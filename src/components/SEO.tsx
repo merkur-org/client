@@ -14,10 +14,8 @@ const SEO = ({
   image,
   shouldExcludeTitleSufix = false,
   shouldIndexPage = true
-}: SEOProps) => {
-  const pageTitle = `${title} ${
-    !shouldExcludeTitleSufix ? '| OCCAM Engenharia' : ''
-  }`
+}: SEOProps): JSX.Element => {
+  const pageTitle = `${title} ${!shouldExcludeTitleSufix ? 'Client' : ''}`
 
   const pageImage = image ? `${process.env.NEXT_PUBLIC_SITE_URL}${image}` : null
 
@@ -53,8 +51,8 @@ const SEO = ({
 
       <meta name="twitter:title" content={pageTitle} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@occamengenharia" />
-      <meta name="twitter:creator" content="@occamengenharia" />
+      <meta name="twitter:site" content="@client" />
+      <meta name="twitter:creator" content="@client" />
       <meta name="twitter:image" content={pageImage} />
       <meta name="twitter:image:src" content={pageImage} />
       <meta name="twitter:image:alt" content="Thumbnail" />

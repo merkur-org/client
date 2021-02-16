@@ -6,7 +6,7 @@ const NotFound: React.FC = () => {
   return (
     <Container>
       <Head>
-        <title>Not found - OCCAM </title>
+        <title>Not found </title>
       </Head>
 
       <h1>Page not found</h1>
