@@ -1,12 +1,16 @@
 import { Container } from '@/styles/pages/Home'
 import SEO from '@/components/SEO'
 
+import { FaCheck } from 'react-icons/fa'
+
+import Button from '@/components/Button'
+
 const Home: React.FC = () => {
   return (
     <Container>
       <SEO title="HOME" image="/banner.png" />
 
-      <h1>Next Starter structure</h1>
+      <Button text="Confirmar" icon={FaCheck} />
     </Container>
   )
 }
