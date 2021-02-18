@@ -8,12 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@unform/core": "^2.1.5",
+    "@unform/web": "^2.1.5",
     "@vercel/node": "^1.8.4",
     "next": "^10.0.7",
     "nodemailer": "^6.4.14",
     "react": "^17.0.1",
     "react-dom": "16.13.1",
-    "styled-components": "^5.2.0"
+    "react-icons": "^4.2.0",
+    "styled-components": "^5.2.0",
+    "unform": "^1.2.3"
   },
   "devDependencies": {
     "@types/node": "^14.11.8",
