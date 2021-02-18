@@ -20,16 +20,14 @@ const FieldText: React.FC<FieldProps> = ({
   children
 }) => {
   return (
-    <BodyField isEmpty={isEmpty} htmlFor={name}>
-      {children}
-      {pathSubLabel && <Link href={`/${pathSubLabel}`}>{subLabel}</Link>}
-      <label htmlFor={name}>{label}</label>
-      {error && (
-        <Error message={error}>
-          <IoMdAlert />
-        </Error>
-      )}
-    </BodyField>
+    <>
+      <BodyField isEmpty={isEmpty} isErrored={!!error} htmlFor={name}>
+        {children}
+        {pathSubLabel && <Link href={`/${pathSubLabel}`}>{subLabel}</Link>}
+        <label htmlFor={name}>{label}</label>
+      </BodyField>
+      {error && <Error>{error}</Error>}
+    </>
   )
 }
 

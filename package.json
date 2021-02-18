@@ -17,7 +17,7 @@
     "react-dom": "16.13.1",
     "react-icons": "^4.2.0",
     "styled-components": "^5.2.0",
-    "unform": "^1.2.3"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@types/node": "^14.11.8",

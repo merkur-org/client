@@ -4,7 +4,9 @@ export const BodyInput = styled.div`
   width: 100%;
   input {
     border: 0;
+    text-decoration: none;
     background: transparent;
+    box-shadow: none;
     outline: 0;
     height: 100%;
     flex: 1;
