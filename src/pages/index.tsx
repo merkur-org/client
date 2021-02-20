@@ -41,7 +41,6 @@ const Home: React.FC = () => {
 
       <Form ref={formRef} onSubmit={handleSubmit}>
         <Input name="email" label="Email" type="email" />
-        <Button type="submit" text="submit" />
       </Form>
     </Container>
   )

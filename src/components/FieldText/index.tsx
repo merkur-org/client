@@ -22,6 +22,9 @@ const FieldText: React.FC<FieldProps> = ({
   return (
     <>
       <BodyField isEmpty={isEmpty} isErrored={!!error} htmlFor={name}>
+        <div id="border-selected"></div>
+        <div id="border-error"></div>
+        <div id="border-bottom"></div>
         {children}
         {pathSubLabel && <Link href={`/${pathSubLabel}`}>{subLabel}</Link>}
         <label htmlFor={name}>{label}</label>
