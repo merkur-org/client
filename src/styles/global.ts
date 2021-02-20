@@ -9,7 +9,11 @@ export default createGlobalStyle`
     box-sizing: border-box;
     text-decoration:none;
     list-style:none;
-    font-size:62.5%;
+    /* font-size:62.5%; */
+  }
+
+  html {
+    font-size: 62.5%;
   }
 
   textarea:focus,
