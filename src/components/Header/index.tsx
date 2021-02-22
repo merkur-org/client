@@ -2,14 +2,7 @@ import { useCallback, useState } from 'react'
 import Link from 'next/link'
 import { MdLocationOn } from 'react-icons/md'
 
-import {
-  Main,
-  HeaderUp,
-  SearchArea,
-  ManagerArea,
-  Burguer,
-  HeaderDown
-} from './styles'
+import { Main, HeaderUp, ManagerArea, Burguer, HeaderDown } from './styles'
 
 import { SearchProducts } from '@/components'
 
@@ -63,21 +56,19 @@ const Header: React.FC = () => {
           </label>
           <div onClick={handleOpenDropDown} className="outside-menu">
             <div className="menu-links">
-              <aside>
-                <Link href="/">
-                  <a>produtos</a>
-                </Link>
-              </aside>
               <div>
                 <section>
                   <Link href="/">
-                    <a>produtos</a>
+                    <a>Categorias</a>
                   </Link>
                   <Link href="/">
-                    <a>produtos</a>
+                    <a>Produtos</a>
                   </Link>
                   <Link href="/">
-                    <a>produtos</a>
+                    <a>Listas semanais</a>
+                  </Link>
+                  <Link href="/">
+                    <a>Meus pedidos</a>
                   </Link>
                 </section>
               </div>

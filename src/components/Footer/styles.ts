@@ -1,4 +1,3 @@
-import { border } from '@/styles/constants'
 import device from '@/styles/constants/breakPoints'
 import styled from 'styled-components'
 

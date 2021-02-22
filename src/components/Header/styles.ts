@@ -25,7 +25,6 @@ export const HeaderUp = styled.section`
     }
   }
 `
-export const SearchArea = styled.div``
 export const ManagerArea = styled.section`
   display: none;
 
@@ -51,7 +50,7 @@ export const Burguer = styled.div<PropsBurguer>`
         background: #fff;
         width: 30px;
         height: 2px;
-        top: 16px;
+        top: 50%;
         left: 15px;
         transition: 0.5s ease-in-out;
 
@@ -108,52 +107,21 @@ export const Burguer = styled.div<PropsBurguer>`
           `}
     width:100vw;
     height: 100vh;
-    position: fixed;
+    position: absolute;
     z-index: 10;
     top: 0;
     left: 0;
     background: transparent;
     .menu-links {
-      position: fixed;
+      position: absolute;
       background-color: white;
       min-width: 100vw;
       box-shadow: 0px 8px 10px 0px rgba(0, 0, 0, 0.2);
       top: 10.4rem;
       z-index: 2;
-      /* padding: 1.2rem; */
-      aside {
-        border-top: solid 1px ${({ theme }) => theme.colors.black};
-        width: 90%;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        a {
-          color: ${({ theme }) => theme.colors.orangePrimary};
 
-          padding: 0.8rem 0;
-
-          display: initial;
-          strong {
-            font-size: 1.6rem;
-          }
-        }
-        legend {
-          font-size: 1.6rem;
-          cursor: pointer;
-          color: ${({ theme }) => theme.colors.orangePrimary};
-          align-items: center;
-
-          strong {
-            font-size: 1.6rem;
-          }
-
-          & + a {
-            margin-left: 3.2rem;
-          }
-        }
-        padding: 0.8rem 0;
-      }
       div {
+        border-top: 2px solid ${({ theme }) => theme.colors.yellowPrimary};
         width: 100vw;
         background: ${({ theme }) => theme.colors.orangePrimary};
         section {
@@ -163,17 +131,20 @@ export const Burguer = styled.div<PropsBurguer>`
           margin: 0 auto;
           padding: 1.6rem 0;
           a {
-            color: #fff;
+            color: ${({ theme }) => theme.colors.white};
             align-items: center;
 
             svg {
-              color: #fff;
+              color: ${({ theme }) => theme.colors.white};
               font-size: 1.6rem;
               margin-right: 0.8rem;
             }
 
             & + a {
-              margin-top: 1.6rem;
+              margin-top: 0.8rem;
+              padding-top: 0.8rem;
+
+              border-top: 1px solid ${({ theme }) => theme.colors.yellowPrimary};
             }
           }
         }
@@ -190,36 +161,52 @@ export const HeaderDown = styled.section`
   background: ${props => props.theme.colors.orangePrimary};
   display: flex;
   justify-content: space-between;
+  align-items: center;
   height: 4rem;
+
+  button {
+    background: transparent;
+    border: 0;
+    color: ${({ theme }) => theme.colors.white};
+    font-size: 1.2rem;
+    padding: 1rem 1.6rem;
+
+    svg {
+      font-size: 1.2rem;
+      color: ${({ theme }) => theme.colors.white};
+    }
+  }
+
   aside {
     display: none;
     a {
-      color: #fff;
-      svg {
-        color: #fff;
-        margin-right: 0.8rem;
-      }
+      color: ${({ theme }) => theme.colors.white};
     }
   }
   @media ${device.tablet} {
-    display: flex;
     padding: 1.6rem;
     height: 4rem;
+    justify-content: initial;
 
     width: 100%;
 
+    button {
+      margin-left: 10%;
+    }
+
     aside {
-      display: initial;
-      width: 100rem;
-      margin: 0 auto;
-      padding: 0 1.6rem;
+      margin-left: 10%;
       display: flex;
 
-      justify-content: space-between;
+      border-left: 1px solid ${({ theme }) => theme.colors.yellowPrimary};
 
       a {
         display: flex;
         align-items: center;
+
+        font-weight: bold;
+        font-size: 1.6rem;
+        margin-left: 2.4rem;
 
         svg {
           margin-right: 0.8rem;
