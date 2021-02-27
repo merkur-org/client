@@ -26,10 +26,100 @@ export const HeaderUp = styled.section`
   }
 `
 export const ManagerArea = styled.section`
-  display: none;
+  > aside {
+    display: flex;
+    flex-direction: column;
+
+    a {
+      font-size: 1.2rem;
+      color: ${({ theme }) => theme.colors.black};
+    }
+  }
+
+  > section {
+    display: flex;
+    align-items: center;
+
+    a {
+      & + a {
+        margin-left: 1.6rem;
+      }
+    }
+  }
 
   @media ${device.tablet} {
-    display: initial;
+    > aside {
+      flex-direction: row;
+      align-items: center;
+      a {
+        font-size: 1.6rem;
+        & + a {
+          margin-left: 1.6rem;
+        }
+      }
+    }
+  }
+`
+export const Manager = styled.a`
+  cursor: pointer;
+  div {
+    display: none;
+  }
+
+  aside {
+    position: relative;
+    svg {
+      color: ${({ theme }) => theme.colors.black};
+      font-size: 1.6rem;
+    }
+
+    span {
+      position: absolute;
+
+      text-align: center;
+      font-size: 1rem;
+      font-weight: bold;
+      color: ${({ theme }) => theme.colors.white};
+      width: 1.6rem;
+      height: 1.6rem;
+
+      border-radius: 50%;
+      background: ${({ theme }) => theme.colors.redPrimary};
+
+      bottom: -0.6rem;
+      right: -1rem;
+    }
+  }
+
+  @media ${device.tablet} {
+    display: flex;
+    align-items: center;
+
+    div {
+      margin-left: 1.6rem;
+      display: flex;
+
+      flex-direction: column;
+      color: ${({ theme }) => theme.colors.black};
+      font-size: 1.2rem;
+
+      span + span {
+        color: ${({ theme }) => theme.colors.gray};
+      }
+    }
+
+    svg {
+      margin-left: 1.6rem;
+    }
+  }
+  @media ${device.laptop} {
+    div {
+      font-size: 1.6rem;
+    }
+
+    svg {
+      margin-left: 1.6rem;
+    }
   }
 `
 interface PropsBurguer {

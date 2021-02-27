@@ -1,8 +1,16 @@
 import { useCallback, useState } from 'react'
 import Link from 'next/link'
 import { MdLocationOn } from 'react-icons/md'
+import { FaShoppingBasket, FaUserAlt } from 'react-icons/fa'
 
-import { Main, HeaderUp, ManagerArea, Burguer, HeaderDown } from './styles'
+import {
+  Main,
+  HeaderUp,
+  ManagerArea,
+  Manager,
+  Burguer,
+  HeaderDown
+} from './styles'
 
 import { SearchProducts } from '@/components'
 
@@ -20,7 +28,44 @@ const Header: React.FC = () => {
           <img src="logo.jpg" alt="" />
         </Link>
         <SearchProducts />
-        <ManagerArea></ManagerArea>
+
+        <ManagerArea>
+          {false ? (
+            <aside>
+              <Link href="/">
+                <a> cadastre-se</a>
+              </Link>
+              <Link href="/">
+                <a>entrar</a>
+              </Link>
+            </aside>
+          ) : (
+            <section>
+              <Link href="/">
+                <Manager>
+                  <div>Cesta</div>
+                  <aside>
+                    <FaShoppingBasket />
+
+                    <span>1</span>
+                  </aside>
+                </Manager>
+              </Link>
+              <Link href="/">
+                <Manager>
+                  <div>
+                    <span>Daniel Gustavo Favero</span>
+                    <span>danielfavero17@gmail.com</span>
+                  </div>
+                  <aside>
+                    <FaUserAlt />
+                    <span>1</span>
+                  </aside>
+                </Manager>
+              </Link>
+            </section>
+          )}
+        </ManagerArea>
       </HeaderUp>
       <HeaderDown>
         <button>

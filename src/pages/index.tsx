@@ -6,7 +6,7 @@ const Home: React.FC = () => {
     <Container>
       <SEO title="HOME" image="/banner.png" />
 
-      <h1>Next Starter structure</h1>
+      <h1>Hello</h1>
     </Container>
   )
 }
