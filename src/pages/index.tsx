@@ -12,7 +12,7 @@ const Home: React.FC = () => {
         category="Legumes"
         price="10"
         unity="kg"
-        quantity="2"
+        quantity={1}
       />
 
       <h1>Next Starter structure</h1>

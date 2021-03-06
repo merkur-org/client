@@ -1,6 +1,7 @@
-import { Card, Data } from './styles'
+import { Card, Data, BuyContainer, BuyQuantity, Info } from './styles'
 import Button from '@/components/IconButton'
 import { FaShoppingBasket } from 'react-icons/fa'
+import { useState } from 'react'
 
 interface IDataProps {
   photo?: string
@@ -8,7 +9,7 @@ interface IDataProps {
   category: string
   price: string
   unity: string
-  quantity: string
+  quantity?: number
 }
 
 const ProductCardData: React.FC<IDataProps> = ({
@@ -17,17 +18,43 @@ const ProductCardData: React.FC<IDataProps> = ({
   category,
   price,
   unity,
-  quantity
+  quantity = 0
 }) => {
+  const [count, setCount] = useState(quantity)
+
+  const handleIncrease = () => setCount(count => count + 1)
+  // const handleIncrease = () => console.log('oi')
+
+  const handleDecrease = () => setCount(count => (count > 0 ? count - 1 : 0))
+  // const handleDecrease = () => console.log('tchau')
+
   return (
     <Card>
       <img src="https://images.unsplash.com/photo-1508313880080-c4bef0730395?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80"></img>
-      <Data>
-        <h3>Legumes</h3>
-        <h1>Batata Inglesa</h1>
-        <h2>R$10/Kg</h2>
-      </Data>
-      <Button icon={FaShoppingBasket} />
+      <Info>
+        <Data>
+          <h3>Legumes</h3>
+          <h1>Batata Inglesa</h1>
+          <h2>R$10/Kg</h2>
+        </Data>
+
+        <BuyContainer>
+          <BuyQuantity>
+            <button type="button" onClick={handleDecrease}>
+              -
+            </button>
+
+            <span>{count}</span>
+
+            <button type="button" onClick={handleIncrease}>
+              +
+            </button>
+            <span>Kg</span>
+          </BuyQuantity>
+
+          <Button icon={FaShoppingBasket} />
+        </BuyContainer>
+      </Info>
     </Card>
   )
 }

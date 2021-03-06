@@ -9,7 +9,7 @@ export const Card = styled.section`
   background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  /* overflow: hidden; */
   //gap: 1rem;
   box-shadow: 0px 0px 10px 0px rgb(0, 0, 0, 0.2);
   position: relative;
@@ -21,6 +21,11 @@ export const Card = styled.section`
   }
 `
 
+export const Info = styled.div`
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+`
 export const Data = styled.section`
   display: flex;
   flex-direction: column;
@@ -43,5 +48,23 @@ export const Data = styled.section`
     font-size: 1.5rem;
     font-weight: normal;
     color: ${({ theme }) => theme.colors.orangePrimary};
+  }
+`
+export const BuyContainer = styled.section`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+export const BuyQuantity = styled.aside`
+  button {
+    font-size: 1.6rem;
+    background: transparent;
+    border: 1px solid ${({ theme }) => theme.colors.gray};
+    padding: 0.8rem 1.2rem;
+  }
+  span {
+    border: 1px solid ${({ theme }) => theme.colors.gray};
+    font-size: 1.6rem;
+    padding: 0.8rem 1.2rem;
   }
 `

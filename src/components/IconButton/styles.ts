@@ -12,7 +12,6 @@ export const Container = styled.button`
   height: 6rem;
   width: max-content;
   font-size: 64px;
-  margin: 0.5rem;
   float: right;
 
   color: ${({ theme }) => theme.colors.greenPrimary};
