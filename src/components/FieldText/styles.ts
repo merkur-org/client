@@ -97,8 +97,8 @@ export const BodyField = styled.label<{ isEmpty: boolean; isErrored: boolean }>`
     }
 
     ${props =>
-      props.isErrored &&
-      css`
+    props.isErrored &&
+    css`
         label {
           color: ${({ theme }) => theme.colors.error};
         }
