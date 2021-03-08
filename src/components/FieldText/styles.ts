@@ -33,7 +33,7 @@ export const BodyField = styled.label<{ isEmpty: boolean; isErrored: boolean }>`
     color: ${({ theme }) => theme.colors.gray};
 
     transition: 0.5s;
-    cursor: text;
+    cursor: default;
   }
 
   #border-bottom {
@@ -97,8 +97,8 @@ export const BodyField = styled.label<{ isEmpty: boolean; isErrored: boolean }>`
     }
 
     ${props =>
-    props.isErrored &&
-    css`
+      props.isErrored &&
+      css`
         label {
           color: ${({ theme }) => theme.colors.error};
         }

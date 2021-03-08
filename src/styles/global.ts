@@ -9,10 +9,10 @@ export default createGlobalStyle`
     box-sizing: border-box;
     text-decoration:none;
     list-style:none;
+    font-family: 'Roboto Slab', serif;
   }
 
   html{
-    font-family: 'Roboto Slab', serif;
     font-size:62.5%;
     font: 400 1.6rem;
   }

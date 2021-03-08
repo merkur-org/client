@@ -13,7 +13,7 @@ export const Container = styled.button`
   justify-content: space-between;
   align-items: center;
 
-  font-size: 2.4rem;
+  font-size: 1.6rem;
   font-weight: bold;
 
   border: none;
