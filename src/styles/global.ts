@@ -14,6 +14,8 @@ export default createGlobalStyle`
 
   html {
     font-size: 62.5%;
+    font-family: 'Roboto Slab', serif;
+    font: 400 1.6rem;
   }
 
   textarea:focus,
@@ -32,7 +34,6 @@ export default createGlobalStyle`
   body {
     background: ${props => props.theme.colors.white};
     color: ${props => props.theme.colors.black};
-    font: 400 1.6rem 'Roboto Slab', serif;
     cursor: default;
   }
 
