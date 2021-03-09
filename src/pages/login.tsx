@@ -60,21 +60,22 @@ const Login: React.FC = () => {
     try {
       const schema = Yup.object().shape({
         emailTab: Yup.boolean(),
+        cpfTab: Yup.boolean(),
         email: Yup.string()
           .email('Insira um email válido')
           .when('emailTab', {
             is: true,
-            then: Yup.string().required('E-mail obrigatória')
+            then: Yup.string().required('E-mail obrigatório')
           }),
         senha: Yup.string().when('emailTab', {
           is: true,
           then: Yup.string().required('Senha obrigatória')
         }),
-        cpf: Yup.string().when('cpfSelected', {
+        cpf: Yup.string().when('cpfTab', {
           is: true,
           then: Yup.string().required('CPF obrigatório')
         }),
-        telefone: Yup.string().when('cpfSelected', {
+        telefone: Yup.string().when('cpfTab', {
           is: true,
           then: Yup.string().required('Telefone obrigatório')
         })
@@ -87,7 +88,6 @@ const Login: React.FC = () => {
         const errors = getValidationErrors(error)
 
         formRef.current?.setErrors(errors)
-        console.log(error)
       }
     }
   }, [])

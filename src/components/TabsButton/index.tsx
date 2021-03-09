@@ -29,7 +29,7 @@ const TabsButton: React.FC<ButtonProps> = ({
     registerField({
       name: fieldName,
       ref: inputRef.current,
-      path: 'value'
+      path: 'checked'
     })
   }, [fieldName, registerField])
 
