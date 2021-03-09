@@ -8,10 +8,10 @@ import { Header, Footer } from '@/components'
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <ThemeProvider theme={theme}>
-      <Header />
+      {!pageProps.showComponents && <Header />}
       <Component {...pageProps} />
       <GlobalStyle />
-      <Footer />
+      {!pageProps.showComponents && <Footer />}
     </ThemeProvider>
   )
 }

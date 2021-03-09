@@ -5,7 +5,6 @@ import {
   WelcomeContainer,
   FormContainer,
   InputContainer,
-  BottomContainer,
   ButtonContainer,
   InputsColumn
 } from '@/styles/pages/cadastro'
@@ -19,6 +18,7 @@ import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
 import getValidationErrors from '@/utils/getValidationErrors'
+import { GetStaticProps } from 'next'
 const Login: React.FC = () => {
   const formTypes = [
     {
@@ -167,4 +167,11 @@ const Login: React.FC = () => {
   )
 }
 
+export const getStaticProps: GetStaticProps<{
+  showComponents: boolean
+}> = async () => {
+  return {
+    props: { showComponents: true }
+  }
+}
 export default Login

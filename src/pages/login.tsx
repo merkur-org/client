@@ -2,7 +2,6 @@ import {
   Container,
   BackgroundOrange,
   BackgroundWhiteRectangle,
-  TabContainer,
   WelcomeContainer,
   FormContainer,
   InputContainer,
@@ -18,6 +17,7 @@ import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
 import getValidationErrors from '@/utils/getValidationErrors'
+import { GetStaticProps } from 'next'
 const Login: React.FC = () => {
   const formTypes = [
     {
@@ -163,6 +163,14 @@ const Login: React.FC = () => {
       <BackgroundOrange />
     </Container>
   )
+}
+
+export const getStaticProps: GetStaticProps<{
+  showComponents: boolean
+}> = async () => {
+  return {
+    props: { showComponents: true }
+  }
 }
 
 export default Login
