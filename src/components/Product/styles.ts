@@ -2,15 +2,13 @@ import styled from 'styled-components'
 
 export const Card = styled.section`
   width: max-content;
+  height: max-content;
   min-width: 20rem;
   max-width: 30rem;
-  height: 45rem;
   border-radius: 0.8rem;
   background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   flex-direction: column;
-  /* overflow: hidden; */
-  //gap: 1rem;
   box-shadow: 0px 0px 10px 0px rgb(0, 0, 0, 0.2);
   position: relative;
   > img {
@@ -56,14 +54,27 @@ export const BuyContainer = styled.section`
   align-items: center;
 `
 export const BuyQuantity = styled.aside`
-  button {
-    font-size: 1.6rem;
-    background: transparent;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .quantity-selector {
     border: 1px solid ${({ theme }) => theme.colors.gray};
+    border-radius: 0.8rem;
+  }
+
+  button {
+    font-size: 2rem;
+    background: transparent;
+    border: none;
     padding: 0.8rem 1.2rem;
   }
-  span {
+
+  .quantity-label {
     border: 1px solid ${({ theme }) => theme.colors.gray};
+  }
+
+  span {
     font-size: 1.6rem;
     padding: 0.8rem 1.2rem;
   }

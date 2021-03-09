@@ -1,6 +1,7 @@
 import { Card, Data, BuyContainer, BuyQuantity, Info } from './styles'
 import Button from '@/components/IconButton'
 import { FaShoppingBasket } from 'react-icons/fa'
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
 import { useState } from 'react'
 
 interface IDataProps {
@@ -40,16 +41,20 @@ const ProductCardData: React.FC<IDataProps> = ({
 
         <BuyContainer>
           <BuyQuantity>
-            <button type="button" onClick={handleDecrease}>
-              -
-            </button>
+            <div className="quantity-selector">
+              <button type="button" onClick={handleDecrease}>
+                <AiOutlineMinus />
+              </button>
 
-            <span>{count}</span>
+              <span className="quantity-label">{count}</span>
 
-            <button type="button" onClick={handleIncrease}>
-              +
-            </button>
-            <span>Kg</span>
+              <button type="button" onClick={handleIncrease}>
+                <AiOutlinePlus />
+              </button>
+            </div>
+            <div className="unit-label">
+              <span>kg</span>
+            </div>
           </BuyQuantity>
 
           <Button icon={FaShoppingBasket} />
