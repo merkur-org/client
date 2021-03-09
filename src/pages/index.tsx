@@ -15,7 +15,7 @@ const Home: React.FC = () => {
         quantity={1}
       />
 
-      <h1>Next Starter structure</h1>
+      <h1>Hello</h1>
     </Container>
   )
 }
