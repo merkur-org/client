@@ -38,7 +38,7 @@ const Login: React.FC = () => {
   const [cnpjSelected, setCnpjSelected] = useState(false)
 
   useEffect(() => {
-    cpfSelected ? setFormInputs(formTypes[1]) : setFormInputs(formTypes[0])
+    cpfSelected ? setFormInputs(formTypes[0]) : setFormInputs(formTypes[1])
   }, [cnpjSelected, cpfSelected])
 
   const formRef = useRef<FormHandles>(null)
@@ -46,11 +46,28 @@ const Login: React.FC = () => {
   const handleSubmit = useCallback(async formData => {
     formRef.current?.setErrors({})
 
+    console.log(formData)
+
     try {
       const schema = Yup.object().shape({
-        name: Yup.string().required('Preencha esse campo'),
-        email: Yup.string().email().required('Preencha esse campo'),
-        phone: Yup.string().required('Preencha esse campo')
+        pessoal: Yup.boolean(),
+        empresarial: Yup.boolean(),
+        name: Yup.string().required('Esse campo é obrigatório'),
+        email: Yup.string().email().required('Esse campo é obrigatório'),
+        phone: Yup.string().required('Esse campo é obrigatório'),
+        cpf: Yup.string().when('pessoal', {
+          is: true,
+          then: Yup.string().required('Esse campo é obrigatório')
+        }),
+        cnpj: Yup.string().when('empresarial', {
+          is: false,
+          then: Yup.string().required('Esse campo é obrigatório')
+        }),
+        password: Yup.string().required('Esse campo é obrigatório'),
+        passwordConfirmation: Yup.string()
+          .oneOf([Yup.ref('password'), null], 'As senhas devem ser iguais')
+          .required('Esse campo é obrigatório'),
+        conditionTerms: Yup.boolean().oneOf([true], 'Aceite os termos de uso')
       })
       await schema.validate(formData, {
         abortEarly: false
@@ -60,7 +77,6 @@ const Login: React.FC = () => {
         const errors = getValidationErrors(error)
 
         formRef.current?.setErrors(errors)
-        console.log(error)
       }
     }
   }, [])
@@ -73,20 +89,24 @@ const Login: React.FC = () => {
           <h2>Preencha todos os campos com os seus dados</h2>
         </WelcomeContainer>
         <FormContainer>
-          <Form ref={formRef} onSubmit={handleSubmit}>
+          <Form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            initialData={{ conditionTerms: false }}
+          >
             <TabMenu
               buttons={[
                 {
                   name: 'pessoal',
                   label: 'conta pessoal',
-                  isSelected: cnpjSelected,
-                  setIsSelected: setCnpjSelected
+                  isSelected: cpfSelected,
+                  setIsSelected: setCpfSelected
                 },
                 {
                   name: 'empresarial',
                   label: 'conta empresarial',
-                  isSelected: cpfSelected,
-                  setIsSelected: setCpfSelected
+                  isSelected: cnpjSelected,
+                  setIsSelected: setCnpjSelected
                 }
               ]}
             />

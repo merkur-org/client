@@ -83,12 +83,6 @@ export const FormContainer = styled.div`
       color: ${({ theme }) => theme.colors.yellowPrimary};
     }
   }
-
-  @media ${breakPoints.mobileL} {
-    aside {
-      margin-bottom: 4.8rem;
-    }
-  }
 `
 
 export const InputsColumn = styled.section`
