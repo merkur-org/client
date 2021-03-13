@@ -3,7 +3,6 @@ import {
   useEffect,
   useCallback,
   ChangeEvent,
-  useState,
   InputHTMLAttributes
 } from 'react'
 import { useField } from '@unform/core'

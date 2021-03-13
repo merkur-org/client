@@ -16,13 +16,14 @@ import {
   WelcomeContainer,
   FormContainer,
   InputContainer,
-  BottomContainer,
   ButtonContainer,
-  InputsColumn
+  InputsColumn,
+  BottomContainer
 } from '@/styles/pages/cadastro'
 
 import getValidationErrors from '@/utils/getValidationErrors'
 import { formMessages } from '@/styles/constants'
+import { GetStaticProps } from 'next'
 
 const Cadastro: React.FC = () => {
   const formTypes = [
@@ -173,3 +174,10 @@ const Cadastro: React.FC = () => {
 }
 
 export default Cadastro
+export const getStaticProps: GetStaticProps<{
+  showComponents: boolean
+}> = async () => {
+  return {
+    props: { showComponents: true }
+  }
+}
