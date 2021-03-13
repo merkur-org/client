@@ -20,9 +20,7 @@ import {
 } from '@/styles/pages/login'
 
 import getValidationErrors from '@/utils/getValidationErrors'
-
 import { formMessages } from '@/styles/constants'
-
 import { GetStaticProps } from 'next'
 
 const Login: React.FC = () => {
