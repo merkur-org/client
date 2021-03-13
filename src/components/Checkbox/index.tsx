@@ -34,26 +34,15 @@ const CheckBox: React.FC<CheckBoxProps> = ({
       path: 'checked'
     })
   }, [defaultValue, fieldName, registerField])
-
-  const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.checked)
-  }, [])
-
   return (
     <>
       <Container htmlFor={id}>
         <label htmlFor={id}>{label}</label>
-        <input
-          type="checkbox"
-          id={id}
-          ref={inputRef}
-          name={name}
-          onChange={handleChange}
-        />
+        <input type="checkbox" id={id} ref={inputRef} name={name} />
         <span></span>
         {(link || linkLabel) && <a href={link}>{linkLabel}</a>}
+        {error && <Error>{error}</Error>}
       </Container>
-      {error && <Error>{error}</Error>}
     </>
   )
 }

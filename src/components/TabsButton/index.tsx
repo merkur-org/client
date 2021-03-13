@@ -41,11 +41,10 @@ const TabsButton: React.FC<ButtonProps> = ({
       <SelectionLine isSelected={isSelected} />
       <label htmlFor={label}>{label}</label>
       <input
-        type="radio"
+        type="checkbox"
         name={name}
         onChange={handleChange}
         ref={inputRef}
-        checked={isSelected}
         id={label}
         {...rest}
       />

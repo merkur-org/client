@@ -1,3 +1,14 @@
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { FormHandles } from '@unform/core'
+import { Form } from '@unform/web'
+import * as Yup from 'yup'
+import { FaCheck } from 'react-icons/fa'
+
+import Button from '@/components/Button'
+import Input from '@/components/Input'
+import TabMenu from '@/components/TabMenu'
+import CheckBox from '@/components/Checkbox'
+
 import {
   Container,
   BackgroundOrange,
@@ -8,18 +19,16 @@ import {
   ButtonContainer,
   InputsColumn
 } from '@/styles/pages/cadastro'
-import { FaCheck } from 'react-icons/fa'
-import Button from '@/components/Button'
-import Input from '@/components/Input'
-import TabMenu from '@/components/TabMenu'
-import CheckBox from '@/components/Checkbox'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { FormHandles } from '@unform/core'
-import { Form } from '@unform/web'
-import * as Yup from 'yup'
+
 import getValidationErrors from '@/utils/getValidationErrors'
+
+import { formMessages } from '@/styles/constants'
+
+const Cadastro: React.FC = () => {
+
 import { GetStaticProps } from 'next'
 const Login: React.FC = () => {
+
   const formTypes = [
     {
       name: 'cpf',
@@ -45,29 +54,26 @@ const Login: React.FC = () => {
 
   const handleSubmit = useCallback(async formData => {
     formRef.current?.setErrors({})
-
-    console.log(formData)
-
     try {
       const schema = Yup.object().shape({
         pessoal: Yup.boolean(),
         empresarial: Yup.boolean(),
-        name: Yup.string().required('Esse campo é obrigatório'),
-        email: Yup.string().email().required('Esse campo é obrigatório'),
-        phone: Yup.string().required('Esse campo é obrigatório'),
+        name: Yup.string().required(formMessages.required),
+        email: Yup.string().email().required(formMessages.required),
+        phone: Yup.string().required(formMessages.required),
         cpf: Yup.string().when('pessoal', {
           is: true,
-          then: Yup.string().required('Esse campo é obrigatório')
+          then: Yup.string().required(formMessages.required)
         }),
         cnpj: Yup.string().when('empresarial', {
           is: false,
-          then: Yup.string().required('Esse campo é obrigatório')
+          then: Yup.string().required(formMessages.required)
         }),
-        password: Yup.string().required('Esse campo é obrigatório'),
+        password: Yup.string().required(formMessages.required),
         passwordConfirmation: Yup.string()
-          .oneOf([Yup.ref('password'), null], 'As senhas devem ser iguais')
-          .required('Esse campo é obrigatório'),
-        conditionTerms: Yup.boolean().oneOf([true], 'Aceite os termos de uso')
+          .oneOf([Yup.ref('password'), null], formMessages.samePassword)
+          .required(formMessages.required),
+        conditionTerms: Yup.boolean().oneOf([true], formMessages.terms)
       })
       await schema.validate(formData, {
         abortEarly: false
@@ -128,9 +134,6 @@ const Login: React.FC = () => {
                     label={formInputs.placeholder}
                   />
                 </InputContainer>
-                <ButtonContainer>
-                  <Button text="Cadastrar" icon={FaCheck} type="submit" />
-                </ButtonContainer>
               </div>
               <div className="column2">
                 <InputContainer>
@@ -150,15 +153,21 @@ const Login: React.FC = () => {
                     label="Confirme sua senha"
                   />
                 </InputContainer>
-                <CheckBox
-                  id="conditionTerms"
-                  name="conditionTerms"
-                  label="Aceito os"
-                  link="/"
-                  linkLabel="termos de condições"
-                />
               </div>
             </InputsColumn>
+
+            <BottomContainer>
+              <ButtonContainer>
+                <Button text="Cadastrar" icon={FaCheck} type="submit" />
+              </ButtonContainer>
+              <CheckBox
+                id="conditionTerms"
+                name="conditionTerms"
+                label="Aceito os"
+                link="/"
+                linkLabel="termos de condições"
+              />
+            </BottomContainer>
           </Form>
         </FormContainer>
       </BackgroundWhiteRectangle>
@@ -167,6 +176,9 @@ const Login: React.FC = () => {
   )
 }
 
+
+export default Cadastro
+
 export const getStaticProps: GetStaticProps<{
   showComponents: boolean
 }> = async () => {
@@ -174,4 +186,4 @@ export const getStaticProps: GetStaticProps<{
     props: { showComponents: true }
   }
 }
-export default Login
+

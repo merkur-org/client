@@ -76,7 +76,6 @@ export const FormContainer = styled.div`
 
   aside {
     margin-top: 0.8rem;
-    margin-bottom: 2.4rem;
 
     p {
       font-size: 1.2rem;
@@ -96,6 +95,10 @@ export const InputsColumn = styled.section`
     }
 
     .column2 {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
       grid-column: 2;
     }
   }
@@ -111,28 +114,18 @@ export const BottomContainer = styled.div`
   flex-direction: column-reverse;
 
   @media ${breakPoints.tablet} {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 2.4rem;
   }
 `
 
 export const ButtonContainer = styled.div`
   width: 100%;
+  margin-top: 2.4rem;
 
   @media ${breakPoints.tablet} {
-    margin-bottom: 2.4rem;
+    margin-top: 0;
     max-width: 22rem;
-  }
-`
-
-export const LinksContainer = styled.div`
-  margin-top: 0.8rem;
-  margin-bottom: 2.4rem;
-  display: flex;
-  justify-content: space-between;
-
-  a {
-    color: ${({ theme }) => theme.colors.gray};
   }
 `
