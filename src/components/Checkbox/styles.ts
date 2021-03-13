@@ -10,6 +10,8 @@ export const Error = styled.p`
 `
 
 export const Container = styled.label`
+  height: fit-content;
+  width: fit-content;
   display: block;
   position: relative;
   padding-left: 2.4rem;

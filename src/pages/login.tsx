@@ -1,23 +1,27 @@
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { FormHandles } from '@unform/core'
+import { Form } from '@unform/web'
+import * as Yup from 'yup'
+import { FaCheck } from 'react-icons/fa'
+
+import Button from '@/components/Button'
+import Input from '@/components/Input'
+import TabMenu from '@/components/TabMenu'
+
 import {
   Container,
   BackgroundOrange,
   BackgroundWhiteRectangle,
-  TabContainer,
   WelcomeContainer,
   FormContainer,
   InputContainer,
   ButtonContainer,
   LinksContainer
 } from '@/styles/pages/login'
-import { FaCheck } from 'react-icons/fa'
-import Button from '@/components/Button'
-import Input from '@/components/Input'
-import TabMenu from '@/components/TabMenu'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { FormHandles } from '@unform/core'
-import { Form } from '@unform/web'
-import * as Yup from 'yup'
+
 import getValidationErrors from '@/utils/getValidationErrors'
+import { formMessages } from '@/styles/constants'
+
 const Login: React.FC = () => {
   const formTypes = [
     {
@@ -62,22 +66,22 @@ const Login: React.FC = () => {
         emailTab: Yup.boolean(),
         cpfTab: Yup.boolean(),
         email: Yup.string()
-          .email('Insira um email válido')
+          .email(formMessages.validEmail)
           .when('emailTab', {
             is: true,
-            then: Yup.string().required('E-mail obrigatório')
+            then: Yup.string().required(formMessages.required)
           }),
         senha: Yup.string().when('emailTab', {
           is: true,
-          then: Yup.string().required('Senha obrigatória')
+          then: Yup.string().required(formMessages.required)
         }),
         cpf: Yup.string().when('cpfTab', {
           is: true,
-          then: Yup.string().required('CPF obrigatório')
+          then: Yup.string().required(formMessages.required)
         }),
         telefone: Yup.string().when('cpfTab', {
           is: true,
-          then: Yup.string().required('Telefone obrigatório')
+          then: Yup.string().required(formMessages.required)
         })
       })
       await schema.validate(formData, {
