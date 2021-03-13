@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { breakPoints, effects } from '../constants'
 
 export const Container = styled.div`

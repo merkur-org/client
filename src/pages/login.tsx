@@ -20,7 +20,10 @@ import {
 } from '@/styles/pages/login'
 
 import getValidationErrors from '@/utils/getValidationErrors'
+
 import { formMessages } from '@/styles/constants'
+
+import { GetStaticProps } from 'next'
 
 const Login: React.FC = () => {
   const formTypes = [
@@ -167,6 +170,14 @@ const Login: React.FC = () => {
       <BackgroundOrange />
     </Container>
   )
+}
+
+export const getStaticProps: GetStaticProps<{
+  showComponents: boolean
+}> = async () => {
+  return {
+    props: { showComponents: true }
+  }
 }
 
 export default Login
