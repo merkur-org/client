@@ -52,12 +52,16 @@ const ProductCardData: React.FC<IDataProps> = ({
                 <AiOutlinePlus />
               </button>
             </div>
-            <div className="unit-label">
-              <span>kg</span>
-            </div>
+            <span>kg</span>
           </BuyQuantity>
 
-          <Button icon={FaShoppingBasket} />
+          <aside
+            onClick={() => {
+              console.log('oi')
+            }}
+          >
+            <FaShoppingBasket />
+          </aside>
         </BuyContainer>
       </Info>
     </Card>

@@ -11,7 +11,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
       {!pageProps.showComponents && <Header />}
       <Component {...pageProps} />
       <GlobalStyle />
-      {!pageProps.showComponents && <Footer />}
+      <Footer />
     </ThemeProvider>
   )
 }
