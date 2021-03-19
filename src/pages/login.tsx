@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/router'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
+import api from '@/services/api'
+
 import { FaCheck } from 'react-icons/fa'
 
 import Button from '@/components/Button'
@@ -20,10 +23,12 @@ import {
 } from '@/styles/pages/login'
 
 import getValidationErrors from '@/utils/getValidationErrors'
-import { formMessages } from '@/styles/constants'
+import formMessages from '@/styles/constants/formMessages'
 import { GetStaticProps } from 'next'
 
 const Login: React.FC = () => {
+  const router = useRouter()
+
   const formTypes = [
     {
       name: 'email',
@@ -88,6 +93,25 @@ const Login: React.FC = () => {
       await schema.validate(formData, {
         abortEarly: false
       })
+
+      let data
+
+      if (emailSelected) {
+        data = {
+          email: formData.email || '',
+          password: formData.senha || ''
+        }
+      } else {
+        data = {
+          phone: formData.telefone || '',
+          cpf: formData.cpf || ''
+        }
+      }
+
+      console.log(data)
+
+      await api.post('/sessions', data)
+      router.push('/')
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error)

@@ -11,6 +11,7 @@
     "@unform/core": "^2.1.6",
     "@unform/web": "^2.1.6",
     "@vercel/node": "^1.8.4",
+    "axios": "^0.21.1",
     "next": "^10.0.7",
     "rc-input-number": "^7.0.1",
     "react": "^17.0.1",
