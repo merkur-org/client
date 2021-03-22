@@ -1,16 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { NextPageContext, NextPage, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
-import * as Yup from 'yup'
-import api from '@/services/api'
+import TokenService from '@/services/Token.service'
+import { useUser } from '@/services/Auth.context'
 
-import { FaCheck } from 'react-icons/fa'
+import validateLogin from '@/utils/validateLogin'
+import signIn from '@/utils/signIn'
 
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import TabMenu from '@/components/TabMenu'
 
+import { FaCheck } from 'react-icons/fa'
 import {
   Container,
   BackgroundOrange,
@@ -21,103 +24,52 @@ import {
   ButtonContainer,
   LinksContainer
 } from '@/styles/pages/login'
+interface pageProps {
+  userLogged: boolean
+}
 
-import getValidationErrors from '@/utils/getValidationErrors'
-import formMessages from '@/styles/constants/formMessages'
-import { GetStaticProps } from 'next'
+interface formProps {
+  cpfTab: boolean
+  emailTab: boolean
+  email?: string
+  senha?: string
+  telefone?: string
+  cpf?: string
+}
 
-const Login: React.FC = () => {
+const Login: NextPage<pageProps> = userLogged => {
+  const [user, setUser] = useUser()
   const router = useRouter()
 
-  const formTypes = [
-    {
-      name: 'email',
-      type: 'email',
-      placeholder: 'Email'
-    },
-    {
-      name: 'senha',
-      type: 'password',
-      placeholder: 'Senha'
-    },
-    {
-      name: 'cpf',
-      type: 'text',
-      placeholder: 'CPF'
-    },
-    {
-      name: 'telefone',
-      type: 'text',
-      placeholder: 'Telefone'
+  // enviar o usuário para a home caso ele tente acessar a página de login e já esteja logado
+  useEffect(() => {
+    if (user) {
+      router.push('/')
     }
-  ]
+  }, [])
 
-  const [formInputs, setFormInputs] = useState([formTypes[0], formTypes[1]])
   const [emailSelected, setEmailSelected] = useState(true)
   const [cpfSelected, setCpfSelected] = useState(false)
-
-  useEffect(() => {
-    emailSelected
-      ? setFormInputs([formTypes[0], formTypes[1]])
-      : setFormInputs([formTypes[2], formTypes[3]])
-  }, [emailSelected, cpfSelected])
-
   const formRef = useRef<FormHandles>(null)
 
-  const handleSubmit = useCallback(async formData => {
-    formRef.current?.setErrors({})
-
+  const handleSubmit = useCallback(async (formData: formProps) => {
     try {
-      const schema = Yup.object().shape({
-        emailTab: Yup.boolean(),
-        cpfTab: Yup.boolean(),
-        email: Yup.string()
-          .email(formMessages.validEmail)
-          .when('emailTab', {
-            is: true,
-            then: Yup.string().required(formMessages.required)
-          }),
-        senha: Yup.string().when('emailTab', {
-          is: true,
-          then: Yup.string().required(formMessages.required)
-        }),
-        cpf: Yup.string().when('cpfTab', {
-          is: true,
-          then: Yup.string().required(formMessages.required)
-        }),
-        telefone: Yup.string().when('cpfTab', {
-          is: true,
-          then: Yup.string().required(formMessages.required)
-        })
-      })
-      await schema.validate(formData, {
-        abortEarly: false
-      })
+      const data = await validateLogin(formData, formRef) // validar o formulário
 
-      let data
+      if (data) {
+        const res = await signIn(data) // logar
 
-      if (emailSelected) {
-        data = {
-          email: formData.email || '',
-          password: formData.senha || ''
-        }
-      } else {
-        data = {
-          phone: formData.telefone || '',
-          cpf: formData.cpf || ''
+        if (res) {
+          setUser({
+            type: 'setAuthDetails',
+            payload: { email: res.data.user.email, name: res.data.user.name }
+          })
+
+          router.push('/') // redirecionar o usuário para home
         }
       }
-
-      console.log(data)
-
-      await api.post('/sessions', data)
-      router.push('/')
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(error)
-
-        formRef.current?.setErrors(errors)
-      }
+    } catch (err) {
+      formRef.current.setErrors(err)
     }
   }, [])
 
@@ -129,7 +81,18 @@ const Login: React.FC = () => {
           <h2>Informe seus dados para iniciar a sessão</h2>
         </WelcomeContainer>
         <FormContainer>
-          <Form ref={formRef} onSubmit={handleSubmit}>
+          <Form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            initialData={{
+              emailTab: true,
+              cpfTab: false,
+              email: '',
+              senha: '',
+              cpf: '',
+              telefone: ''
+            }}
+          >
             <TabMenu
               buttons={[
                 {
@@ -149,17 +112,9 @@ const Login: React.FC = () => {
             {emailSelected && (
               <>
                 <InputContainer>
-                  <Input
-                    name={formInputs[0].name}
-                    type={formInputs[0].type}
-                    label={formInputs[0].placeholder}
-                  />
+                  <Input name="email" type="email" label="Email" />
                 </InputContainer>
-                <Input
-                  name={formInputs[1].name}
-                  type={formInputs[1].type}
-                  label={formInputs[1].placeholder}
-                />
+                <Input name="senha" type="password" label="Senha" />
                 <LinksContainer>
                   <a href="forgotPassword">esqueceu sua senha?</a>
                   <a href="noRegister">não possui cadastro?</a>
@@ -170,17 +125,9 @@ const Login: React.FC = () => {
             {cpfSelected && (
               <>
                 <InputContainer>
-                  <Input
-                    name={formInputs[0].name}
-                    type={formInputs[0].type}
-                    label={formInputs[0].placeholder}
-                  />
+                  <Input name="cpf" type="text" label="CPF" />
                 </InputContainer>
-                <Input
-                  name={formInputs[1].name}
-                  type={formInputs[1].type}
-                  label={formInputs[1].placeholder}
-                />
+                <Input name="telefone" type="string" label="Telefone" />
               </>
             )}
             <ButtonContainer>

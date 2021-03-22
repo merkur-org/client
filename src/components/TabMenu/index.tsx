@@ -30,7 +30,6 @@ const TabMenu: React.FC<ButtonsProps> = ({ buttons }) => {
       button => button.name === event.target.name
     )
     selectedOne.setIsSelected(true)
-    console.log(selectedOne)
   }, [])
 
   return (

@@ -3,16 +3,19 @@ import { ThemeProvider } from 'styled-components'
 
 import GlobalStyle from '../styles/global'
 import theme from '../styles/theme'
+import { AuthProvider } from '@/services/Auth.context'
 import { Header, Footer } from '@/components'
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
-    <ThemeProvider theme={theme}>
-      {!pageProps.showComponents && <Header />}
-      <Component {...pageProps} />
-      <GlobalStyle />
-      <Footer />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        {!pageProps.showComponents && <Header />}
+        <Component {...pageProps} />
+        <GlobalStyle />
+        <Footer />
+      </ThemeProvider>
+    </AuthProvider>
   )
 }
 
