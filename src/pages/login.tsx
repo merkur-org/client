@@ -1,17 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { NextPageContext, NextPage, GetStaticProps } from 'next'
+import { NextPage, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
-import TokenService from '@/services/Token.service'
-import { useUser } from '@/services/Auth.context'
 
 import validateLogin from '@/utils/validateLogin'
-import signIn from '@/utils/signIn'
+import { useAuth } from '@/hooks/auth'
 
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import TabMenu from '@/components/TabMenu'
+import withUserLogged from '@/components/WithUserLogged'
 
 import { FaCheck } from 'react-icons/fa'
 import {
@@ -24,10 +23,6 @@ import {
   ButtonContainer,
   LinksContainer
 } from '@/styles/pages/login'
-interface pageProps {
-  userLogged: boolean
-}
-
 interface formProps {
   cpfTab: boolean
   emailTab: boolean
@@ -37,16 +32,9 @@ interface formProps {
   cpf?: string
 }
 
-const Login: NextPage<pageProps> = userLogged => {
-  const [user, setUser] = useUser()
+const Login: NextPage = () => {
+  const { signIn } = useAuth()
   const router = useRouter()
-
-  // enviar o usuário para a home caso ele tente acessar a página de login e já esteja logado
-  useEffect(() => {
-    if (user) {
-      router.push('/')
-    }
-  }, [])
 
   const [emailSelected, setEmailSelected] = useState(true)
   const [cpfSelected, setCpfSelected] = useState(false)
@@ -57,16 +45,8 @@ const Login: NextPage<pageProps> = userLogged => {
       const data = await validateLogin(formData, formRef) // validar o formulário
 
       if (data) {
-        const res = await signIn(data) // logar
-
-        if (res) {
-          setUser({
-            type: 'setAuthDetails',
-            payload: { email: res.data.user.email, name: res.data.user.name }
-          })
-
-          router.push('/') // redirecionar o usuário para home
-        }
+        await signIn(data)
+        router.push('/')
       }
     } catch (err) {
       formRef.current.setErrors(err)
@@ -141,12 +121,4 @@ const Login: NextPage<pageProps> = userLogged => {
   )
 }
 
-export const getStaticProps: GetStaticProps<{
-  showComponents: boolean
-}> = async () => {
-  return {
-    props: { showComponents: true }
-  }
-}
-
-export default Login
+export default withUserLogged(Login)
