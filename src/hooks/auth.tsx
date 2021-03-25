@@ -1,11 +1,12 @@
 import { useContext, createContext, useCallback, useState } from 'react'
+import Cookie from 'js-cookie'
 import api from '@/services/api'
 
 interface SignInCredentials {
   email?: string
-  senha?: string
+  password?: string
   cpf?: string
-  telefone?: string
+  phone?: string
 }
 
 interface User {
@@ -29,39 +30,46 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthData>(() => {
-    if (typeof window !== 'undefined') {
-      const token = window.localStorage.getItem('@Projeto:token')
-      const user = window.localStorage.getItem('@Projeto:user')
+    const token = Cookie.get('token')
+    const user = Cookie.get('user')
 
-      if (token && user) {
-        api.defaults.headers.authorization = `Bearer ${token}`
+    if (token && user) {
+      api.defaults.headers.authorization = `Bearer ${token}`
 
-        return { token, user: JSON.parse(user) }
-      }
+      return { token, user: JSON.parse(user) }
     }
+
     return {} as AuthData
   })
 
-  const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('/sessions', { email, password })
+  const signIn = useCallback(
+    async ({ email, password, cpf, phone }: SignInCredentials) => {
+      let response
 
-    const { token, user } = response.data
+      if (email && password) {
+        response = await api.post('/sessions', {
+          email: email,
+          password: password
+        })
+      } else {
+        response = await api.post('/sessions', { cpf: cpf, phone: phone })
+      }
 
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem('@Projeto:token', token)
-      window.localStorage.setItem('@Projeto:user', JSON.stringify(user))
-    }
+      const { token, user } = response.data
 
-    api.defaults.headers.authorization = `Bearer ${token}`
+      Cookie.set('token', token)
+      Cookie.set('user', JSON.stringify(user))
 
-    setData({ token, user })
-  }, [])
+      api.defaults.headers.authorization = `Bearer ${token}`
+
+      setData({ token, user })
+    },
+    []
+  )
 
   const signOut = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      window.localStorage.removeItem('@Projeto:token')
-      window.localStorage.removeItem('@Projeto:user')
-    }
+    Cookie.remove('token')
+    Cookie.remove('user')
 
     setData({} as AuthData)
   }, [])

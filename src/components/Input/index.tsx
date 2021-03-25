@@ -3,6 +3,7 @@ import {
   useRef,
   InputHTMLAttributes,
   ChangeEvent,
+  FormEvent,
   useCallback,
   useState
 } from 'react'
@@ -56,6 +57,14 @@ const Input: React.FC<InputProps> = ({
     }
   }, [])
 
+  // máscara de input para o telefone
+  const handleKeyUp = useCallback((event: any) => {
+    let value = event.target.value
+    value = value.replace(/\D/g, '')
+    value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+    event.currentTarget.value = value
+  }, [])
+
   return (
     <BodyInput>
       <FieldText
@@ -68,6 +77,7 @@ const Input: React.FC<InputProps> = ({
       >
         <input
           onChange={handleChange}
+          onKeyUp={name === 'phone' && handleKeyUp}
           ref={inputRef}
           defaultValue={defaultValue}
           type="text"

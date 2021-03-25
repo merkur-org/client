@@ -11,6 +11,7 @@ import Button from '@/components/Button'
 import Input from '@/components/Input'
 import TabMenu from '@/components/TabMenu'
 import withUserLogged from '@/components/WithUserLogged'
+import { Error } from '@/components/ErrorLabel/styles'
 
 import { FaCheck } from 'react-icons/fa'
 import {
@@ -38,18 +39,23 @@ const Login: NextPage = () => {
 
   const [emailSelected, setEmailSelected] = useState(true)
   const [cpfSelected, setCpfSelected] = useState(false)
-  const formRef = useRef<FormHandles>(null)
+  const [errors, setErrors] = useState()
 
+  useEffect(() => {
+    setErrors(undefined)
+  }, [emailSelected, cpfSelected])
+
+  const formRef = useRef<FormHandles>(null)
   const handleSubmit = useCallback(async (formData: formProps) => {
     try {
       const data = await validateLogin(formData, formRef) // validar o formulário
-
       if (data) {
         await signIn(data)
         router.push('/')
       }
     } catch (err) {
       formRef.current.setErrors(err)
+      setErrors(err)
     }
   }, [])
 
@@ -94,11 +100,12 @@ const Login: NextPage = () => {
                 <InputContainer>
                   <Input name="email" type="email" label="Email" />
                 </InputContainer>
-                <Input name="senha" type="password" label="Senha" />
+                <Input name="password" type="password" label="Senha" />
                 <LinksContainer>
                   <a href="forgotPassword">esqueceu sua senha?</a>
                   <a href="noRegister">não possui cadastro?</a>
                 </LinksContainer>
+                {errors && <Error>Email ou Senha incorreto(s)</Error>}
               </>
             )}
 
@@ -107,7 +114,8 @@ const Login: NextPage = () => {
                 <InputContainer>
                   <Input name="cpf" type="text" label="CPF" />
                 </InputContainer>
-                <Input name="telefone" type="string" label="Telefone" />
+                <Input name="phone" type="string" label="Telefone" />
+                {errors && <Error>Cpf ou Telefone incorreto(s)</Error>}
               </>
             )}
             <ButtonContainer>
@@ -119,6 +127,14 @@ const Login: NextPage = () => {
       <BackgroundOrange />
     </Container>
   )
+}
+
+export const getStaticProps: GetStaticProps<{
+  showComponents: boolean
+}> = async () => {
+  return {
+    props: { showComponents: true }
+  }
 }
 
 export default withUserLogged(Login)

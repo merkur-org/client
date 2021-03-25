@@ -1,39 +1,25 @@
-import { NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { ElementType, useEffect } from 'react'
+import Cookie from 'js-cookie'
 
-export default (
-  WrappedComponent: NextPage
-): {
-  ({ ...props }: { [x: string]: any }): JSX.Element
-  getInitialProps(
-    context: any
-  ): Promise<{
-    userIsAuth: boolean
-  }>
-} => {
-  const hocComponent = ({ ...props }) => <WrappedComponent {...props} />
+// impedir que o usuário entre em rotas caso ele NÃO esteja logado
+// EX: Página de finalização de compra
+const WithAuth = (Component: ElementType) => {
+  const Wrapper = (props: any) => {
+    const router = useRouter()
 
-  hocComponent.getInitialProps = async context => {
-    const userIsAuth = true
+    useEffect(() => {
+      const token = Cookie.get('token')
 
-    // Are you an authorized user or not?
-    if (!userIsAuth) {
-      // Handle server-side and client-side rendering.
-      if (context.res) {
-        context.res?.writeHead(302, {
-          Location: '/'
-        })
-        context.res?.end()
+      if (!token) {
+        router.replace('/')
       }
-    } else if (WrappedComponent.getInitialProps) {
-      const wrappedProps = await WrappedComponent.getInitialProps({
-        ...context,
-        auth: userIsAuth
-      })
-      return { ...wrappedProps, userIsAuth }
-    }
+    }, [])
 
-    return { userIsAuth }
+    return <Component {...props} />
   }
 
-  return hocComponent
+  return Wrapper
 }
+
+export default WithAuth

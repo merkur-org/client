@@ -9,8 +9,8 @@ interface loginProps {
   cpfTab: boolean
   emailTab: boolean
   email?: string
-  senha?: string
-  telefone?: string
+  password?: string
+  phone?: string
   cpf?: string
 }
 
@@ -30,7 +30,7 @@ const validateLogin = async (
           is: true,
           then: Yup.string().required(formMessages.required)
         }),
-      senha: Yup.string().when('emailTab', {
+      password: Yup.string().when('emailTab', {
         is: true,
         then: Yup.string().required(formMessages.required)
       }),
@@ -38,7 +38,7 @@ const validateLogin = async (
         is: true,
         then: Yup.string().required(formMessages.required)
       }),
-      telefone: Yup.string().when('cpfTab', {
+      phone: Yup.string().when('cpfTab', {
         is: true,
         then: Yup.string().required(formMessages.required)
       })
@@ -51,11 +51,11 @@ const validateLogin = async (
     if (formData.emailTab) {
       data = {
         email: formData.email || '',
-        password: formData.senha || ''
+        password: formData.password || ''
       }
     } else {
       data = {
-        phone: formData.telefone || '',
+        phone: formData.phone || '',
         cpf: formData.cpf || ''
       }
     }
