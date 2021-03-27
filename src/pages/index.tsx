@@ -10,7 +10,6 @@ import SEO from '@/components/SEO'
 import ProductCard from '@/components/Product'
 import { FaDotCircle, FaArrowRight } from 'react-icons/fa'
 import Dropdown from '@/components/Dropdown'
-import ModalProductDetails from '@/components/ModalProductDetails'
 
 const a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -21,10 +20,7 @@ const Home: React.FC = () => {
       <BannerContainer>
         <img src="http://placeimg.com/640/480/business" alt="" />
       </BannerContainer>
-      <ModalProductDetails text="oi" IconButton={<FaArrowRight />}>
-        <li>Voce tem novo convite</li>
-        <li>Que tal aproveitar</li>
-      </ModalProductDetails>
+
       <OffersContainer>
         <OffersTopTitle>
           <section>

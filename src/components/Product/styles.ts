@@ -11,6 +11,7 @@ export const Card = styled.section`
   flex-direction: column;
   box-shadow: 0px 0px 10px 0px rgb(0, 0, 0, 0.2);
   > img {
+    cursor: pointer;
     width: 100%;
     height: 29.8rem;
     object-fit: cover;

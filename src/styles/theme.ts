@@ -10,7 +10,8 @@ const theme = {
     yellowPrimary: '#F7C80C',
     yellowSecundary: '#FFFF70',
     gray: '#888888',
-    redPrimary: '#F50000'
+    redPrimary: '#F50000',
+    division: '#efeded'
   }
 }
 

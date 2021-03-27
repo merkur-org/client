@@ -1,8 +1,8 @@
-import { Card, Data, BuyContainer, BuyQuantity, Info } from './styles'
-import Button from '@/components/IconButton'
+import { Card, Data, BuyContainer, Info } from './styles'
 import { FaShoppingBasket } from 'react-icons/fa'
-import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import ModalProductDetails from '@/components/ModalProductDetails'
+import BuyQuantityInput from '@/components/BuyQuantityInput'
 
 interface IDataProps {
   photo?: string
@@ -21,17 +21,18 @@ const ProductCardData: React.FC<IDataProps> = ({
   unity,
   quantity = 0
 }) => {
-  const [count, setCount] = useState(quantity)
-
-  const handleIncrease = () => setCount(count => count + 1)
-  // const handleIncrease = () => console.log('oi')
-
-  const handleDecrease = () => setCount(count => (count > 0 ? count - 1 : 0))
-  // const handleDecrease = () => console.log('tchau')
-
+  const [isOpenModalDetails, setIsOpenModalDetails] = useState(false)
   return (
     <Card>
-      <img src="https://images.unsplash.com/photo-1508313880080-c4bef0730395?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80"></img>
+      <img
+        onClick={() => setIsOpenModalDetails(state => !state)}
+        src="https://images.unsplash.com/photo-1508313880080-c4bef0730395?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80"
+      ></img>
+      <ModalProductDetails
+        isOpen={isOpenModalDetails}
+        setIsOpen={setIsOpenModalDetails}
+      ></ModalProductDetails>
+
       <Info>
         <Data>
           <aside>
@@ -42,21 +43,7 @@ const ProductCardData: React.FC<IDataProps> = ({
         </Data>
 
         <BuyContainer>
-          <BuyQuantity>
-            <div className="quantity-selector">
-              <button type="button" onClick={handleDecrease}>
-                <AiOutlineMinus />
-              </button>
-
-              <span className="quantity-label">{count}</span>
-
-              <button type="button" onClick={handleIncrease}>
-                <AiOutlinePlus />
-              </button>
-            </div>
-            <span>kg</span>
-          </BuyQuantity>
-
+          <BuyQuantityInput />
           <aside
             onClick={() => {
               console.log('oi')
