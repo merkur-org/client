@@ -1,14 +1,4 @@
-import { transitions } from '@/styles/constants'
 import styled, { css } from 'styled-components'
-
-export const Error = styled.p`
-  font-size: 1.2rem;
-  text-align: right;
-
-  margin-top: 0.8rem;
-
-  color: ${({ theme }) => theme.colors.error};
-`
 
 export const BodyField = styled.label<{ isEmpty: boolean; isErrored: boolean }>`
   width: 100%;

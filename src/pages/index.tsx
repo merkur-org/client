@@ -1,5 +1,6 @@
 import {
   Container,
+  BannerContainer,
   GridContainer,
   OffersContainer,
   OffersTopTitle,
@@ -8,6 +9,7 @@ import {
 import SEO from '@/components/SEO'
 import ProductCard from '@/components/Product'
 import { FaDotCircle, FaArrowRight } from 'react-icons/fa'
+import Dropdown from '@/components/Dropdown'
 
 const a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -15,7 +17,9 @@ const Home: React.FC = () => {
   return (
     <Container>
       <SEO title="HOME" image="/banner.png" />
-
+      <BannerContainer>
+        <img src="http://placeimg.com/640/480/business" alt="" />
+      </BannerContainer>
       <OffersContainer>
         <OffersTopTitle>
           <section>
@@ -23,8 +27,10 @@ const Home: React.FC = () => {
             <span>Ofertas</span>
           </section>
           <Filter>
-            <span>Filtrar por</span>
-            <FaArrowRight />
+            <Dropdown text="Filtrar por" IconButton={<FaArrowRight />}>
+              <li>Voce tem novo convite</li>
+              <li>Que tal aproveitar</li>
+            </Dropdown>
           </Filter>
         </OffersTopTitle>
         <GridContainer>
