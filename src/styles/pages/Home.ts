@@ -73,12 +73,8 @@ export const Filter = styled.div`
 
 export const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 33%);
 
-  @media ${device.mobileS} {
-    grid-template-columns: repeat(1, 100%);
-  }
-  @media ${device.tablet} {
+  @media (min-width: 500px) {
     grid-template-columns: repeat(2, 50%);
   }
   @media ${device.laptop} {

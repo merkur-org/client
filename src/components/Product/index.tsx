@@ -34,8 +34,10 @@ const ProductCardData: React.FC<IDataProps> = ({
       <img src="https://images.unsplash.com/photo-1508313880080-c4bef0730395?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80"></img>
       <Info>
         <Data>
-          <h3>Legumes</h3>
-          <h1>Batata Inglesa</h1>
+          <aside>
+            <h3>Legumes</h3>
+            <h1>Batata Inglesa</h1>
+          </aside>
           <h2>R$10/Kg</h2>
         </Data>
 

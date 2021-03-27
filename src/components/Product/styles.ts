@@ -3,10 +3,8 @@ import styled from 'styled-components'
 
 export const Card = styled.section`
   margin: 2.4rem;
-  width: max-content;
-  height: max-content;
-  min-width: 20rem;
-  max-width: 30rem;
+  width: 22rem;
+  height: 36.4rem;
   border-radius: 0.8rem;
   background-color: ${({ theme }) => theme.colors.white};
   display: flex;
@@ -14,7 +12,7 @@ export const Card = styled.section`
   box-shadow: 0px 0px 10px 0px rgb(0, 0, 0, 0.2);
   > img {
     width: 100%;
-    height: 20rem;
+    height: 29.8rem;
     object-fit: cover;
     object-position: top;
     border-radius: 0.8rem 0.8rem 0 0;
@@ -22,32 +20,32 @@ export const Card = styled.section`
 `
 
 export const Info = styled.div`
-  padding: 1.6rem;
+  padding: 0 1.6rem;
   display: flex;
   flex-direction: column;
 `
 export const Data = styled.section`
   display: flex;
   flex-direction: column;
-  padding: 0.8rem 1rem;
+  height: 12.8rem;
+  justify-content: space-between;
+  padding: 1.6rem 0;
+  aside {
+    > h1 {
+      font-size: 2.4rem;
+      font-weight: bold;
+    }
 
-  > h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-top: 0;
-    margin-bottom: 3rem;
+    > h3 {
+      font-size: 1.4rem;
+      font-weight: normal;
+      color: ${({ theme }) => theme.colors.orangePrimary};
+    }
   }
-
   > h2 {
     font-size: 2rem;
     font-weight: normal;
     color: ${({ theme }) => theme.colors.gray};
-  }
-
-  > h3 {
-    font-size: 1.5rem;
-    font-weight: normal;
-    color: ${({ theme }) => theme.colors.orangePrimary};
   }
 `
 export const BuyContainer = styled.section`
@@ -55,6 +53,7 @@ export const BuyContainer = styled.section`
   justify-content: space-between;
   align-items: center;
   width: 90%;
+  margin-bottom: 1.6rem;
 
   aside {
     cursor: pointer;
