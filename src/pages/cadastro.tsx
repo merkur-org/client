@@ -23,7 +23,7 @@ import {
 
 import getValidationErrors from '@/utils/getValidationErrors'
 
-import { formMessages } from '@/styles/constants'
+import formMessages from '@/styles/constants/formMessages'
 
 import { GetStaticProps } from 'next'
 

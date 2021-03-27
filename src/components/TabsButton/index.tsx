@@ -46,6 +46,7 @@ const TabsButton: React.FC<ButtonProps> = ({
         onChange={handleChange}
         ref={inputRef}
         id={label}
+        checked={isSelected}
         {...rest}
       />
     </Container>
