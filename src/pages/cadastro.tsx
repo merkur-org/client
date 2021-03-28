@@ -26,6 +26,7 @@ import getValidationErrors from '@/utils/getValidationErrors'
 import { formMessages } from '@/styles/constants'
 
 import { GetStaticProps } from 'next'
+import validateRegister from '@/utils/validateRegister'
 
 const Cadastro: React.FC = () => {
   const formTypes = [
@@ -54,29 +55,7 @@ const Cadastro: React.FC = () => {
   const handleSubmit = useCallback(async formData => {
     formRef.current?.setErrors({})
     try {
-      const schema = Yup.object().shape({
-        pessoal: Yup.boolean(),
-        empresarial: Yup.boolean(),
-        name: Yup.string().required(formMessages.required),
-        email: Yup.string().email().required(formMessages.required),
-        phone: Yup.string().required(formMessages.required),
-        cpf: Yup.string().when('pessoal', {
-          is: true,
-          then: Yup.string().required(formMessages.required)
-        }),
-        cnpj: Yup.string().when('empresarial', {
-          is: false,
-          then: Yup.string().required(formMessages.required)
-        }),
-        password: Yup.string().required(formMessages.required),
-        passwordConfirmation: Yup.string()
-          .oneOf([Yup.ref('password'), null], formMessages.samePassword)
-          .required(formMessages.required),
-        conditionTerms: Yup.boolean().oneOf([true], formMessages.terms)
-      })
-      await schema.validate(formData, {
-        abortEarly: false
-      })
+      const data = validateRegister(formData, formRef)
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error)
