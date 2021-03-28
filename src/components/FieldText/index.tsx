@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { BodyField, Error } from './styles'
+import { BodyField } from './styles'
+import { Error } from '@/components/ErrorLabel/styles'
 import { IoMdAlert } from 'react-icons/io'
 
 interface FieldProps {

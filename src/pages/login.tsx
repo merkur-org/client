@@ -1,13 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { NextPage, GetStaticProps } from 'next'
+import { useRouter } from 'next/router'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
-import * as Yup from 'yup'
-import { FaCheck } from 'react-icons/fa'
+
+import validateLogin from '@/utils/validateLogin'
+import { useAuth } from '@/hooks/auth'
 
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import TabMenu from '@/components/TabMenu'
+import withUserLogged from '@/components/WithUserLogged'
+import { Error } from '@/components/ErrorLabel/styles'
 
+import { FaCheck } from 'react-icons/fa'
 import {
   Container,
   BackgroundOrange,
@@ -18,82 +24,38 @@ import {
   ButtonContainer,
   LinksContainer
 } from '@/styles/pages/login'
+interface formProps {
+  cpfTab: boolean
+  emailTab: boolean
+  email?: string
+  senha?: string
+  telefone?: string
+  cpf?: string
+}
 
-import getValidationErrors from '@/utils/getValidationErrors'
-import { formMessages } from '@/styles/constants'
-import { GetStaticProps } from 'next'
+const Login: NextPage = () => {
+  const { signIn } = useAuth()
+  const router = useRouter()
 
-const Login: React.FC = () => {
-  const formTypes = [
-    {
-      name: 'email',
-      type: 'email',
-      placeholder: 'Email'
-    },
-    {
-      name: 'senha',
-      type: 'password',
-      placeholder: 'Senha'
-    },
-    {
-      name: 'cpf',
-      type: 'text',
-      placeholder: 'CPF'
-    },
-    {
-      name: 'telefone',
-      type: 'text',
-      placeholder: 'Telefone'
-    }
-  ]
-
-  const [formInputs, setFormInputs] = useState([formTypes[0], formTypes[1]])
   const [emailSelected, setEmailSelected] = useState(true)
   const [cpfSelected, setCpfSelected] = useState(false)
+  const [errors, setErrors] = useState()
 
   useEffect(() => {
-    emailSelected
-      ? setFormInputs([formTypes[0], formTypes[1]])
-      : setFormInputs([formTypes[2], formTypes[3]])
+    setErrors(undefined)
   }, [emailSelected, cpfSelected])
 
   const formRef = useRef<FormHandles>(null)
-
-  const handleSubmit = useCallback(async formData => {
-    formRef.current?.setErrors({})
-
+  const handleSubmit = useCallback(async (formData: formProps) => {
     try {
-      const schema = Yup.object().shape({
-        emailTab: Yup.boolean(),
-        cpfTab: Yup.boolean(),
-        email: Yup.string()
-          .email(formMessages.validEmail)
-          .when('emailTab', {
-            is: true,
-            then: Yup.string().required(formMessages.required)
-          }),
-        senha: Yup.string().when('emailTab', {
-          is: true,
-          then: Yup.string().required(formMessages.required)
-        }),
-        cpf: Yup.string().when('cpfTab', {
-          is: true,
-          then: Yup.string().required(formMessages.required)
-        }),
-        telefone: Yup.string().when('cpfTab', {
-          is: true,
-          then: Yup.string().required(formMessages.required)
-        })
-      })
-      await schema.validate(formData, {
-        abortEarly: false
-      })
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(error)
-
-        formRef.current?.setErrors(errors)
+      const data = await validateLogin(formData, formRef) // validar o formulário
+      if (data) {
+        await signIn(data)
+        router.push('/')
       }
+    } catch (err) {
+      formRef.current.setErrors(err)
+      setErrors(err)
     }
   }, [])
 
@@ -105,7 +67,18 @@ const Login: React.FC = () => {
           <h2>Informe seus dados para iniciar a sessão</h2>
         </WelcomeContainer>
         <FormContainer>
-          <Form ref={formRef} onSubmit={handleSubmit}>
+          <Form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            initialData={{
+              emailTab: true,
+              cpfTab: false,
+              email: '',
+              senha: '',
+              cpf: '',
+              telefone: ''
+            }}
+          >
             <TabMenu
               buttons={[
                 {
@@ -125,38 +98,24 @@ const Login: React.FC = () => {
             {emailSelected && (
               <>
                 <InputContainer>
-                  <Input
-                    name={formInputs[0].name}
-                    type={formInputs[0].type}
-                    label={formInputs[0].placeholder}
-                  />
+                  <Input name="email" type="email" label="Email" />
                 </InputContainer>
-                <Input
-                  name={formInputs[1].name}
-                  type={formInputs[1].type}
-                  label={formInputs[1].placeholder}
-                />
+                <Input name="password" type="password" label="Senha" />
                 <LinksContainer>
                   <a href="forgotPassword">esqueceu sua senha?</a>
                   <a href="noRegister">não possui cadastro?</a>
                 </LinksContainer>
+                {errors && <Error>Email ou Senha incorreto(s)</Error>}
               </>
             )}
 
             {cpfSelected && (
               <>
                 <InputContainer>
-                  <Input
-                    name={formInputs[0].name}
-                    type={formInputs[0].type}
-                    label={formInputs[0].placeholder}
-                  />
+                  <Input name="cpf" type="text" label="CPF" />
                 </InputContainer>
-                <Input
-                  name={formInputs[1].name}
-                  type={formInputs[1].type}
-                  label={formInputs[1].placeholder}
-                />
+                <Input name="phone" type="string" label="Telefone" />
+                {errors && <Error>Cpf ou Telefone incorreto(s)</Error>}
               </>
             )}
             <ButtonContainer>
@@ -178,4 +137,4 @@ export const getStaticProps: GetStaticProps<{
   }
 }
 
-export default Login
+export default withUserLogged(Login)

@@ -3,6 +3,7 @@ import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
 import { FaCheck } from 'react-icons/fa'
+import { useRouter } from 'next/router'
 
 import Button from '@/components/Button'
 import Input from '@/components/Input'
@@ -22,40 +23,30 @@ import {
 } from '@/styles/pages/cadastro'
 
 import getValidationErrors from '@/utils/getValidationErrors'
+import { useAuth } from '@/hooks/auth'
 
-import { formMessages } from '@/styles/constants'
+import formMessages from '@/styles/constants/formMessages'
 
 import { GetStaticProps } from 'next'
 import validateRegister from '@/utils/validateRegister'
+import { sign } from 'crypto'
+import WithUserLogged from '@/components/WithUserLogged'
 
 const Cadastro: React.FC = () => {
-  const formTypes = [
-    {
-      name: 'cpf',
-      type: 'text',
-      placeholder: 'CPF'
-    },
-    {
-      name: 'cnpj',
-      type: 'text',
-      placeholder: 'CNPJ'
-    }
-  ]
-
-  const [formInputs, setFormInputs] = useState(formTypes[0])
   const [cpfSelected, setCpfSelected] = useState(true)
   const [cnpjSelected, setCnpjSelected] = useState(false)
-
-  useEffect(() => {
-    cpfSelected ? setFormInputs(formTypes[0]) : setFormInputs(formTypes[1])
-  }, [cnpjSelected, cpfSelected])
-
+  const { signUp } = useAuth()
+  const router = useRouter()
   const formRef = useRef<FormHandles>(null)
 
   const handleSubmit = useCallback(async formData => {
     formRef.current?.setErrors({})
     try {
-      const data = validateRegister(formData, formRef)
+      const data = await validateRegister(formData, formRef)
+      if (data) {
+        await signUp(data)
+        router.push('/')
+      }
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error)
@@ -105,13 +96,16 @@ const Cadastro: React.FC = () => {
                 <InputContainer>
                   <Input name="phone" type="text" label="Telefone" />
                 </InputContainer>
-                <InputContainer>
-                  <Input
-                    name={formInputs.name}
-                    type={formInputs.type}
-                    label={formInputs.placeholder}
-                  />
-                </InputContainer>
+                {cpfSelected && (
+                  <InputContainer>
+                    <Input name="cpf" type="text" label="Cpf" />
+                  </InputContainer>
+                )}
+                {cnpjSelected && (
+                  <InputContainer>
+                    <Input name="cnpj" type="text" label="Cnpj" />
+                  </InputContainer>
+                )}
               </div>
               <div className="column2">
                 <InputContainer>
@@ -154,7 +148,7 @@ const Cadastro: React.FC = () => {
   )
 }
 
-export default Cadastro
+export default WithUserLogged(Cadastro)
 
 export const getStaticProps: GetStaticProps<{
   showComponents: boolean

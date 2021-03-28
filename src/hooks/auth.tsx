@@ -10,12 +10,12 @@ interface SignInCredentials {
 }
 
 interface SignUpCredentials {
-  email?: string
-  password?: string
+  name: string
+  email: string
+  password: string
+  phone: string
   cpf?: string
-  phone?: string
   cnpj?: string
-  name?: string
 }
 
 interface User {
@@ -28,6 +28,7 @@ interface AuthContextData {
   user: User
   signIn(credentials: SignInCredentials): Promise<void>
   signOut(): void
+  signUp(credentials: SignUpCredentials): Promise<void>
 }
 
 interface AuthData {
@@ -83,34 +84,38 @@ export const AuthProvider: React.FC = ({ children }) => {
     setData({} as AuthData)
   }, [])
 
-  return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
-      {children}
-    </AuthContext.Provider>
-  )
   const signUp = useCallback(
-    async ({ email, password, cpf, phone }: SignInCredentials) => {
+    async ({ email, password, cpf, phone, cnpj, name }: SignUpCredentials) => {
       let response
 
-      if (email && password) {
-        response = await api.post('/sessions', {
+      if (cpf) {
+        response = await api.post('/users', {
+          name: name,
+          cpf: cpf,
+          phone: phone,
           email: email,
           password: password
         })
       } else {
-        response = await api.post('/sessions', { cpf: cpf, phone: phone })
+        response = await api.post('/sessions', {
+          name: name,
+          cnpj: cnpj,
+          phone: phone,
+          email: email,
+          password: password
+        })
       }
-
-      const { token, user } = response.data
-
-      Cookie.set('token', token)
-      Cookie.set('user', JSON.stringify(user))
-
-      api.defaults.headers.authorization = `Bearer ${token}`
-
-      setData({ token, user })
+      if (response) {
+        await signIn({ email: response.email, password: response.password })
+      }
     },
     []
+  )
+
+  return (
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut, signUp }}>
+      {children}
+    </AuthContext.Provider>
   )
 }
 
