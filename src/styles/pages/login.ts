@@ -43,7 +43,7 @@ export const BackgroundOrange = styled.div`
   position: absolute;
   top: 0;
   height: 41.3%;
-  width: 100%;
+  width: 100vw;
 
   z-index: -100;
 

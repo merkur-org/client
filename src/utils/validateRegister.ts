@@ -10,10 +10,10 @@ interface registerProps {
   empresarial: boolean
   name: string
   email: string
-  password: string
   phone: string
   cpf?: string
   cnpj?: string
+  password: string
   passwordConfirmation: string
   conditionTerms: boolean
 }
@@ -36,7 +36,7 @@ const validateRegister = async (
         then: Yup.string().required(formMessages.required)
       }),
       cnpj: Yup.string().when('empresarial', {
-        is: false,
+        is: true,
         then: Yup.string().required(formMessages.required)
       }),
       password: Yup.string().required(formMessages.required),
@@ -45,6 +45,7 @@ const validateRegister = async (
         .required(formMessages.required),
       conditionTerms: Yup.boolean().oneOf([true], formMessages.terms)
     })
+
     await schema.validate(formData, {
       abortEarly: false
     })

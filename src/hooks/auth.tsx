@@ -87,14 +87,15 @@ export const AuthProvider: React.FC = ({ children }) => {
   const signUp = useCallback(
     async ({ email, password, cpf, phone, cnpj, name }: SignUpCredentials) => {
       let response
-
       if (cpf) {
+        console.log({ email, password, cpf, phone, cnpj, name })
         response = await api.post('/users', {
           name: name,
           cpf: cpf,
           phone: phone,
           email: email,
-          password: password
+          password: password,
+          role: 'r'
         })
       } else {
         response = await api.post('/sessions', {
@@ -102,7 +103,8 @@ export const AuthProvider: React.FC = ({ children }) => {
           cnpj: cnpj,
           phone: phone,
           email: email,
-          password: password
+          password: password,
+          role: 'r'
         })
       }
       if (response) {
