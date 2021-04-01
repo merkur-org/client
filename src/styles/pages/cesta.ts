@@ -49,10 +49,10 @@ export const CheckoutTable = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  overflow-x: scroll;
-
-  @media ${breakPoints.tablet} {
-    overflow-x: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
   }
 `
 
@@ -70,7 +70,9 @@ export const CheckoutDetails = styled.div`
     align-items: center;
 
     img {
-      height: 8.8rem;
+      max-height: 8.8rem;
+      max-width: 15.4rem;
+      width: 100%;
     }
 
     h4 {
@@ -98,8 +100,15 @@ export const CheckoutDetails = styled.div`
   section {
     display: flex;
     justify-content: center;
-    width: 100%;
-    text-align: center;
+    margin: 0 auto;
+  }
+
+  @media ${breakPoints.tablet} {
+    h3,
+    a,
+    section {
+      width: 100%;
+    }
   }
 `
 
