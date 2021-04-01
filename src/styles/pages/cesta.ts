@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { breakPoints } from '../constants'
 
-export const Page = styled.div`
+export const Container = styled.div`
   padding: 3.6rem 1.6rem;
 
   @media ${breakPoints.tablet} {
