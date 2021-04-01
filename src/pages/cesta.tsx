@@ -1,5 +1,8 @@
+import WithAuth from '@/components/WithAuth'
+import { Page } from '@/styles/pages/cesta'
+
 const Bag: React.FC = () => {
-  return <div>aaa</div>
+  return <Page>aaa</Page>
 }
 
 export default Bag
