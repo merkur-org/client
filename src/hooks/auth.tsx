@@ -9,6 +9,15 @@ interface SignInCredentials {
   phone?: string
 }
 
+interface SignUpCredentials {
+  name: string
+  email: string
+  password: string
+  phone: string
+  cpf?: string
+  cnpj?: string
+}
+
 interface User {
   id: string
   name: string
@@ -19,6 +28,7 @@ interface AuthContextData {
   user: User
   signIn(credentials: SignInCredentials): Promise<void>
   signOut(): void
+  signUp(credentials: SignUpCredentials): Promise<void>
 }
 
 interface AuthData {
@@ -74,8 +84,38 @@ export const AuthProvider: React.FC = ({ children }) => {
     setData({} as AuthData)
   }, [])
 
+  const signUp = useCallback(
+    async ({ email, password, cpf, phone, cnpj, name }: SignUpCredentials) => {
+      let response
+      if (cpf) {
+        console.log({ email, password, cpf, phone, cnpj, name })
+        response = await api.post('/users', {
+          name: name,
+          cpf: cpf,
+          phone: phone,
+          email: email,
+          password: password,
+          role: 'r'
+        })
+      } else {
+        response = await api.post('/sessions', {
+          name: name,
+          cnpj: cnpj,
+          phone: phone,
+          email: email,
+          password: password,
+          role: 'r'
+        })
+      }
+      if (response) {
+        await signIn({ email: response.email, password: response.password })
+      }
+    },
+    []
+  )
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut, signUp }}>
       {children}
     </AuthContext.Provider>
   )

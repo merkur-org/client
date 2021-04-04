@@ -32,6 +32,6 @@ export const BuyQuantity = styled.section`
 
   span {
     font-size: 1.6rem;
-    padding: 0.8rem 1.2rem;
+    padding: 0.8rem 0 0.8rem 1.2rem;
   }
 `

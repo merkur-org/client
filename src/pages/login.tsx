@@ -24,6 +24,7 @@ import {
   ButtonContainer,
   LinksContainer
 } from '@/styles/pages/login'
+import BackButton from '@/components/BackButton'
 interface formProps {
   cpfTab: boolean
   emailTab: boolean
@@ -60,72 +61,75 @@ const Login: NextPage = () => {
   }, [])
 
   return (
-    <Container>
-      <BackgroundWhiteRectangle>
-        <WelcomeContainer>
-          <h1>BEM VINDO</h1>
-          <h2>Informe seus dados para iniciar a sessão</h2>
-        </WelcomeContainer>
-        <FormContainer>
-          <Form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            initialData={{
-              emailTab: true,
-              cpfTab: false,
-              email: '',
-              senha: '',
-              cpf: '',
-              telefone: ''
-            }}
-          >
-            <TabMenu
-              buttons={[
-                {
-                  name: 'emailTab',
-                  label: 'email e senha',
-                  isSelected: emailSelected,
-                  setIsSelected: setEmailSelected
-                },
-                {
-                  name: 'cpfTab',
-                  label: 'cpf e telefone',
-                  isSelected: cpfSelected,
-                  setIsSelected: setCpfSelected
-                }
-              ]}
-            />
-            {emailSelected && (
-              <>
-                <InputContainer>
-                  <Input name="email" type="email" label="Email" />
-                </InputContainer>
-                <Input name="password" type="password" label="Senha" />
-                <LinksContainer>
-                  <a href="forgotPassword">esqueceu sua senha?</a>
-                  <a href="noRegister">não possui cadastro?</a>
-                </LinksContainer>
-                {errors && <Error>Email ou Senha incorreto(s)</Error>}
-              </>
-            )}
+    <>
+      <BackButton />
+      <Container>
+        <BackgroundWhiteRectangle>
+          <WelcomeContainer>
+            <h1>BEM VINDO</h1>
+            <h2>Informe seus dados para iniciar a sessão</h2>
+          </WelcomeContainer>
+          <FormContainer>
+            <Form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              initialData={{
+                emailTab: true,
+                cpfTab: false,
+                email: '',
+                senha: '',
+                cpf: '',
+                telefone: ''
+              }}
+            >
+              <TabMenu
+                buttons={[
+                  {
+                    name: 'emailTab',
+                    label: 'email e senha',
+                    isSelected: emailSelected,
+                    setIsSelected: setEmailSelected
+                  },
+                  {
+                    name: 'cpfTab',
+                    label: 'cpf e telefone',
+                    isSelected: cpfSelected,
+                    setIsSelected: setCpfSelected
+                  }
+                ]}
+              />
+              {emailSelected && (
+                <>
+                  <InputContainer>
+                    <Input name="email" type="email" label="Email" />
+                  </InputContainer>
+                  <Input name="password" type="password" label="Senha" />
+                  <LinksContainer>
+                    <a href="forgotPassword">esqueceu sua senha?</a>
+                    <a href="noRegister">não possui cadastro?</a>
+                  </LinksContainer>
+                  {errors && <Error>Email ou Senha incorreto(s)</Error>}
+                </>
+              )}
 
-            {cpfSelected && (
-              <>
-                <InputContainer>
-                  <Input name="cpf" type="text" label="CPF" />
-                </InputContainer>
-                <Input name="phone" type="string" label="Telefone" />
-                {errors && <Error>Cpf ou Telefone incorreto(s)</Error>}
-              </>
-            )}
-            <ButtonContainer>
-              <Button text="Iniciar sessão" icon={FaCheck} type="submit" />
-            </ButtonContainer>
-          </Form>
-        </FormContainer>
-      </BackgroundWhiteRectangle>
-      <BackgroundOrange />
-    </Container>
+              {cpfSelected && (
+                <>
+                  <InputContainer>
+                    <Input name="cpf" type="text" label="CPF" />
+                  </InputContainer>
+                  <Input name="phone" type="string" label="Telefone" />
+                  {errors && <Error>Cpf ou Telefone incorreto(s)</Error>}
+                </>
+              )}
+              <ButtonContainer>
+                <Button text="Iniciar sessão" icon={FaCheck} type="submit" />
+              </ButtonContainer>
+            </Form>
+          </FormContainer>
+        </BackgroundWhiteRectangle>
+        <BackgroundOrange />
+      </Container>
+    </>
   )
 }
 

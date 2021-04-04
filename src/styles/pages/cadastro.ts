@@ -6,10 +6,7 @@ export const Container = styled.div`
   height: 100vh;
 
   display: flex;
-  align-items: center;
   justify-content: center;
-
-  margin-top: 9.6rem;
 
   h1 {
     /* BEM VINDO */
@@ -47,7 +44,7 @@ export const BackgroundOrange = styled.div`
   position: absolute;
   top: 0;
   height: 41.3%;
-  width: 100%;
+  width: 100vw;
 
   z-index: -100;
 
@@ -55,11 +52,11 @@ export const BackgroundOrange = styled.div`
 `
 export const BackgroundWhiteRectangle = styled.div`
   background: ${({ theme }) => theme.colors.white};
-  /* Drop Shadow */
   box-shadow: ${effects.dropShadow};
   border-radius: 8px;
 
-  margin: 0 1.6rem;
+  margin: 9.6rem 1.6rem;
+  height: fit-content;
 
   @media ${breakPoints.mobileL} {
     width: 100%;

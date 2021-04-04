@@ -41,7 +41,7 @@ const Header: React.FC = () => {
             </aside>
           ) : (
             <section>
-              <Link href="/">
+              <Link href="/cesta">
                 <Manager>
                   <div>Cesta</div>
                   <aside>
