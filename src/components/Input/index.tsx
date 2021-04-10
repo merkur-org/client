@@ -8,14 +8,17 @@ import {
   useState
 } from 'react'
 import { useField } from '@unform/core'
-import { BodyInput } from './styles'
+
 import FieldText from '../FieldText'
+
+import { BodyInput } from './styles'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   label?: string
   subLabel?: string
   pathSubLabel?: string
+  mask?(value: string): string
 }
 /**
  * This component receives text in your field
@@ -35,6 +38,7 @@ const Input: React.FC<InputProps> = ({
   label,
   subLabel,
   pathSubLabel,
+  mask,
   ...rest
 }) => {
   const inputRef = useRef(null)
@@ -59,10 +63,9 @@ const Input: React.FC<InputProps> = ({
 
   // máscara de input para o telefone
   const handleKeyUp = useCallback((event: any) => {
-    let value = event.target.value
-    value = value.replace(/\D/g, '')
-    value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
-    event.currentTarget.value = value
+    if (mask) {
+      event.target.value = mask(event.target.value)
+    }
   }, [])
 
   return (
@@ -77,7 +80,7 @@ const Input: React.FC<InputProps> = ({
       >
         <input
           onChange={handleChange}
-          onKeyUp={name === 'phone' && handleKeyUp}
+          onKeyUp={handleKeyUp}
           ref={inputRef}
           defaultValue={defaultValue}
           type="text"

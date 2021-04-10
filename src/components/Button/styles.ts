@@ -1,5 +1,15 @@
 import { border, effects, transitions } from '@/styles/constants'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const buttonClicked = keyframes`
+  50%{
+    transform: scale(0.95)
+  }
+
+  100%{
+    transform: scale(1)
+  }
+`
 
 export const Container = styled.button`
   background-color: ${({ theme }) => theme.colors.greenPrimary};
@@ -7,6 +17,11 @@ export const Container = styled.button`
   transition: background ${transitions.hover};
   &:hover {
     background-color: ${({ theme }) => theme.colors.greenSecundary};
+  }
+
+  &:active {
+    animation: ${buttonClicked} 0.1s ease-in-out;
+    background-color: ${({ theme }) => theme.colors.darkGreen};
   }
 
   display: flex;

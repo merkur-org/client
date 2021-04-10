@@ -1,15 +1,25 @@
-import { useState } from 'react'
+import { useCallback, useState, useRef } from 'react'
+import { FaShoppingBasket, FaCheck } from 'react-icons/fa'
+import { FiTrash2 } from 'react-icons/fi'
+import { FormHandles } from '@unform/core'
+import * as Yup from 'yup'
 
-import WithAuth from '@/components/WithAuth'
 import BuyQuantityInput from '@/components/BuyQuantityInput'
+import Select from '@/components/Select'
+import WithAuth from '@/components/WithAuth'
+import getValidationErrors from '@/utils/getValidationErrors'
 
 import {
   Container,
-  Title,
-  CheckoutTable,
-  CheckoutDetails,
-  CheckoutColumns
+  SummaryOrder,
+  SummaryTitle,
+  SummaryContent,
+  SummaryDelivery,
+  SummaryButtons,
+  Title
 } from '@/styles/pages/cesta'
+import { Table } from '@/styles/components/table'
+import { formMessages } from '@/styles/constants'
 
 interface CheckoutDetailsProps {
   image: string
@@ -44,33 +54,102 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
     }
   ])
 
+  const formRef = useRef<FormHandles>(null)
+  const handleFinishOrder = useCallback(async formData => {
+    formRef.current?.setErrors({})
+
+    try {
+      const schema = Yup.object().shape({
+        location: Yup.string().required(formMessages.required)
+      })
+
+      await schema.validate(formData, {
+        abortEarly: false
+      })
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(error)
+
+        formRef.current?.setErrors(errors)
+      }
+    }
+  }, [])
+
   return (
     <Container>
       <Title>
         <div></div>
         <h1>Minha cesta</h1>
       </Title>
-      <CheckoutTable>
-        <CheckoutColumns>
-          <strong>Produto</strong>
-          <strong>Preço</strong>
-          <strong>Quantidade</strong>
-          <strong>Total</strong>
-          <strong>Ações</strong>
-        </CheckoutColumns>
-        {products.map(({ image, name, unitPrice, quantity, totalPrice }) => (
-          <CheckoutDetails key="name">
-            <aside>
-              <img src={image} />
-              <h4>{name}</h4>
-            </aside>
-            <h3>{unitPrice}</h3>
-            <BuyQuantityInput quantity={quantity} />
-            <h3>{totalPrice}</h3>
-            <a>remover</a>
-          </CheckoutDetails>
+      <Table>
+        <tr>
+          <th>Produto</th>
+          <th>Preço</th>
+          <th>Quantidade</th>
+          <th>Total</th>
+          <th>Ações</th>
+        </tr>
+        {products.map(product => (
+          <tr key={product.name}>
+            <td>
+              <div className="product-image">
+                <img src={product.image} />
+                <p className="product-name">{product.name}</p>
+              </div>
+            </td>
+            <td>
+              <h4 className="price">{product.unitPrice}</h4>
+            </td>
+            <td>
+              <div className="actions">
+                <BuyQuantityInput quantity={product.quantity} />
+              </div>
+            </td>
+            <td>
+              <h4 className="total">{product.totalPrice}</h4>
+            </td>
+            <td>
+              <button type="button" className="actions error">
+                <FiTrash2 />
+                <span>remover</span>
+              </button>
+            </td>
+          </tr>
         ))}
-      </CheckoutTable>
+      </Table>
+
+      <SummaryOrder onSubmit={handleFinishOrder} ref={formRef}>
+        <SummaryTitle>
+          <h2>Resumo do pedido</h2>
+        </SummaryTitle>
+        <SummaryContent>
+          <SummaryDelivery>
+            <section>
+              <strong>Total</strong>
+              <span>R$ 40,00</span>
+            </section>
+            <section>
+              <Select
+                name="location"
+                label="Ponto de entrega"
+                defaultOption="Ponto de entrega"
+                options={[
+                  { value: 1, label: 'Janeiro' },
+                  { value: 2, label: 'Fevereiro' }
+                ]}
+              />
+            </section>
+          </SummaryDelivery>
+          <SummaryButtons>
+            <button>
+              <span>Adicionar mais produtos</span> <FaShoppingBasket />
+            </button>
+            <button type="submit">
+              <span>Fechar Pedido</span> <FaCheck />
+            </button>
+          </SummaryButtons>
+        </SummaryContent>
+      </SummaryOrder>
     </Container>
   )
 }

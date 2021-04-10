@@ -1,12 +1,22 @@
 import styled, { css } from 'styled-components'
 import { breakPoints, effects } from '../constants'
 
-export const Container = styled.div`
+interface PageProps {
+  isLoading: boolean
+}
+
+export const Container = styled.div<PageProps>`
   width: 100vw;
-  height: 100vh;
+  height: 100%;
 
   display: flex;
   justify-content: center;
+
+  ${props =>
+    props.isLoading &&
+    css`
+      cursor: wait;
+    `}
 
   h1 {
     /* BEM VINDO */

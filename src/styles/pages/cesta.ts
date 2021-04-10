@@ -1,20 +1,24 @@
 import styled from 'styled-components'
-import { breakPoints } from '../constants'
+import { border, breakPoints } from '../constants'
+import { Form } from '@unform/web'
+import device from '../constants/breakPoints'
 
 export const Container = styled.div`
   padding: 3.6rem 1.6rem;
 
-  @media ${breakPoints.tablet} {
-    padding: 5.6rem 3.2rem;
-  }
-
   overflow-x: hidden;
+
+  @media ${breakPoints.tablet} {
+    padding: 5.6rem 12rem;
+  }
 `
 
 export const Title = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 2.4rem;
+  max-width: 120rem;
+  margin: 0 auto 2.4rem;
 
   div {
     content: '';
@@ -44,97 +48,127 @@ export const Title = styled.div`
     }
   }
 `
+export const SummaryOrder = styled(Form)`
+  width: 100%;
+  max-width: 120rem;
+  margin: 5.6rem auto;
 
-export const CheckoutTable = styled.div`
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar {
-    display: none;
+`
+
+export const SummaryTitle = styled.div`
+  width: 100%;
+  text-align: center;
+  height: 3.2rem;
+  background: ${({ theme }) => theme.colors.orangePrimary};
+
+  h2 {
+    color: ${({ theme }) => theme.colors.white};
+    font-size: 1.6rem;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+export const SummaryContent = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media ${device.tablet} {
+    flex-direction: row;
+    justify-content: space-between;
   }
 `
 
-export const CheckoutDetails = styled.div`
-  height: 100%;
-
+export const SummaryDelivery = styled.div`
+  margin-top: 3.2rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
 
-  border-bottom: 1px solid ${({ theme }) => theme.colors.orangePrimary};
-
-  aside {
-    min-width: 53.2rem;
-    display: flex;
-    align-items: center;
-
-    img {
-      max-height: 8.8rem;
-      max-width: 15.4rem;
-      width: 100%;
-    }
-
-    h4 {
-      white-space: nowrap;
-      margin-left: 2.4rem;
-      font-weight: lighter;
-      font-size: 1.6rem;
-    }
-  }
-
-  a {
-    font-weight: lighter;
-    font-size: 1.6rem;
-    color: ${({ theme }) => theme.colors.error};
-  }
-
-  h3 {
-    font-weight: 400;
-    font-size: 2.4rem;
-    color: ${({ theme }) => theme.colors.gray};
-  }
-
-  h3,
-  a,
   section {
     display: flex;
-    justify-content: center;
-    margin: 0 auto;
-  }
 
-  @media ${breakPoints.tablet} {
-    h3,
-    a,
-    section {
-      width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+    strong {
+      color: ${({ theme }) => theme.colors.black};
+      font-size: 2.4rem;
+      display: flex;
+      align-items: center;
+      svg {
+        margin-right: 1.6rem;
+        font-size: 2.4rem;
+        color: ${({ theme }) => theme.colors.gray};
+      }
+    }
+
+    p {
+      font-size: 1.6rem;
+      color: ${({ theme }) => theme.colors.gray};
+    }
+    span {
+      font-size: 2.4rem;
+      color: ${({ theme }) => theme.colors.black};
+
+      display: flex;
+      flex-direction: column;
+
+      button {
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        color: ${({ theme }) => theme.colors.redPrimary};
+        margin-top: 0.4rem;
+      }
+    }
+
+    & + section {
+      margin-top: 3.2rem;
     }
   }
-`
 
-export const CheckoutColumns = styled.section`
+  @media ${device.tablet} {
+    width: 50%;
+    padding: 0 3.2rem;
+    border-left: 0.1rem solid ${({ theme }) => theme.colors.division};
+  }
+`
+export const SummaryButtons = styled.div`
+  margin-top: 3.2rem;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
 
-  background-color: ${({ theme }) => theme.colors.white};
-
-  strong {
-    text-align: center;
-    font-size: 1.6rem;
-    font-weight: bold;
+  button {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    padding: 0.8rem 5.6rem;
+    height: 4.8rem;
+    padding: 1.6rem;
 
-    background-color: ${({ theme }) => theme.colors.orangePrimary};
     color: ${({ theme }) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.orangePrimary};
+
+    border: 0;
+    border-radius: ${border.borderRadius};
+
+    font-size: 1.6rem;
+    & + button {
+      background: ${({ theme }) => theme.colors.greenPrimary};
+      margin-top: 1.6rem;
+    }
   }
 
-  strong + strong {
-    border-left: 1px solid ${({ theme }) => theme.colors.yellowPrimary};
-  }
-
-  strong:first-child {
-    min-width: 53.2rem;
+  @media ${device.tablet} {
+    width: 50%;
+    padding: 0 3.2rem;
+    border-left: 0.1rem solid ${({ theme }) => theme.colors.division};
+    border-right: 0.1rem solid ${({ theme }) => theme.colors.division};
   }
 `

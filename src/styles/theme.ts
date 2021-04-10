@@ -6,10 +6,12 @@ const theme = {
     warning: '#F7C80C',
     greenPrimary: '#00D844',
     greenSecundary: '#72FF33',
+    darkGreen: '#13B245',
     orangePrimary: '#F08E00',
     yellowPrimary: '#F7C80C',
     yellowSecundary: '#FFFF70',
     gray: '#888888',
+    lightGray: 'rgba(136, 136, 136, 0.25)',
     redPrimary: '#F50000',
     division: '#efeded'
   }
