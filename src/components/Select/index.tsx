@@ -1,18 +1,10 @@
-import {
-  useEffect,
-  useRef,
-  InputHTMLAttributes,
-  ChangeEvent,
-  useCallback,
-  useState,
-  SelectHTMLAttributes
-} from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import { useField } from '@unform/core'
 import ReactSelect, { OptionTypeBase, Props as SelectProps } from 'react-select'
 
 import FieldText from '../FieldText'
 
-import { BodySelect } from './styles'
+import { BodySelect, selectStyles } from './styles'
 
 interface Props extends SelectProps<OptionTypeBase> {
   name: string
@@ -88,6 +80,7 @@ const Select: React.FC<Props> = ({
           options={rest.options}
           defaultValue={rest.defaultValue}
           placeholder=""
+          styles={selectStyles}
         />
       </FieldText>
     </BodySelect>

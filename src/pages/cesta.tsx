@@ -5,6 +5,7 @@ import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
 
 import BuyQuantityInput from '@/components/BuyQuantityInput'
+import Button from '@/components/Button'
 import Select from '@/components/Select'
 import WithAuth from '@/components/WithAuth'
 import getValidationErrors from '@/utils/getValidationErrors'
@@ -37,6 +38,7 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
 }) => {
   const [products, setProducts] = useState([
     {
+      id: 1,
       image:
         'https://images.unsplash.com/photo-1508313880080-c4bef0730395?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80',
       name: 'Banana Caturra Orgânica',
@@ -45,6 +47,7 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
       totalPrice: 'R$12,00'
     },
     {
+      id: 2,
       image:
         'https://images.unsplash.com/photo-1423483641154-5411ec9c0ddf?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
       name: 'Uva Orgânica',
@@ -53,6 +56,16 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
       totalPrice: 'R$12,00'
     }
   ])
+
+  function handleRemoveProduct(id: number) {
+    const filteredProducts = [...products]
+    filteredProducts.splice(
+      filteredProducts.findIndex(product => product.id === id),
+      1
+    )
+
+    setProducts(filteredProducts)
+  }
 
   const formRef = useRef<FormHandles>(null)
   const handleFinishOrder = useCallback(async formData => {
@@ -90,7 +103,7 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
           <th>Ações</th>
         </tr>
         {products.map(product => (
-          <tr key={product.name}>
+          <tr key={product.id}>
             <td>
               <div className="product-image">
                 <img src={product.image} />
@@ -109,7 +122,11 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
               <h4 className="total">{product.totalPrice}</h4>
             </td>
             <td>
-              <button type="button" className="actions error">
+              <button
+                type="button"
+                className="actions error"
+                onClick={() => handleRemoveProduct(product.id)}
+              >
                 <FiTrash2 />
                 <span>remover</span>
               </button>
@@ -141,12 +158,12 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
             </section>
           </SummaryDelivery>
           <SummaryButtons>
-            <button>
-              <span>Adicionar mais produtos</span> <FaShoppingBasket />
-            </button>
-            <button type="submit">
-              <span>Fechar Pedido</span> <FaCheck />
-            </button>
+            <Button
+              text="Adicionar mais produtos"
+              icon={FaShoppingBasket}
+              buttonType="orangePrimary"
+            />
+            <Button text="Fechar Pedido" icon={FaCheck} type="submit" />
           </SummaryButtons>
         </SummaryContent>
       </SummaryOrder>

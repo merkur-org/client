@@ -8,6 +8,8 @@ const theme = {
     greenSecundary: '#72FF33',
     darkGreen: '#13B245',
     orangePrimary: '#F08E00',
+    orangeSecundary: '#FF9C0D',
+    darkOrange: '#DE8E2B',
     yellowPrimary: '#F7C80C',
     yellowSecundary: '#FFFF70',
     gray: '#888888',

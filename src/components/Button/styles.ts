@@ -1,5 +1,5 @@
 import { border, effects, transitions } from '@/styles/constants'
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 
 const buttonClicked = keyframes`
   50%{
@@ -11,18 +11,43 @@ const buttonClicked = keyframes`
   }
 `
 
-export const Container = styled.button`
-  background-color: ${({ theme }) => theme.colors.greenPrimary};
+interface ContainerProps {
+  buttonType?: string
+}
+
+export const Container = styled.button<ContainerProps>`
+  ${props =>
+    props.buttonType === 'greenPrimary' &&
+    css`
+      background-color: ${({ theme }) => theme.colors.greenPrimary};
+
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.greenSecundary};
+      }
+
+      &:active {
+        animation: ${buttonClicked} 0.1s ease-in-out;
+        background-color: ${({ theme }) => theme.colors.darkGreen};
+      }
+    `}
+
+  ${props =>
+    props.buttonType === 'orangePrimary' &&
+    css`
+      background-color: ${({ theme }) => theme.colors.orangePrimary};
+
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.orangeSecundary};
+      }
+
+      &:active {
+        animation: ${buttonClicked} 0.1s ease-in-out;
+        background-color: ${({ theme }) => theme.colors.darkOrange};
+      }
+    `}
+
   color: ${({ theme }) => theme.colors.white};
   transition: background ${transitions.hover};
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.greenSecundary};
-  }
-
-  &:active {
-    animation: ${buttonClicked} 0.1s ease-in-out;
-    background-color: ${({ theme }) => theme.colors.darkGreen};
-  }
 
   display: flex;
   justify-content: space-between;

@@ -98,16 +98,6 @@ export const SummaryDelivery = styled.div`
       font-size: 2.4rem;
       display: flex;
       align-items: center;
-      svg {
-        margin-right: 1.6rem;
-        font-size: 2.4rem;
-        color: ${({ theme }) => theme.colors.gray};
-      }
-    }
-
-    p {
-      font-size: 1.6rem;
-      color: ${({ theme }) => theme.colors.gray};
     }
     span {
       font-size: 2.4rem;
@@ -140,29 +130,10 @@ export const SummaryButtons = styled.div`
   margin-top: 3.2rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
 
-  button {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    height: 4.8rem;
-    padding: 1.6rem;
-
-    color: ${({ theme }) => theme.colors.white};
-    background: ${({ theme }) => theme.colors.orangePrimary};
-
-    border: 0;
-    border-radius: ${border.borderRadius};
-
-    font-size: 1.6rem;
-    & + button {
-      background: ${({ theme }) => theme.colors.greenPrimary};
-      margin-top: 1.6rem;
-    }
+  button + button {
+    margin-top: 1.6rem;
   }
 
   @media ${device.tablet} {
