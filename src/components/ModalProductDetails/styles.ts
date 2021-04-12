@@ -74,8 +74,8 @@ export const ModalContent = styled.div<ModalProps>`
   overflow-y: auto;
   position: fixed;
   background-color: ${({ theme }) => theme.colors.white};
-  width: 100%;
-  height: 100vh;
+  width: 0%;
+  height: 100%;
 
   /* bottom: 0; */
   top: 0;
@@ -88,6 +88,13 @@ export const ModalContent = styled.div<ModalProps>`
   hr {
     border: 0;
   }
+
+  ${props =>
+    props.isOpen &&
+    css`
+      width: 100%;
+      right: 0;
+    `}
 
   @media ${device.tablet} {
     width: 50vw;
