@@ -4,6 +4,7 @@ export const Table = styled.table`
   width: 100%;
 
   font-size: 1.6rem;
+  margin-top: 2.4rem;
 
   border-spacing: 0;
   display: block;

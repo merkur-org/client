@@ -13,41 +13,6 @@ export const Container = styled.div`
   }
 `
 
-export const Title = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 2.4rem;
-  max-width: 120rem;
-  margin: 0 auto 2.4rem;
-
-  div {
-    content: '';
-    width: 1.6rem;
-    height: 1.6rem;
-
-    border: 4px solid ${({ theme }) => theme.colors.orangePrimary};
-    border-radius: 100vmax;
-
-    margin-right: 1.6rem;
-  }
-
-  h1 {
-    font-size: 2.4rem;
-  }
-
-  @media ${breakPoints.tablet} {
-    div {
-      width: 2.4rem;
-      height: 2.4rem;
-
-      border: 8px solid ${({ theme }) => theme.colors.orangePrimary};
-    }
-
-    h1 {
-      font-size: 4rem;
-    }
-  }
-`
 export const SummaryOrder = styled(Form)`
   width: 100%;
   max-width: 120rem;

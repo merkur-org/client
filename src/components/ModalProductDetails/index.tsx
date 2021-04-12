@@ -1,6 +1,8 @@
-import { useRef, useEffect } from 'react'
-import { FaShoppingBasket } from 'react-icons/fa'
-import { IoMdBriefcase, IoMdClose } from 'react-icons/io'
+import { useRef, useEffect, useCallback } from 'react'
+import { FaShoppingBasket, FaPlus, FaShoppingBag } from 'react-icons/fa'
+
+import Button from '@/components/Button'
+
 import {
   CloseButton,
   BodyButton,
@@ -16,7 +18,7 @@ import { BuyQuantityInput } from '@/components'
 
 interface ModalProductDetailsProps {
   isOpen: boolean
-  setIsOpen: any
+  setIsOpen(isOpen: boolean): void
 }
 
 const ModalProductDetails: React.FC<ModalProductDetailsProps> = ({
@@ -24,22 +26,16 @@ const ModalProductDetails: React.FC<ModalProductDetailsProps> = ({
   setIsOpen
 }) => {
   const ModalProductDetailsRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    document.addEventListener('mousedown', (event: MouseEvent) => {
-      if (
-        event.target &&
-        !ModalProductDetailsRef.current?.contains(event.target as Node) &&
-        isOpen
-      ) {
-        setIsOpen(!isOpen)
-      }
-    })
+
+  const handleClose = useCallback(() => {
+    setIsOpen(!isOpen)
   }, [isOpen])
+
   return (
     <BodyButton ref={ModalProductDetailsRef} asideOpen={isOpen}>
-      <ModalContent onClick={() => setIsOpen(!isOpen)}>
-        <CloseButton onClick={() => setIsOpen(false)}>
-          <IoMdClose />
+      <ModalContent>
+        <CloseButton onClick={handleClose}>
+          <FaPlus />
         </CloseButton>
         <ContentUp>
           <img
@@ -71,18 +67,6 @@ const ModalProductDetails: React.FC<ModalProductDetailsProps> = ({
             </p>
           </Info>
           <hr />
-
-          <ButtonsContainer>
-            <button>
-              <span>Comprar agora</span>
-              <IoMdBriefcase />
-            </button>
-            <button>
-              <span>Adicionar a cesta</span>
-              <FaShoppingBasket />
-            </button>
-          </ButtonsContainer>
-
           <Info>
             <h2>Informações nutricionais</h2>
             <p>
@@ -92,6 +76,14 @@ const ModalProductDetails: React.FC<ModalProductDetailsProps> = ({
             </p>
           </Info>
         </InfoContent>
+        <ButtonsContainer>
+          <Button text="Adicionar a cesta" icon={FaShoppingBasket} />
+          <Button
+            text="Comprar agora"
+            icon={FaShoppingBasket}
+            buttonType="yellowPrimary"
+          />
+        </ButtonsContainer>
       </ModalContent>
     </BodyButton>
   )

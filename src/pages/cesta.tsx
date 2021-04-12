@@ -7,7 +7,9 @@ import * as Yup from 'yup'
 import BuyQuantityInput from '@/components/BuyQuantityInput'
 import Button from '@/components/Button'
 import Select from '@/components/Select'
+import Title from '@/components/Title'
 import WithAuth from '@/components/WithAuth'
+
 import getValidationErrors from '@/utils/getValidationErrors'
 
 import {
@@ -16,8 +18,7 @@ import {
   SummaryTitle,
   SummaryContent,
   SummaryDelivery,
-  SummaryButtons,
-  Title
+  SummaryButtons
 } from '@/styles/pages/cesta'
 import { Table } from '@/styles/components/table'
 import { formMessages } from '@/styles/constants'
@@ -90,10 +91,7 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
 
   return (
     <Container>
-      <Title>
-        <div></div>
-        <h1>Minha cesta</h1>
-      </Title>
+      <Title title="Minha cesta" />
       <Table>
         <tr>
           <th>Produto</th>
