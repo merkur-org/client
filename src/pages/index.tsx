@@ -19,7 +19,7 @@ const Home: React.FC = () => {
     <Container>
       <SEO title="HOME" image="/banner.png" />
       <BannerContainer>
-        <img src="http://placeimg.com/640/480/business" alt="" />
+        <img src="banner.png" alt="" />
       </BannerContainer>
 
       <OffersTopTitle>

@@ -33,7 +33,7 @@ const ModalProductDetails: React.FC<ModalProductDetailsProps> = ({
 
   return (
     <BodyButton ref={ModalProductDetailsRef} asideOpen={isOpen}>
-      <ModalContent>
+      <ModalContent isOpen={isOpen}>
         <CloseButton onClick={handleClose}>
           <FaPlus />
         </CloseButton>

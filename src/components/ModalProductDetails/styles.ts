@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 import { border, effects } from '@/styles/constants'
 import device from '@/styles/constants/breakPoints'
@@ -43,14 +43,34 @@ export const BodyButton = styled.div<styleProps>`
     width: 100%;
     cursor: pointer;
   }
-  ${props => props.asideOpen && ModalContent} {
-    opacity: 1;
-    visibility: visible;
+`
+interface ModalProps {
+  isOpen: boolean
+}
+
+const openAnimation = keyframes`
+  from{
+    right: -50vw;
+  }
+
+  to{
+    right: 0;
   }
 `
-export const ModalContent = styled.div`
-  opacity: 0;
-  visibility: hidden;
+
+const closeAnimation = keyframes`
+  from{
+    right: 0;
+  }
+
+  to{
+    right: -50vw;
+  }
+`
+
+export const ModalContent = styled.div<ModalProps>`
+  opacity: 1;
+  visibility: visible;
   overflow-y: auto;
   position: fixed;
   background-color: ${({ theme }) => theme.colors.white};
@@ -59,7 +79,7 @@ export const ModalContent = styled.div`
 
   /* bottom: 0; */
   top: 0;
-  right: 0;
+  right: 0vw;
   z-index: 100;
   box-shadow: ${effects.dropShadow};
   display: flex;
@@ -71,7 +91,24 @@ export const ModalContent = styled.div`
 
   @media ${device.tablet} {
     width: 50vw;
+    right: -50vw;
     overflow-x: hidden;
+
+    ${props =>
+      props.isOpen
+        ? css`
+            animation: ${openAnimation} 0.3s ease;
+            width: 50vw;
+            right: 0;
+          `
+        : css`
+            animation: ${closeAnimation} 0.3s ease;
+            right: -50vw;
+            visibility: 0;
+            opacity: 0;
+
+            transition: opacity 0.2s;
+          `}
   }
 `
 
@@ -180,7 +217,7 @@ export const ButtonsContainer = styled.div`
   flex-direction: column;
   width: 100%;
 
-  position: fixed;
+  position: absolute;
   bottom: 0;
   right: 0;
 
