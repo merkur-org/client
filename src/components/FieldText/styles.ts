@@ -23,7 +23,7 @@ export const BodyField = styled.label<{ isEmpty: boolean; isErrored: boolean }>`
     color: ${({ theme }) => theme.colors.gray};
 
     transition: 0.5s;
-    cursor: default;
+    cursor: pointer;
   }
 
   #border-bottom {

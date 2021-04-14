@@ -86,29 +86,27 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const signUp = useCallback(
     async ({ email, password, cpf, phone, cnpj, name }: SignUpCredentials) => {
-      let response
       if (cpf) {
         console.log({ email, password, cpf, phone, cnpj, name })
-        response = await api.post('/users', {
-          name: name,
-          cpf: cpf,
-          phone: phone,
-          email: email,
-          password: password,
-          role: 'r'
-        })
+        await api
+          .post('/users', {
+            name: name,
+            cpf: cpf,
+            phone: phone,
+            email: email,
+            password: password
+          })
+          .then(() => signIn({ email: email, password: password }))
       } else {
-        response = await api.post('/sessions', {
-          name: name,
-          cnpj: cnpj,
-          phone: phone,
-          email: email,
-          password: password,
-          role: 'r'
-        })
-      }
-      if (response) {
-        await signIn({ email: response.email, password: response.password })
+        await api
+          .post('/users', {
+            name: name,
+            cnpj: cnpj,
+            phone: phone,
+            email: email,
+            password: password
+          })
+          .then(() => signIn({ email: email, password: password }))
       }
     },
     []

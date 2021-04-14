@@ -1,13 +1,23 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { breakPoints, effects } from '../constants'
 
-export const Container = styled.div`
+interface PageProps {
+  isLoading: boolean
+}
+
+export const Container = styled.div<PageProps>`
   width: 100vw;
   height: 100vh;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  ${props =>
+    props.isLoading &&
+    css`
+      cursor: wait;
+    `}
 
   h1 {
     /* BEM VINDO */
@@ -51,7 +61,7 @@ export const BackgroundOrange = styled.div`
 `
 export const BackgroundWhiteRectangle = styled.div`
   background: ${({ theme }) => theme.colors.white};
-  /* Drop Shadow */
+
   box-shadow: ${effects.dropShadow};
   border-radius: 8px;
 

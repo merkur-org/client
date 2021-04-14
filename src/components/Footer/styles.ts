@@ -6,6 +6,8 @@ export const Container = styled.footer`
   align-items: center;
   flex-direction: column;
 
+  background-color: ${({ theme }) => theme.colors.white};
+
   > section {
     display: flex;
     flex-direction: column;

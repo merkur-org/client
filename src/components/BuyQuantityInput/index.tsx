@@ -1,5 +1,5 @@
 import { BuyQuantity } from './styles'
-import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
+import { FaPlus, FaMinus } from 'react-icons/fa'
 import { useState } from 'react'
 
 interface IDataProps {
@@ -17,13 +17,13 @@ const BuyQuantityInput: React.FC<IDataProps> = ({ quantity = 0 }) => {
     <BuyQuantity>
       <div className="quantity-selector">
         <button type="button" onClick={handleDecrease}>
-          <AiOutlineMinus />
+          <FaMinus />
         </button>
 
         <span className="quantity-label">{count}</span>
 
         <button type="button" onClick={handleIncrease}>
-          <AiOutlinePlus />
+          <FaPlus />
         </button>
       </div>
       <span>kg</span>

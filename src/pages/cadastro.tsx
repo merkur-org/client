@@ -13,6 +13,7 @@ import { Error } from '@/components/ErrorLabel/styles'
 import WithUserLogged from '@/components/WithUserLogged'
 
 import validateRegister from '@/utils/validateRegister'
+import phoneInputMask from '@/utils/phoneInputMask'
 import { useAuth } from '@/hooks/auth'
 
 import {
@@ -48,6 +49,7 @@ const Cadastro: React.FC = () => {
   const [cpfSelected, setCpfSelected] = useState(true)
   const [cnpjSelected, setCnpjSelected] = useState(false)
   const [errors, setErrors] = useState()
+  const [isLoading, setisLoading] = useState(false)
 
   useEffect(() => {
     setErrors(undefined)
@@ -59,19 +61,22 @@ const Cadastro: React.FC = () => {
       const data = await validateRegister(formData, formRef)
 
       if (data) {
+        setisLoading(true)
+
         await signUp(data)
         router.push('/')
       }
     } catch (err) {
       formRef.current.setErrors(err)
       setErrors(err)
+      setisLoading(false)
     }
   }, [])
 
   return (
     <>
       <BackButton />
-      <Container>
+      <Container isLoading={isLoading}>
         <BackgroundWhiteRectangle>
           <WelcomeContainer>
             <h1>BEM VINDO</h1>
@@ -108,7 +113,12 @@ const Cadastro: React.FC = () => {
                     <Input name="email" type="email" label="Email" />
                   </InputContainer>
                   <InputContainer>
-                    <Input name="phone" type="text" label="Telefone" />
+                    <Input
+                      name="phone"
+                      type="text"
+                      label="Telefone"
+                      mask={phoneInputMask}
+                    />
                   </InputContainer>
                   {cpfSelected && (
                     <InputContainer>
@@ -153,8 +163,8 @@ const Cadastro: React.FC = () => {
                   link="/"
                   linkLabel="termos de condições"
                 />
-                {errors && <Error>Algo deu errado, tente novamente</Error>}
               </BottomContainer>
+              {errors && <Error>Algo deu errado, tente novamente</Error>}
             </Form>
           </FormContainer>
         </BackgroundWhiteRectangle>

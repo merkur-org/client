@@ -1,5 +1,5 @@
 const transitions = {
-  hover: '0.2s'
+  hover: '0.4s'
 }
 
 export default transitions
