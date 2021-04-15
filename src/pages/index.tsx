@@ -8,7 +8,7 @@ import {
 } from '@/styles/pages/Home'
 import SEO from '@/components/SEO'
 import ProductCard from '@/components/Product'
-import { FaDotCircle, FaArrowRight } from 'react-icons/fa'
+import { FaLongArrowAltRight } from 'react-icons/fa'
 import Dropdown from '@/components/Dropdown'
 import Title from '@/components/Title'
 
@@ -25,9 +25,13 @@ const Home: React.FC = () => {
       <OffersTopTitle>
         <Title title="Ofertas" />
         <Filter>
-          <Dropdown text="Filtrar por" IconButton={<FaArrowRight />}>
-            <li>Voce tem novo convite</li>
-            <li>Que tal aproveitar</li>
+          <Dropdown text="Filtrar por" IconButton={<FaLongArrowAltRight />}>
+            <li>Adicionados Recentemente</li>
+            <li>Categorias</li>
+            <li>Menor Preço</li>
+            <li>Maior Preço</li>
+            <li>Ordem Alfabética</li>
+            <li>Promoções</li>
           </Dropdown>
         </Filter>
       </OffersTopTitle>
