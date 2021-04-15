@@ -12,10 +12,11 @@ export default createGlobalStyle`
     /* font-size:62.5%; */
   }
 
-  html {
+  html, button{
     font-size: 62.5%;
     font-family: 'Roboto Slab', serif;
     font: 400 1.6rem;
+    overflow-x: hidden;
   }
 
   textarea:focus,
@@ -26,6 +27,7 @@ export default createGlobalStyle`
     border: 0 none;
     outline: 0;
   }
+
   a, button {
     text-decoration: none;
     cursor: pointer;

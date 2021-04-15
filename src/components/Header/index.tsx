@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import Link from 'next/link'
-import { MdLocationOn } from 'react-icons/md'
+import { FiMapPin, FiChevronDown } from 'react-icons/fi'
 import { FaShoppingBasket, FaUserAlt } from 'react-icons/fa'
 
 import {
@@ -9,7 +9,8 @@ import {
   ManagerArea,
   Manager,
   Burguer,
-  HeaderDown
+  HeaderDown,
+  HeaderLink
 } from './styles'
 
 import { SearchProducts } from '@/components'
@@ -53,6 +54,7 @@ const Header: React.FC = () => {
               </Link>
               <Link href="/">
                 <Manager>
+                  <FiChevronDown />
                   <div>
                     <span>Daniel Gustavo Favero</span>
                     <span>danielfavero17@gmail.com</span>
@@ -69,20 +71,14 @@ const Header: React.FC = () => {
       </HeaderUp>
       <HeaderDown>
         <button>
-          <MdLocationOn /> Cidade - UF
+          <FiMapPin /> <p>Cidade - UF</p>
         </button>
         <aside>
-          <Link href="/">
-            <a>Categorias</a>
+          <Link href="/produtos">
+            <HeaderLink isSelected>Produtos</HeaderLink>
           </Link>
-          <Link href="/">
-            <a>Produtos</a>
-          </Link>
-          <Link href="/">
-            <a>Listas semanais</a>
-          </Link>
-          <Link href="/">
-            <a>Meus pedidos</a>
+          <Link href="/meus-pedidos">
+            <HeaderLink isSelected={false}>Meus pedidos</HeaderLink>
           </Link>
         </aside>
 

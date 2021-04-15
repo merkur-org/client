@@ -148,7 +148,7 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
                 name="location"
                 label="Ponto de entrega"
                 defaultOption="Ponto de entrega"
-                options={[{ value: 1, label: 'Roberto' }]}
+                options={[]}
               />
             </section>
           </SummaryDelivery>

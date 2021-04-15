@@ -1,9 +1,8 @@
 import styled, { css } from 'styled-components'
-import { breakPoints as device } from '@/styles/constants'
+import { breakPoints as device, effects } from '@/styles/constants'
 
 export const Main = styled.header``
 export const HeaderUp = styled.section`
-  padding: 1.6rem;
   background: #fff;
   display: flex;
   align-items: center;
@@ -12,13 +11,15 @@ export const HeaderUp = styled.section`
   max-width: 120rem;
   margin: 0 auto;
   overflow: hidden;
-  height: 7rem;
+  height: 7.2rem;
+
   img {
     height: 4.8rem;
     cursor: pointer;
   }
 
   @media ${device.tablet} {
+    height: 10.4rem;
     img {
       height: 6rem;
       width: 12rem;
@@ -29,10 +30,18 @@ export const ManagerArea = styled.section`
   > aside {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
 
     a {
+      font-weight: 100;
       font-size: 1.2rem;
       color: ${({ theme }) => theme.colors.black};
+      margin: 0 1.6rem;
+
+      & + a {
+        font-weight: bold;
+        color: ${({ theme }) => theme.colors.yellowPrimary};
+      }
     }
   }
 
@@ -66,6 +75,8 @@ export const Manager = styled.a`
     display: none;
   }
 
+  margin-right: 1.6rem;
+
   aside {
     position: relative;
     svg {
@@ -96,29 +107,38 @@ export const Manager = styled.a`
     align-items: center;
 
     div {
-      margin-left: 1.6rem;
-      display: flex;
-
       flex-direction: column;
       color: ${({ theme }) => theme.colors.black};
       font-size: 1.2rem;
 
       span + span {
+        font-size: 1.2rem;
         color: ${({ theme }) => theme.colors.gray};
       }
     }
 
     svg {
-      margin-left: 1.6rem;
+      font-size: 1.2rem;
     }
   }
+  > svg {
+    display: none;
+  }
+
   @media ${device.laptop} {
     div {
+      display: flex;
+      text-align: right;
       font-size: 1.6rem;
     }
 
     svg {
       margin-left: 1.6rem;
+    }
+
+    > svg {
+      display: initial;
+      margin-right: 0.8rem;
     }
   }
 `
@@ -130,7 +150,6 @@ export const Burguer = styled.div<PropsBurguer>`
   label {
     div {
       background: transparent;
-      border-radius: 50%;
       width: 60px;
       height: 60px;
 
@@ -139,9 +158,10 @@ export const Burguer = styled.div<PropsBurguer>`
         display: block;
         background: #fff;
         width: 30px;
-        height: 2px;
+        height: 3px;
+        border-radius: 0.4rem;
         top: 50%;
-        left: 15px;
+        left: 16px;
         transition: 0.5s ease-in-out;
 
         &:before,
@@ -218,11 +238,15 @@ export const Burguer = styled.div<PropsBurguer>`
           width: 90%;
           display: flex;
           flex-direction: column;
-          margin: 0 auto;
+          margin: auto;
           padding: 1.6rem 0;
+
           a {
             color: ${({ theme }) => theme.colors.white};
             align-items: center;
+
+            font-size: 1.6rem;
+            font-weight: bold;
 
             svg {
               color: ${({ theme }) => theme.colors.white};
@@ -252,56 +276,89 @@ export const HeaderDown = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 4rem;
+  height: 3.2rem;
+
+  box-shadow: ${effects.dropShadow};
 
   button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
     background: transparent;
     border: 0;
+
     color: ${({ theme }) => theme.colors.white};
     font-size: 1.2rem;
-    padding: 1rem 1.6rem;
+
+    width: 100%;
+    height: 3.2rem;
+    padding-left: 1.6rem;
 
     svg {
       font-size: 1.2rem;
       color: ${({ theme }) => theme.colors.white};
+
+      margin-right: 0.8rem;
     }
   }
 
   aside {
     display: none;
-    a {
-      color: ${({ theme }) => theme.colors.white};
-    }
   }
   @media ${device.tablet} {
-    padding: 1.6rem;
-    height: 4rem;
+    height: 4.8rem;
     justify-content: initial;
 
     width: 100%;
 
     button {
-      margin-left: 10%;
+      padding-left: 12rem;
+      width: 25%;
+      height: 4.8rem;
+
+      font-size: 1.6rem;
+
+      svg {
+        font-size: 1.6rem;
+      }
     }
 
     aside {
-      margin-left: 10%;
       display: flex;
 
-      border-left: 1px solid ${({ theme }) => theme.colors.yellowPrimary};
+      border-left: 2px solid ${({ theme }) => theme.colors.yellowPrimary};
 
-      a {
-        display: flex;
-        align-items: center;
+      width: 100%;
+      height: 4.8rem;
+    }
+  }
+`
 
-        font-weight: bold;
-        font-size: 1.6rem;
-        margin-left: 2.4rem;
+interface HeaderLinkProps {
+  isSelected: boolean
+}
 
-        svg {
-          margin-right: 0.8rem;
-        }
-      }
+export const HeaderLink = styled.a<HeaderLinkProps>`
+  ${props =>
+    props.isSelected &&
+    css`
+      border-bottom: 4px solid ${({ theme }) => theme.colors.yellowSecundary};
+      background-color: ${({ theme }) => theme.colors.yellowPrimary};
+    `}
+
+  color: ${({ theme }) => theme.colors.white};
+
+  @media ${device.tablet} {
+    display: flex;
+    align-items: center;
+
+    font-weight: bold;
+    font-size: 1.6rem;
+    padding: 0 1.2rem;
+
+    svg {
+      margin-right: 0.8rem;
     }
   }
 `

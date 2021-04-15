@@ -1,3 +1,4 @@
+import { effects } from '@/styles/constants'
 import device from '@/styles/constants/breakPoints'
 import styled from 'styled-components'
 
@@ -5,13 +6,19 @@ export const Container = styled.footer`
   display: flex;
   align-items: center;
   flex-direction: column;
+  width: 100vw;
 
   background-color: ${({ theme }) => theme.colors.white};
+
+  box-shadow: ${effects.dropShadow};
+
+  margin-top: 5.6rem;
 
   > section {
     display: flex;
     flex-direction: column;
     align-items: center;
+
     img {
       width: 12.8rem;
       margin-bottom: 2.4rem;
@@ -43,6 +50,7 @@ export const Container = styled.footer`
     & + section {
       margin: 5.6rem 0;
       color: ${({ theme }) => theme.colors.gray};
+      font-size: 1.2rem;
     }
   }
 
@@ -66,9 +74,10 @@ export const Container = styled.footer`
   @media ${device.tablet} {
     flex-direction: row;
     justify-content: space-between;
-    max-width: 120rem;
     margin: 0 auto;
-    padding: 1.6rem 0.8rem;
+    padding: 1.6rem 12rem;
+
+    margin-top: 3.6rem;
 
     > section {
       flex-direction: row;
@@ -79,6 +88,7 @@ export const Container = styled.footer`
 
       aside {
         margin-left: 3.2rem;
+        align-items: flex-start;
 
         & + aside {
           margin-top: 0rem;
@@ -86,6 +96,7 @@ export const Container = styled.footer`
       }
       & + section {
         margin: 0;
+        align-self: flex-end;
       }
     }
   }
