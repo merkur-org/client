@@ -8,7 +8,6 @@ export const Card = styled.section`
   background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   flex-direction: column;
-
   box-shadow: ${effects.dropShadow};
 
   > img {

@@ -14,6 +14,8 @@ export const Container = styled.footer`
 
   margin-top: 5.6rem;
 
+  background-color: ${({ theme }) => theme.colors.white};
+
   > section {
     display: flex;
     flex-direction: column;

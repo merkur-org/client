@@ -14,9 +14,12 @@ import {
 } from './styles'
 
 import { SearchProducts } from '@/components'
+import { useAuth } from '@/hooks/auth'
 
 const Header: React.FC = () => {
   const [openDropDown, setOpenDropDown] = useState(false)
+
+  const { user } = useAuth()
 
   const handleOpenDropDown = useCallback(() => {
     setOpenDropDown(state => !state)
@@ -31,12 +34,12 @@ const Header: React.FC = () => {
         <SearchProducts />
 
         <ManagerArea>
-          {false ? (
+          {!user ? (
             <aside>
-              <Link href="/">
+              <Link href="/cadastro">
                 <a> cadastre-se</a>
               </Link>
-              <Link href="/">
+              <Link href="/login">
                 <a>entrar</a>
               </Link>
             </aside>
@@ -47,7 +50,6 @@ const Header: React.FC = () => {
                   <div>Cesta</div>
                   <aside>
                     <FaShoppingBasket />
-
                     <span>1</span>
                   </aside>
                 </Manager>
@@ -56,8 +58,8 @@ const Header: React.FC = () => {
                 <Manager>
                   <FiChevronDown />
                   <div>
-                    <span>Daniel Gustavo Favero</span>
-                    <span>danielfavero17@gmail.com</span>
+                    <span>{user.name}</span>
+                    <span>{user.email}</span>
                   </div>
                   <aside>
                     <FaUserAlt />
@@ -100,13 +102,7 @@ const Header: React.FC = () => {
               <div>
                 <section>
                   <Link href="/">
-                    <a>Categorias</a>
-                  </Link>
-                  <Link href="/">
                     <a>Produtos</a>
-                  </Link>
-                  <Link href="/">
-                    <a>Listas semanais</a>
                   </Link>
                   <Link href="/">
                     <a>Meus pedidos</a>
