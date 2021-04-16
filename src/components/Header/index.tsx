@@ -1,7 +1,12 @@
 import { useCallback, useState } from 'react'
 import Link from 'next/link'
 import { MdLocationOn } from 'react-icons/md'
-import { FaShoppingBasket, FaUserAlt } from 'react-icons/fa'
+import {
+  FaShoppingBasket,
+  FaUserAlt,
+  FaLongArrowAltRight,
+  FaIcons
+} from 'react-icons/fa'
 
 import {
   Main,
@@ -12,6 +17,8 @@ import {
   HeaderDown
 } from './styles'
 
+import Dropdown from '@/components/Dropdown'
+
 import { SearchProducts } from '@/components'
 import { useAuth } from '@/hooks/auth'
 
@@ -19,6 +26,7 @@ const Header: React.FC = () => {
   const [openDropDown, setOpenDropDown] = useState(false)
 
   const { user } = useAuth()
+  const { signOut } = useAuth()
 
   const handleOpenDropDown = useCallback(() => {
     setOpenDropDown(state => !state)
@@ -43,30 +51,34 @@ const Header: React.FC = () => {
               </Link>
             </aside>
           ) : (
-            <section>
-              <Link href="/cesta">
-                <Manager>
-                  <div>Cesta</div>
-                  <aside>
-                    <FaShoppingBasket />
-                    <span>1</span>
-                  </aside>
-                </Manager>
-              </Link>
-              <Link href="/">
-                <Manager>
-                  <div>
-                    <span>{user.name}</span>
-                    <span>{user.email}</span>
-                  </div>
-                  <aside>
-                    <FaUserAlt />
-                    <span>1</span>
-                  </aside>
-                </Manager>
-              </Link>
-            </section>
-          )}
+              <section>
+                <Link href="/cesta">
+                  <Manager>
+                    <div>Cesta</div>
+                    <aside>
+                      <FaShoppingBasket />
+                      <span>1</span>
+                    </aside>
+                  </Manager>
+                </Link>
+                <Link href="/">
+                  <Manager>
+                    <div>
+                      <span>{user.name}</span>
+                      <span>{user.email}</span>
+                    </div>
+                    <aside>
+                      {' '}
+                      <FaUserAlt />
+                      <span>1</span>
+                      <Dropdown IconButton={<FaLongArrowAltRight />}>
+                        <li>LogOut onclick={signOut}</li>
+                      </Dropdown>
+                    </aside>
+                  </Manager>
+                </Link>
+              </section>
+            )}
         </ManagerArea>
       </HeaderUp>
       <HeaderDown>
