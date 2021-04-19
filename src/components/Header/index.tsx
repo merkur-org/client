@@ -71,10 +71,10 @@ const Header: React.FC = () => {
                       {' '}
                       <FaUserAlt />
                       <span>1</span>
-                      <Dropdown IconButton={<FaLongArrowAltRight />}>
-                        <li>LogOut onclick={signOut}</li>
-                      </Dropdown>
                     </aside>
+                    <Dropdown IconButton={<FaLongArrowAltRight />}>
+                      <button onClick={signOut}>SignOut</button>
+                    </Dropdown>
                   </Manager>
                 </Link>
               </section>
