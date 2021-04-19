@@ -37,6 +37,22 @@ export const SummaryTitle = styled.div`
   align-items: center;
 `
 
+export const ClearBasket = styled.div`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+  h2 {
+    color: ${({ theme }) => theme.colors.orangePrimary};
+    font-size: 1.6rem;
+    font-family: Roboto Slab;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 1.6rem;
+    line-height: 21px;
+  }
+`
+
 export const SummaryContent = styled.div`
   display: flex;
   flex-direction: column;
