@@ -2,8 +2,9 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { BodyButton, DropdownContent } from './styles'
 
 interface DropdownProps {
-  IconButton: React.ReactNode
-  text: string
+  IconButton?: React.ReactNode
+  text?: string
+  isOpen?: boolean
 }
 /**
  *
@@ -16,11 +17,16 @@ interface DropdownProps {
  * </Dropdown>
  * )
  */
-const Dropdown: React.FC<DropdownProps> = ({ IconButton, text, children }) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  IconButton,
+  text,
+  children,
+  isOpen
+}) => {
   const dropdownRef = useRef<HTMLDivElement>(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState(false || isOpen)
   const handleClick = useCallback(() => {
-    setIsOpen(!isOpen)
+    setOpenDropdown(!isOpen)
   }, [isOpen])
 
   useEffect(() => {
@@ -30,7 +36,7 @@ const Dropdown: React.FC<DropdownProps> = ({ IconButton, text, children }) => {
         !dropdownRef.current?.contains(event.target as Node) &&
         isOpen
       ) {
-        setIsOpen(false)
+        setOpenDropdown(false)
       }
     })
   }, [isOpen])

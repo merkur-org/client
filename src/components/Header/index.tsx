@@ -7,14 +7,15 @@ import {
   FaLongArrowAltRight,
   FaIcons
 } from 'react-icons/fa'
-
+import { FiMapPin, FiChevronDown } from 'react-icons/fi'
 import {
   Main,
   HeaderUp,
   ManagerArea,
   Manager,
   Burguer,
-  HeaderDown
+  HeaderDown,
+  HeaderLink
 } from './styles'
 
 import Dropdown from '@/components/Dropdown'
@@ -62,7 +63,8 @@ const Header: React.FC = () => {
                   </Manager>
                 </Link>
                 <Link href="/">
-                  <Manager>
+                  <Manager onClick={handleOpenDropDown}>
+                    <FiChevronDown />
                     <div>
                       <span>{user.name}</span>
                       <span>{user.email}</span>
@@ -72,8 +74,8 @@ const Header: React.FC = () => {
                       <FaUserAlt />
                       <span>1</span>
                     </aside>
-                    <Dropdown IconButton={<FaLongArrowAltRight />}>
-                      <button onClick={signOut}>SignOut</button>
+                    <Dropdown isOpen={openDropDown}>
+                      <li onClick={signOut}>SignOut</li>
                     </Dropdown>
                   </Manager>
                 </Link>
@@ -83,14 +85,14 @@ const Header: React.FC = () => {
       </HeaderUp>
       <HeaderDown>
         <button>
-          <MdLocationOn /> Cidade - UF
+          <FiMapPin /> <p>Cidade - UF</p>
         </button>
         <aside>
           <Link href="/produtos">
-            <a>Produtos</a>
+            <HeaderLink isSelected>Produtos</HeaderLink>
           </Link>
           <Link href="/meus-pedidos">
-            <a>Meus pedidos</a>
+            <HeaderLink isSelected={false}>Meus pedidos</HeaderLink>
           </Link>
         </aside>
 

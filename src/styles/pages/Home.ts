@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { border } from '../constants'
+import { border, effects } from '../constants'
 import device from '../constants/breakPoints'
 
 export const Container = styled.div`
@@ -20,10 +20,14 @@ export const BannerContainer = styled.div`
   max-height: 39.8rem;
   max-width: 120rem;
   margin: 0 auto 3.6rem;
+  height: fit-content;
 
   img {
     width: 100%;
-    height: 100%;
+    height: fit-content;
+    object-fit: contain;
+
+    box-shadow: ${effects.dropShadow};
   }
 
   @media ${device.tablet} {
@@ -32,6 +36,8 @@ export const BannerContainer = styled.div`
 
     margin: 5.6rem auto;
     img {
+      height: 100%;
+
       border-radius: 0.8rem;
     }
   }
@@ -62,6 +68,8 @@ export const OffersTopTitle = styled.div`
 
   @media ${device.tablet} {
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 
     margin-left: 0;
   }
