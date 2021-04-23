@@ -67,6 +67,12 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
 
     setProducts(filteredProducts)
   }
+  function handleRemoveAllProducts() {
+    const filteredProducts = [...products]
+    filteredProducts.splice(0, 1)
+
+    setProducts([])
+  }
 
   const formRef = useRef<FormHandles>(null)
   const handleFinishOrder = useCallback(async formData => {
@@ -132,6 +138,14 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
           </tr>
         ))}
       </Table>
+      <button
+        type="button"
+        className="actions error"
+        onClick={() => handleRemoveAllProducts()}
+      >
+        <FiTrash2 />
+        <h2>Limpar Cesta</h2>
+      </button>
 
       <SummaryOrder onSubmit={handleFinishOrder} ref={formRef}>
         <SummaryTitle>

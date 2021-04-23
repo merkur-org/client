@@ -71,6 +71,10 @@ export const BodyButton = styled.div<styleProps>`
     &:active {
       font-size: 1.2rem;
     }
+
+    svg {
+      margin: 0 1.6rem;
+    }
   }
   ${props => props.asideOpen && DropdownContent} {
     opacity: 1;

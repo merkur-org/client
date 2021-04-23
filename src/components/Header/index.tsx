@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
 import Link from 'next/link'
-import { FiMapPin, FiChevronDown } from 'react-icons/fi'
+import Router from 'next/router'
 import { FaShoppingBasket, FaUserAlt } from 'react-icons/fa'
-
+import { FiMapPin, FiChevronDown } from 'react-icons/fi'
 import {
   Main,
   HeaderUp,
@@ -13,6 +13,8 @@ import {
   HeaderLink
 } from './styles'
 
+import Dropdown from '@/components/Dropdown'
+
 import { SearchProducts } from '@/components'
 import { useAuth } from '@/hooks/auth'
 
@@ -20,10 +22,16 @@ const Header: React.FC = () => {
   const [openDropDown, setOpenDropDown] = useState(false)
 
   const { user } = useAuth()
+  const { signOut } = useAuth()
 
   const handleOpenDropDown = useCallback(() => {
     setOpenDropDown(state => !state)
   }, [])
+
+  async function handleSignOut() {
+    signOut()
+    Router.reload()
+  }
 
   return (
     <Main>
@@ -54,19 +62,25 @@ const Header: React.FC = () => {
                   </aside>
                 </Manager>
               </Link>
-              <Link href="/">
-                <Manager>
-                  <FiChevronDown />
-                  <div>
-                    <span>{user.name}</span>
-                    <span>{user.email}</span>
-                  </div>
-                  <aside>
-                    <FaUserAlt />
-                    <span>1</span>
-                  </aside>
-                </Manager>
-              </Link>
+              <Dropdown
+                buttonContent={
+                  <Manager>
+                    <FiChevronDown />
+                    <div>
+                      <span>{user.name}</span>
+                      <span>{user.email}</span>
+                    </div>
+                    <aside>
+                      {' '}
+                      <FaUserAlt />
+                      <span>1</span>
+                    </aside>
+                  </Manager>
+                }
+              >
+                <li onClick={handleSignOut}>SignOut</li>
+                <li>Meu Perfil</li>
+              </Dropdown>
             </section>
           )}
         </ManagerArea>

@@ -15,9 +15,10 @@ interface DropdownProps {
  * </Dropdown>
  * )
  */
-const Dropdown: React.FC<DropdownProps> = ({ buttonContent, children }) => {
-  const dropdownRef = useRef<HTMLDivElement>(null)
+const Filter: React.FC<DropdownProps> = ({ buttonContent, children }) => {
+  const filterRef = useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = useState(false)
+
   const handleClick = useCallback(() => {
     setIsOpen(!isOpen)
   }, [isOpen])
@@ -26,19 +27,20 @@ const Dropdown: React.FC<DropdownProps> = ({ buttonContent, children }) => {
     document.addEventListener('mousedown', (event: MouseEvent) => {
       if (
         event.target &&
-        !dropdownRef.current?.contains(event.target as Node) &&
+        !filterRef.current?.contains(event.target as Node) &&
         isOpen
       ) {
         setIsOpen(false)
       }
     })
   }, [isOpen])
+
   return (
-    <BodyButton ref={dropdownRef} asideOpen={isOpen}>
+    <BodyButton ref={filterRef} asideOpen={isOpen}>
       <button onClick={handleClick}>{buttonContent}</button>
-      <DropdownContent onClick={handleClick}>{children}</DropdownContent>
+      <DropdownContent>{children}</DropdownContent>
     </BodyButton>
   )
 }
 
-export default Dropdown
+export default Filter

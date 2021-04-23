@@ -10,8 +10,7 @@ export const HeaderUp = styled.section`
   width: 100vw;
   max-width: 120rem;
   margin: 0 auto;
-  overflow: hidden;
-  height: 7.2rem;
+  height: 100%;
 
   img {
     height: 4.8rem;

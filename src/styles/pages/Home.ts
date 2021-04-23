@@ -74,10 +74,6 @@ export const OffersTopTitle = styled.div`
     margin-left: 0;
   }
 `
-export const Filter = styled.div`
-  display: flex;
-  flex-direction: column;
-`
 
 export const GridContainer = styled.div`
   display: grid;
