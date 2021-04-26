@@ -11,6 +11,9 @@ import Title from '@/components/Title'
 import WithAuth from '@/components/WithAuth'
 
 import getValidationErrors from '@/utils/getValidationErrors'
+import formMessages from '@/styles/constants/formMessages'
+
+import { useBag } from '@/hooks/bag'
 
 import {
   Container,
@@ -21,7 +24,6 @@ import {
   SummaryButtons
 } from '@/styles/pages/cesta'
 import { Table } from '@/styles/components/table'
-import { formMessages } from '@/styles/constants'
 
 interface CheckoutDetailsProps {
   image: string
@@ -37,41 +39,12 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
   unitPrice,
   quantity
 }) => {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      image:
-        'https://images.unsplash.com/photo-1508313880080-c4bef0730395?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80',
-      name: 'Banana Caturra Orgânica',
-      unitPrice: 'R$4,00',
-      quantity: 3,
-      totalPrice: 'R$12,00'
-    },
-    {
-      id: 2,
-      image:
-        'https://images.unsplash.com/photo-1423483641154-5411ec9c0ddf?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
-      name: 'Uva Orgânica',
-      unitPrice: 'R$4,00',
-      quantity: 3,
-      totalPrice: 'R$12,00'
-    }
-  ])
+  const { products, removeProduct, clearBag } = useBag()
 
-  function handleRemoveProduct(id: number) {
-    const filteredProducts = [...products]
-    filteredProducts.splice(
-      filteredProducts.findIndex(product => product.id === id),
-      1
-    )
+  function handleRemoveProduct(id: string) {
+    const foundProduct = products.find(product => product.id === id)
 
-    setProducts(filteredProducts)
-  }
-  function handleRemoveAllProducts() {
-    const filteredProducts = [...products]
-    filteredProducts.splice(0, 1)
-
-    setProducts([])
+    removeProduct(foundProduct)
   }
 
   const formRef = useRef<FormHandles>(null)
@@ -110,12 +83,12 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
           <tr key={product.id}>
             <td>
               <div className="product-image">
-                <img src={product.image} />
+                <img src={product.photo} />
                 <p className="product-name">{product.name}</p>
               </div>
             </td>
             <td>
-              <h4 className="price">{product.unitPrice}</h4>
+              <h4 className="price">{product.sale_price}</h4>
             </td>
             <td>
               <div className="actions">
@@ -123,7 +96,9 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
               </div>
             </td>
             <td>
-              <h4 className="total">{product.totalPrice}</h4>
+              <h4 className="total">{`${
+                (product.sale_price as number) * product.quantity
+              }`}</h4>
             </td>
             <td>
               <button
@@ -138,11 +113,7 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
           </tr>
         ))}
       </Table>
-      <button
-        type="button"
-        className="actions error"
-        onClick={() => handleRemoveAllProducts()}
-      >
+      <button type="button" className="actions error" onClick={clearBag}>
         <FiTrash2 />
         <h2>Limpar Cesta</h2>
       </button>
@@ -180,4 +151,4 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
   )
 }
 
-export default Bag
+export default WithAuth(Bag)
