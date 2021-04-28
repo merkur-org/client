@@ -57,7 +57,6 @@ export const BodyButton = styled.div<styleProps>`
     cursor: pointer;
     transition: all ${transitions.hover};
 
-
     display: flex;
     align-items: center;
     font-size: 1.6rem;
@@ -71,6 +70,10 @@ export const BodyButton = styled.div<styleProps>`
 
     &:active {
       font-size: 1.2rem;
+    }
+
+    svg {
+      margin: 0 1.6rem;
     }
   }
   ${props => props.asideOpen && DropdownContent} {

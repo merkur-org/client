@@ -27,6 +27,18 @@ const ModalProductDetails: React.FC<ModalProductDetailsProps> = ({
 }) => {
   const ModalProductDetailsRef = useRef<HTMLDivElement>(null)
 
+  useEffect(() => {
+    document.addEventListener('mousedown', (event: MouseEvent) => {
+      if (
+        event.target &&
+        !ModalProductDetailsRef.current?.contains(event.target as Node) &&
+        isOpen
+      ) {
+        setIsOpen(false)
+      }
+    })
+  }, [isOpen])
+
   const handleClose = useCallback(() => {
     setIsOpen(!isOpen)
   }, [isOpen])

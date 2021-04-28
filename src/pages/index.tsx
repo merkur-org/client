@@ -3,14 +3,14 @@ import {
   BannerContainer,
   GridContainer,
   OffersContainer,
-  OffersTopTitle,
-  Filter
+  OffersTopTitle
 } from '@/styles/pages/Home'
 import SEO from '@/components/SEO'
 import ProductCard from '@/components/Product'
 import { FaLongArrowAltRight } from 'react-icons/fa'
-import Dropdown from '@/components/Dropdown'
+
 import Title from '@/components/Title'
+import Filter from '@/components/Filter'
 
 const a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -24,15 +24,20 @@ const Home: React.FC = () => {
 
       <OffersTopTitle>
         <Title title="Ofertas" />
-        <Filter>
-          <Dropdown text="Filtrar por" IconButton={<FaLongArrowAltRight />}>
-            <li>Adicionados Recentemente</li>
-            <li>Categorias</li>
-            <li>Menor Preço</li>
-            <li>Maior Preço</li>
-            <li>Ordem Alfabética</li>
-            <li>Promoções</li>
-          </Dropdown>
+        <Filter
+          buttonContent={
+            <>
+              <p>Filtrar por</p>
+              <FaLongArrowAltRight />
+            </>
+          }
+        >
+          <li>Adicionados Recentemente</li>
+          <li>Categorias</li>
+          <li>Menor Preço</li>
+          <li>Maior Preço</li>
+          <li>Ordem Alfabética</li>
+          <li>Promoções</li>
         </Filter>
       </OffersTopTitle>
       <OffersContainer>
