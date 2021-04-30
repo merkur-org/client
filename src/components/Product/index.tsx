@@ -12,57 +12,62 @@ import { useState } from 'react'
 import { useBag } from '@/hooks/bag'
 import { useAuth } from '@/hooks/auth'
 
+import { ProductData } from '@/pages'
+
 import ModalProductDetails from '@/components/ModalProductDetails'
 import BuyQuantityInput from '@/components/BuyQuantityInput'
 
-interface IDataProps {
-  photo?: string
-  productName: string
-  category: string
-  price: string
-  unity: string
-  quantity?: number
+interface ProductCardProps {
+  product: ProductData
 }
 
-const ProductCardData: React.FC<IDataProps> = ({
-  photo,
-  productName,
-  category,
-  price,
-  unity,
-  quantity = 0
-}) => {
+const ProductCardData: React.FC<ProductCardProps> = ({ product }) => {
   const [isOpenModalDetails, setIsOpenModalDetails] = useState(false)
   const [openSucessAddProduct, setOpenSucessAddProduct] = useState(false)
   const [openErrorAddProduct, setOpenErrorAddProduct] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [cardQuantity, setCardQuantity] = useState(0)
 
   const { addProduct } = useBag()
   const { user } = useAuth()
 
   const time = 2000
 
+  function fireErrorMessage(message: string) {
+    setErrorMessage(message)
+    setOpenErrorAddProduct(true)
+
+    setTimeout(() => {
+      setOpenErrorAddProduct(false)
+    }, time)
+  }
+
+  function fireSucessMessage() {
+    setOpenSucessAddProduct(true)
+
+    setTimeout(() => {
+      setOpenSucessAddProduct(false)
+    }, time)
+  }
+
   function handleAddProduct() {
     if (user) {
-      setOpenSucessAddProduct(true)
-      addProduct({
-        id: '1',
-        name: 'Bata Inglesa Orgânica',
-        photo:
-          'https://images.unsplash.com/photo-1508313880080-c4bef0730395?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80',
-        quantity: 3,
-        sale_price: 4,
-        unit: 'kg'
-      })
+      if (cardQuantity === 0) {
+        fireErrorMessage('Adicione pelo menos um produto')
+      } else {
+        addProduct({
+          id: product.id,
+          name: product.name,
+          photo: product.image_url,
+          quantity: cardQuantity,
+          sale_price: product.sale_price,
+          unit: product.unit_sale
+        })
 
-      setTimeout(() => {
-        setOpenSucessAddProduct(false)
-      }, time)
+        fireSucessMessage()
+      }
     } else {
-      setOpenErrorAddProduct(true)
-
-      setTimeout(() => {
-        setOpenErrorAddProduct(false)
-      }, time)
+      fireErrorMessage('Você precisa efetuar login para adicionar a cesta')
     }
   }
 
@@ -72,25 +77,33 @@ const ProductCardData: React.FC<IDataProps> = ({
         <ModalProductDetails
           isOpen={isOpenModalDetails}
           setIsOpen={setIsOpenModalDetails}
+          product={product}
+          quantity={cardQuantity}
+          setQuantity={setCardQuantity}
         />
         <img
           onClick={() => {
             setIsOpenModalDetails(true)
           }}
-          src="https://images.unsplash.com/photo-1508313880080-c4bef0730395?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80"
+          src={product.image_url}
         />
 
         <Info>
           <Data>
             <aside>
-              <h3>Legumes</h3>
-              <h1>Batata Inglesa</h1>
+              <h3>{product.category || 'legumes'}</h3>
+              <h1>{product.name}</h1>
             </aside>
-            <h2>R$ 10/Kg</h2>
+            <h2>
+              R$ {product.sale_price}/{product.unit_sale}
+            </h2>
           </Data>
 
           <BuyContainer>
-            <BuyQuantityInput />
+            <BuyQuantityInput
+              quantity={cardQuantity}
+              setQuantity={setCardQuantity}
+            />
             <aside onClick={handleAddProduct}>
               <FaShoppingBasket />
             </aside>
@@ -101,7 +114,7 @@ const ProductCardData: React.FC<IDataProps> = ({
         Producto adicionado a cesta
       </SucessAddProduct>
       <ErrorAddProduct isOpen={openErrorAddProduct} time={time}>
-        Você precisar efetuar login para adicionar produtos a cesta
+        {errorMessage}
       </ErrorAddProduct>
     </>
   )

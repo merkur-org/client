@@ -1,7 +1,10 @@
-import { useContext, createContext, useCallback, useState } from 'react'
+import { useContext, createContext, useCallback, useReducer } from 'react'
 import Cookie from 'js-cookie'
 
-interface IProduct {
+import { BagReducer, sumItems } from './bagReducer'
+import { boolean } from 'yup/lib/locale'
+
+export interface IProduct {
   id: string
   name: string
   quantity: number
@@ -10,67 +13,61 @@ interface IProduct {
   sale_price: string | number
 }
 
+export interface StateProps {
+  bagItems: IProduct[]
+  sumItems(bagItems: IProduct[]): { itemCount: number; total: string }
+  checkout: boolean
+}
 interface BagContextData {
-  products: IProduct[]
   addProduct(product: IProduct): void
-  updateQuantityProduct(product: IProduct, isIncreasing: boolean): void
   removeProduct(product: IProduct): void
+  increseProductQuantity(product: IProduct): void
+  decreaseProductQuantity(product: IProduct): void
   clearBag(): void
+  bagItems: IProduct[]
 }
 
-const BagContext = createContext<BagContextData>({} as BagContextData)
+const storage = Cookie.get('bag') ? JSON.parse(Cookie.get('bag')) : []
+const initialState = {
+  bagItems: storage,
+  ...sumItems(storage),
+  checkout: false
+}
+
+export const BagContext = createContext<BagContextData>({} as BagContextData)
 
 export const BagProvider: React.FC = ({ children }) => {
-  const [products, setProducts] = useState<IProduct[]>(() => {
-    const bag = Cookie.get('bag')
-
-    if (bag) {
-      return JSON.parse(bag) as IProduct[]
-    }
-
-    return [] as IProduct[]
-  })
+  const [state, dispatch] = useReducer(BagReducer, initialState)
 
   const addProduct = useCallback((product: IProduct) => {
-    const productExists = products.findIndex(p => p.id === product.id)
-    if (productExists < 0) {
-      setProducts(products.concat(product))
-    } else {
-      updateQuantityProduct(product, true)
-    }
+    dispatch({ type: 'ADD_PRODUCT', product })
   }, [])
 
-  const updateQuantityProduct = useCallback(
-    (product: IProduct, isIncreasing: boolean) => {
-      const productExists = products.findIndex(p => p.id === product.id)
-
-      if (productExists > 0) {
-        const data = products
-        let { quantity: q } = data[productExists]
-        data[productExists].quantity = isIncreasing ? q++ : q >= 0 ? q-- : 0
-
-        setProducts(data)
-      }
-    },
-    []
-  )
-
   const removeProduct = useCallback((product: IProduct) => {
-    setProducts(products.filter(p => p.id !== product.id))
+    dispatch({ type: 'REMOVE_PRODUCT', product })
+  }, [])
+
+  const increseProductQuantity = useCallback((product: IProduct) => {
+    dispatch({ type: 'INCREASE', product })
+  }, [])
+
+  const decreaseProductQuantity = useCallback((product: IProduct) => {
+    dispatch({ type: 'DECREASE', product })
   }, [])
 
   const clearBag = useCallback(() => {
-    setProducts([] as IProduct[])
+    dispatch({ type: 'CLEAR', product: undefined })
   }, [])
 
   return (
     <BagContext.Provider
       value={{
-        products,
         addProduct,
-        clearBag,
         removeProduct,
-        updateQuantityProduct
+        decreaseProductQuantity,
+        increseProductQuantity,
+        clearBag,
+        ...state
       }}
     >
       {children}

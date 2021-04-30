@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useState, useRef, useContext } from 'react'
 import { FaShoppingBasket, FaCheck } from 'react-icons/fa'
 import { FiTrash2 } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
@@ -13,7 +13,7 @@ import WithAuth from '@/components/WithAuth'
 import getValidationErrors from '@/utils/getValidationErrors'
 import formMessages from '@/styles/constants/formMessages'
 
-import { useBag } from '@/hooks/bag'
+import { useBag, IProduct, BagContext } from '@/hooks/bag'
 
 import {
   Container,
@@ -25,26 +25,11 @@ import {
 } from '@/styles/pages/cesta'
 import { Table } from '@/styles/components/table'
 
-interface CheckoutDetailsProps {
-  image: string
-  name: string
-  unitPrice: string
-  quantity: number
-  totalPrice: string
-}
+const Bag: React.FC = () => {
+  const { bagItems, removeProduct, clearBag } = useContext(BagContext)
 
-const Bag: React.FC<CheckoutDetailsProps> = ({
-  image,
-  name,
-  unitPrice,
-  quantity
-}) => {
-  const { products, removeProduct, clearBag } = useBag()
-
-  function handleRemoveProduct(id: string) {
-    const foundProduct = products.find(product => product.id === id)
-
-    removeProduct(foundProduct)
+  function handleRemoveProduct(product: IProduct) {
+    removeProduct(product)
   }
 
   const formRef = useRef<FormHandles>(null)
@@ -79,7 +64,7 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
           <th>Total</th>
           <th>Ações</th>
         </tr>
-        {products.map(product => (
+        {bagItems.map(product => (
           <tr key={product.id}>
             <td>
               <div className="product-image">
@@ -92,7 +77,11 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
             </td>
             <td>
               <div className="actions">
-                <BuyQuantityInput quantity={product.quantity} />
+                <BuyQuantityInput
+                  quantity={product.quantity}
+                  product={product}
+                  type="BAG"
+                />
               </div>
             </td>
             <td>
@@ -104,7 +93,7 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
               <button
                 type="button"
                 className="actions error"
-                onClick={() => handleRemoveProduct(product.id)}
+                onClick={() => handleRemoveProduct(product)}
               >
                 <FiTrash2 />
                 <span>remover</span>

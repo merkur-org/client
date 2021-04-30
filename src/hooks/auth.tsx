@@ -80,6 +80,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const signOut = useCallback(() => {
     Cookie.remove('token')
     Cookie.remove('user')
+    Cookie.remove('bag')
 
     setData({} as AuthData)
   }, [])

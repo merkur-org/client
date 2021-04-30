@@ -13,7 +13,7 @@ export const Card = styled.section`
   > img {
     cursor: pointer;
     width: 100%;
-    height: 29.8rem;
+    height: 17.6rem;
     object-fit: cover;
     object-position: top;
     border-radius: 0.8rem 0.8rem 0 0;
