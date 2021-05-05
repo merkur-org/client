@@ -8,7 +8,6 @@ import {
 import SEO from '@/components/SEO'
 import ProductCard from '@/components/Product'
 import { FaLongArrowAltRight } from 'react-icons/fa'
-
 import Title from '@/components/Title'
 import Filter from '@/components/Filter'
 

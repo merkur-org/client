@@ -14,6 +14,8 @@ import getValidationErrors from '@/utils/getValidationErrors'
 
 import {
   Container,
+  TopTitle,
+  ClearBasket,
   SummaryOrder,
   SummaryTitle,
   SummaryContent,
@@ -97,7 +99,15 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
 
   return (
     <Container>
-      <Title title="Minha cesta" />
+      <TopTitle>
+        <Title title="Minha cesta" />
+        <ClearBasket>
+          <h2 onClick={() => handleRemoveAllProducts()}>
+            <h2>Limpar Cesta</h2>
+          </h2>
+        </ClearBasket>
+      </TopTitle>
+
       <Table>
         <tr>
           <th>Produto</th>
@@ -138,14 +148,6 @@ const Bag: React.FC<CheckoutDetailsProps> = ({
           </tr>
         ))}
       </Table>
-      <button
-        type="button"
-        className="actions error"
-        onClick={() => handleRemoveAllProducts()}
-      >
-        <FiTrash2 />
-        <h2>Limpar Cesta</h2>
-      </button>
 
       <SummaryOrder onSubmit={handleFinishOrder} ref={formRef}>
         <SummaryTitle>

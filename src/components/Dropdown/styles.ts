@@ -57,7 +57,6 @@ export const BodyButton = styled.div<styleProps>`
     cursor: pointer;
     transition: all ${transitions.hover};
 
-
     display: flex;
     align-items: center;
     font-size: 1.6rem;
