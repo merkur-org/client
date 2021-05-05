@@ -13,6 +13,26 @@ export const Container = styled.div`
   }
 `
 
+export const TopTitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-bottom: 2.4rem;
+  margin-left: 1.6rem;
+
+  width: 100%;
+
+  @media ${device.tablet} {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-left: 0;
+  }
+`
+
 export const SummaryOrder = styled(Form)`
   width: 100%;
   max-width: 120rem;
@@ -35,6 +55,23 @@ export const SummaryTitle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`
+
+export const ClearBasket = styled.div`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  cursor: pointer;
+
+  h2 {
+    color: ${({ theme }) => theme.colors.orangePrimary};
+    font-size: 1.6rem;
+    font-family: Roboto Slab;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 1.6rem;
+    line-height: 21px;
+  }
 `
 
 export const SummaryContent = styled.div`
