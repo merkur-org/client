@@ -13,7 +13,8 @@ export const CloseButton = styled.button`
   width: 6.4rem;
 
   border: 0;
-  border-bottom-left-radius: 16px;
+  border-bottom-left-radius: 1.6rem;
+  border-top-left-radius: 1.6rem;
 
   right: 0rem;
   top: 0rem;
@@ -27,7 +28,7 @@ export const CloseButton = styled.button`
     transform: rotate(45deg);
   }
   &:hover {
-    background: '#CB7903';
+    background: ${({ theme }) => theme.colors.orangeSecundary};
   }
 `
 
@@ -147,7 +148,7 @@ export const ContentUp = styled.aside`
     padding: 3.2rem;
 
     img {
-      width: 40%;
+      width: 60%;
       border-radius: 1.6rem;
     }
 

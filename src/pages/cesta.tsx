@@ -73,7 +73,7 @@ const Bag: React.FC = () => {
               </div>
             </td>
             <td>
-              <h4 className="price">{product.sale_price}</h4>
+              <h4 className="price">{`R$ ${product.sale_price}`}</h4>
             </td>
             <td>
               <div className="actions">
@@ -85,7 +85,7 @@ const Bag: React.FC = () => {
               </div>
             </td>
             <td>
-              <h4 className="total">{`${
+              <h4 className="total">{`R$ ${
                 (product.sale_price as number) * product.quantity
               }`}</h4>
             </td>
@@ -102,10 +102,6 @@ const Bag: React.FC = () => {
           </tr>
         ))}
       </Table>
-      <button type="button" className="actions error" onClick={clearBag}>
-        <FiTrash2 />
-        <h2>Limpar Cesta</h2>
-      </button>
 
       <SummaryOrder onSubmit={handleFinishOrder} ref={formRef}>
         <SummaryTitle>

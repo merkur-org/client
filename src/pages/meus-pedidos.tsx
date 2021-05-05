@@ -45,9 +45,14 @@ interface HomeProps {
   data: ProductData[]
 }
 
-const Home: React.FC<HomeProps> = ({ data, limit, page, total_count }) => {
+const MeusPedidos: React.FC<HomeProps> = ({
+  data,
+  limit,
+  page,
+  total_count
+}) => {
   const { initializeProducts } = useProducts()
-  const [products] = useState(data)
+  const [products, setProducts] = useState(data)
 
   useEffect(() => {
     initializeProducts(data)
@@ -101,4 +106,4 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 }
 
-export default Home
+export default MeusPedidos
