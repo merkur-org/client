@@ -1,17 +1,41 @@
 import { BuyQuantity } from './styles'
 import { FaPlus, FaMinus } from 'react-icons/fa'
-import { useState } from 'react'
+import { Dispatch, useState, SetStateAction, useContext } from 'react'
+
+import { BagContext, IProduct } from '@/hooks/bag'
 
 interface IDataProps {
   quantity?: number
+  setQuantity?: Dispatch<SetStateAction<number>>
+  product?: IProduct
+  type?: string
 }
 
-const BuyQuantityInput: React.FC<IDataProps> = ({ quantity = 0 }) => {
-  const [count, setCount] = useState(quantity)
+const BuyQuantityInput: React.FC<IDataProps> = ({
+  quantity = 0,
+  setQuantity,
+  product,
+  type = 'CARD'
+}) => {
+  const { increseProductQuantity, decreaseProductQuantity } = useContext(
+    BagContext
+  )
 
-  const handleIncrease = () => setCount(count => count + 1)
+  let handleIncrease, handleDecrease
 
-  const handleDecrease = () => setCount(count => (count > 0 ? count - 1 : 0))
+  switch (type) {
+    case 'CARD':
+      handleIncrease = () => setQuantity(count => count + 1)
+      handleDecrease = () => setQuantity(count => (count > 0 ? count - 1 : 0))
+
+      break
+
+    case 'BAG':
+      handleIncrease = () => increseProductQuantity(product)
+      handleDecrease = () => decreaseProductQuantity(product)
+
+      break
+  }
 
   return (
     <BuyQuantity>
@@ -20,7 +44,7 @@ const BuyQuantityInput: React.FC<IDataProps> = ({ quantity = 0 }) => {
           <FaMinus />
         </button>
 
-        <span className="quantity-label">{count}</span>
+        <span className="quantity-label">{quantity}</span>
 
         <button type="button" onClick={handleIncrease}>
           <FaPlus />

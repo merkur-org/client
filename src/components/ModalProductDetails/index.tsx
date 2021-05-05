@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useCallback, SetStateAction, Dispatch } from 'react'
 import { FaShoppingBasket, FaPlus, FaShoppingBag } from 'react-icons/fa'
 
 import Button from '@/components/Button'
@@ -16,14 +16,22 @@ import {
 
 import { BuyQuantityInput } from '@/components'
 
+import { ProductData } from '@/pages'
+
 interface ModalProductDetailsProps {
   isOpen: boolean
   setIsOpen(isOpen: boolean): void
+  product: ProductData
+  quantity: number
+  setQuantity: Dispatch<SetStateAction<number>>
 }
 
 const ModalProductDetails: React.FC<ModalProductDetailsProps> = ({
   isOpen,
-  setIsOpen
+  setIsOpen,
+  product,
+  quantity,
+  setQuantity
 }) => {
   const ModalProductDetailsRef = useRef<HTMLDivElement>(null)
 
@@ -50,21 +58,20 @@ const ModalProductDetails: React.FC<ModalProductDetailsProps> = ({
           <FaPlus />
         </CloseButton>
         <ContentUp>
-          <img
-            src="https://images.unsplash.com/photo-1508313880080-c4bef0730395?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80"
-            alt="BATATA INGLESA"
-          />
+          <img src={product.image_url} />
 
           <aside>
             <Data>
               <aside>
-                <h3>Legumes</h3>
-                <h1>Batata Inglesa</h1>
+                <h3>{product.category || 'legumes'}</h3>
+                <h1>{product.name}</h1>
               </aside>
-              <h2>R$10/Kg</h2>
+              <h2>
+                R${product.sale_price}/{product.unit_sale}
+              </h2>
             </Data>
 
-            <BuyQuantityInput />
+            <BuyQuantityInput quantity={quantity} setQuantity={setQuantity} />
           </aside>
         </ContentUp>
 

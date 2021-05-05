@@ -41,7 +41,9 @@ export const Table = styled.table`
     align-items: center;
 
     img {
-      width: auto;
+      width: fit-content;
+      object-fit: cover;
+      object-position: center;
       max-height: 8.8rem;
       max-width: 15.4rem;
     }

@@ -1,62 +1,122 @@
-import { Card, Data, BuyContainer, Info } from './styles'
+import {
+  Card,
+  Data,
+  BuyContainer,
+  Info,
+  SucessAddProduct,
+  ErrorAddProduct
+} from './styles'
 import { FaShoppingBasket } from 'react-icons/fa'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
+
+import { useBag } from '@/hooks/bag'
+import { useAuth } from '@/hooks/auth'
+
+import { ProductData } from '@/pages'
+
 import ModalProductDetails from '@/components/ModalProductDetails'
 import BuyQuantityInput from '@/components/BuyQuantityInput'
 
-interface IDataProps {
-  photo?: string
-  productName: string
-  category: string
-  price: string
-  unity: string
-  quantity?: number
+interface ProductCardProps {
+  product: ProductData
 }
 
-const ProductCardData: React.FC<IDataProps> = ({
-  photo,
-  productName,
-  category,
-  price,
-  unity,
-  quantity = 0
-}) => {
+const ProductCardData: React.FC<ProductCardProps> = ({ product }) => {
   const [isOpenModalDetails, setIsOpenModalDetails] = useState(false)
+  const [openSucessAddProduct, setOpenSucessAddProduct] = useState(false)
+  const [openErrorAddProduct, setOpenErrorAddProduct] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [cardQuantity, setCardQuantity] = useState(0)
+
+  const { addProduct } = useBag()
+  const { user } = useAuth()
+
+  const time = 2000
+
+  function fireErrorMessage(message: string) {
+    setErrorMessage(message)
+    setOpenErrorAddProduct(true)
+
+    setTimeout(() => {
+      setOpenErrorAddProduct(false)
+    }, time)
+  }
+
+  function fireSucessMessage() {
+    setOpenSucessAddProduct(true)
+
+    setTimeout(() => {
+      setOpenSucessAddProduct(false)
+    }, time)
+  }
+
+  function handleAddProduct() {
+    if (user) {
+      if (cardQuantity === 0) {
+        fireErrorMessage('Adicione pelo menos um produto')
+      } else {
+        addProduct({
+          id: product.id,
+          name: product.name,
+          photo: product.image_url,
+          quantity: cardQuantity,
+          sale_price: product.sale_price,
+          unit: product.unit_sale
+        })
+
+        fireSucessMessage()
+      }
+    } else {
+      fireErrorMessage('Você precisa efetuar login para adicionar a cesta')
+    }
+  }
+
   return (
-    <Card>
-      <ModalProductDetails
-        isOpen={isOpenModalDetails}
-        setIsOpen={setIsOpenModalDetails}
-      />
-      <img
-        onClick={() => {
-          setIsOpenModalDetails(true)
-          console.log('aaaaaaa')
-        }}
-        src="https://images.unsplash.com/photo-1508313880080-c4bef0730395?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80"
-      />
+    <>
+      <Card>
+        <ModalProductDetails
+          isOpen={isOpenModalDetails}
+          setIsOpen={setIsOpenModalDetails}
+          product={product}
+          quantity={cardQuantity}
+          setQuantity={setCardQuantity}
+        />
+        <img
+          onClick={() => {
+            setIsOpenModalDetails(true)
+          }}
+          src={product.image_url}
+        />
 
-      <Info>
-        <Data>
-          <aside>
-            <h3>Legumes</h3>
-            <h1>Batata Inglesa</h1>
-          </aside>
-          <h2>R$ 10/Kg</h2>
-        </Data>
+        <Info>
+          <Data>
+            <aside>
+              <h3>{product.category || 'legumes'}</h3>
+              <h1>{product.name}</h1>
+            </aside>
+            <h2>
+              R$ {product.sale_price}/{product.unit_sale}
+            </h2>
+          </Data>
 
-        <BuyContainer>
-          <BuyQuantityInput />
-          <aside
-            onClick={() => {
-              console.log('oi')
-            }}
-          >
-            <FaShoppingBasket />
-          </aside>
-        </BuyContainer>
-      </Info>
-    </Card>
+          <BuyContainer>
+            <BuyQuantityInput
+              quantity={cardQuantity}
+              setQuantity={setCardQuantity}
+            />
+            <aside onClick={handleAddProduct}>
+              <FaShoppingBasket />
+            </aside>
+          </BuyContainer>
+        </Info>
+      </Card>
+      <SucessAddProduct isOpen={openSucessAddProduct} time={time}>
+        Producto adicionado a cesta
+      </SucessAddProduct>
+      <ErrorAddProduct isOpen={openErrorAddProduct} time={time}>
+        {errorMessage}
+      </ErrorAddProduct>
+    </>
   )
 }
 
