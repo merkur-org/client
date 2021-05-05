@@ -14,6 +14,8 @@ import { useProducts } from '@/hooks/products'
 
 import Title from '@/components/Title'
 import Filter from '@/components/Filter'
+import Pagination from '@/components/Pagination'
+
 import { GetServerSideProps } from 'next'
 import { Context } from 'node:vm'
 import { useEffect, useState } from 'react'
@@ -85,6 +87,7 @@ const Home: React.FC<HomeProps> = ({ data, limit, page, total_count }) => {
           ))}
         </GridContainer>
       </OffersContainer>
+      <Pagination page={1} itemsPerPage={10} />
     </Container>
   )
 }
@@ -93,6 +96,8 @@ export const getServerSideProps: GetServerSideProps = async (
   context: Context
 ) => {
   const { data: listProducts } = await api.get('/products/in-list?type=offer')
+
+  console.log(listProducts)
 
   return {
     props: {
