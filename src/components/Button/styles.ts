@@ -46,21 +46,6 @@ export const Container = styled.button<ContainerProps>`
       }
     `}
 
-  ${props =>
-    props.buttonType === 'yellowPrimary' &&
-    css`
-      background-color: ${({ theme }) => theme.colors.yellowPrimary};
-
-      &:hover {
-        background-color: ${({ theme }) => theme.colors.yellowSecundary};
-      }
-
-      &:active {
-        animation: ${buttonClicked} 0.1s ease-in-out;
-        background-color: ${({ theme }) => theme.colors.warning};
-      }
-    `}
-
   color: ${({ theme }) => theme.colors.white};
   transition: background ${transitions.hover};
 

@@ -100,7 +100,7 @@ const ModalProductDetails: React.FC<ModalProductDetailsProps> = ({
           <Button
             text="Comprar agora"
             icon={FaShoppingBasket}
-            buttonType="yellowPrimary"
+            buttonType="orangePrimary"
           />
         </ButtonsContainer>
       </ModalContent>
