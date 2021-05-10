@@ -10,14 +10,12 @@ import ProductCard from '@/components/Product'
 import { FaLongArrowAltRight } from 'react-icons/fa'
 
 import api from '@/services/api'
-import { useProducts } from '@/hooks/products'
 
 import Title from '@/components/Title'
 import Filter from '@/components/Filter'
-import { GetServerSideProps } from 'next'
-import { Context } from 'node:vm'
-import { useEffect, useState } from 'react'
+import Pagination from '@/components/Pagination'
 
+import { GetServerSideProps, NextPage } from 'next'
 export interface ProductData {
   id: string
   name: string
@@ -42,28 +40,23 @@ interface HomeProps {
   limit: number
   page: number
   total_count: number
-  data: ProductData[]
+  listProducts: ProductData[]
 }
 
-const MeusPedidos: React.FC<HomeProps> = ({
-  data,
-  limit,
+const Home: NextPage<HomeProps> = ({
   page,
-  total_count
+  limit,
+  total_count,
+  listProducts
 }) => {
-  const { initializeProducts } = useProducts()
-  const [products, setProducts] = useState(data)
-
-  useEffect(() => {
-    initializeProducts(data)
-  }, [initializeProducts])
-
   return (
     <Container>
       <SEO title="HOME" image="/banner.png" />
-      <BannerContainer>
-        <img src="banner.png" alt="" />
-      </BannerContainer>
+      {page <= 1 && (
+        <BannerContainer>
+          <img src="banner.png" alt="" />
+        </BannerContainer>
+      )}
 
       <OffersTopTitle>
         <Title title="Ofertas" />
@@ -85,25 +78,35 @@ const MeusPedidos: React.FC<HomeProps> = ({
       </OffersTopTitle>
       <OffersContainer>
         <GridContainer>
-          {products.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {listProducts &&
+            listProducts.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
         </GridContainer>
       </OffersContainer>
+      <Pagination
+        page={page}
+        itemsPerPage={page >= 1 ? 10 : 15}
+        total_count={total_count}
+      />
     </Container>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: Context
-) => {
-  const { data: listProducts } = await api.get('/products/in-list?type=offer')
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const page = query.page || 1
+
+  const { data } = await api.get(`/products/in-list?type=offer&page=${page}`)
+  const { data: listProducts, limit, total_count } = data
 
   return {
     props: {
-      ...listProducts
+      page,
+      limit,
+      total_count,
+      listProducts
     }
   }
 }
 
-export default MeusPedidos
+export default Home
