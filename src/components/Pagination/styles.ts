@@ -1,6 +1,11 @@
+import { breakPoints } from '@/styles/constants'
 import styled, { css } from 'styled-components'
 export const PaginationComponent = styled.section`
-  display: flex;
+  display: inline-flex;
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: auto;
+  justify-content: flex-start;
 
   margin-top: 5.6rem;
 
@@ -31,6 +36,10 @@ export const PaginationComponent = styled.section`
 
   .pageNumbers button {
     border-radius: 0;
+  }
+
+  @media ${breakPoints.tablet} {
+    justify-content: center;
   }
 `
 interface PaginationStyleProps {
