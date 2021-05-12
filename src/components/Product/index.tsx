@@ -1,86 +1,122 @@
-import {
-  Card,
-  Data,
-  BuyContainer,
-  Info,
-  SucessAddProduct,
-  ErrorAddProduct
-} from './styles'
+import { Card, Data, BuyContainer, Info, Success, Error } from './styles'
 import { FaShoppingBasket } from 'react-icons/fa'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 import { useBag } from '@/hooks/bag'
-import { useAuth } from '@/hooks/auth'
+import { useAuth, User } from '@/hooks/auth'
 
 import { ProductData } from '@/pages'
 
 import ModalProductDetails from '@/components/ModalProductDetails'
 import BuyQuantityInput from '@/components/BuyQuantityInput'
+import ModalMessages from '@/components/ModalMessages'
 
 interface ProductCardProps {
   product: ProductData
 }
 
+interface MessagesProps {
+  message: string
+  open: boolean
+  timer: number
+}
+
+export function handleValidateAddProduct(
+  quantity: number,
+  user: User
+): { message: string; status: string } {
+  if (user) {
+    if (quantity === 0) {
+      return {
+        message: 'Adicione pelo menos um produto',
+        status: 'error'
+      }
+    } else {
+      return {
+        message: 'Produto adicinado a cesta',
+        status: 'success'
+      }
+    }
+  } else {
+    return {
+      message: 'Você precisa efetuar login para adicionar a cesta',
+      status: 'error'
+    }
+  }
+}
+
+export function handleFireMessages(
+  status: string,
+  message: string,
+  timer: number,
+  setSuccessMessage: Dispatch<SetStateAction<Omit<MessagesProps, 'timer'>>>,
+  setErrorMessage: Dispatch<SetStateAction<Omit<MessagesProps, 'timer'>>>
+): void {
+  if (status === 'success') {
+    setSuccessMessage(oldState => ({
+      ...oldState,
+      message,
+      open: true
+    }))
+
+    setErrorMessage(oldState => ({
+      ...oldState,
+      message: '',
+      open: false
+    }))
+
+    setTimeout(() => {
+      setSuccessMessage(oldState => ({
+        ...oldState,
+        open: false
+      }))
+    }, timer)
+  } else {
+    setErrorMessage(oldState => ({
+      ...oldState,
+      message,
+      open: true
+    }))
+
+    setSuccessMessage(oldState => ({
+      ...oldState,
+      message: '',
+      open: false
+    }))
+
+    setTimeout(() => {
+      setErrorMessage(oldState => ({
+        ...oldState,
+        open: false
+      }))
+    }, timer)
+  }
+}
+
 const ProductCardData: React.FC<ProductCardProps> = ({ product }) => {
   const [isOpenModalDetails, setIsOpenModalDetails] = useState(false)
-  const [openSucessAddProduct, setOpenSucessAddProduct] = useState(false)
-  const [openErrorAddProduct, setOpenErrorAddProduct] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState({ message: '', open: false })
+  const [successMessage, setSuccessMessage] = useState({
+    message: '',
+    open: false
+  })
   const [cardQuantity, setCardQuantity] = useState(0)
 
   const { addProduct } = useBag()
   const { user } = useAuth()
 
-  const time = 2000
-
-  function fireErrorMessage(message: string) {
-    setErrorMessage(message)
-    setOpenErrorAddProduct(true)
-
-    setTimeout(() => {
-      setOpenErrorAddProduct(false)
-    }, time)
-  }
-
-  function fireSucessMessage() {
-    setOpenSucessAddProduct(true)
-
-    setTimeout(() => {
-      setOpenSucessAddProduct(false)
-    }, time)
-  }
-
-  function handleAddProduct() {
-    if (user) {
-      if (cardQuantity === 0) {
-        fireErrorMessage('Adicione pelo menos um produto')
-      } else {
-        addProduct({
-          id: product.id,
-          name: product.name,
-          photo: product.image_url,
-          quantity: cardQuantity,
-          sale_price: product.sale_price,
-          unit: product.unit_sale
-        })
-
-        fireSucessMessage()
-      }
-    } else {
-      fireErrorMessage('Você precisa efetuar login para adicionar a cesta')
-    }
-  }
+  const timer = 2000
 
   return (
     <>
+      <ModalProductDetails
+        isOpen={isOpenModalDetails}
+        setIsOpen={setIsOpenModalDetails}
+        product={product}
+        quantity={cardQuantity}
+        setQuantity={setCardQuantity}
+      />
       <Card>
-        <ModalProductDetails
-          isOpen={isOpenModalDetails}
-          setIsOpen={setIsOpenModalDetails}
-          product={product}
-          quantity={cardQuantity}
-          setQuantity={setCardQuantity}
-        />
         <img
           onClick={() => {
             setIsOpenModalDetails(true)
@@ -104,18 +140,44 @@ const ProductCardData: React.FC<ProductCardProps> = ({ product }) => {
               quantity={cardQuantity}
               setQuantity={setCardQuantity}
             />
-            <aside onClick={handleAddProduct}>
+            <aside
+              onClick={() => {
+                const res = handleValidateAddProduct(cardQuantity, user)
+                if (res) {
+                  handleFireMessages(
+                    res.status,
+                    res.message,
+                    timer,
+                    setSuccessMessage,
+                    setErrorMessage
+                  )
+
+                  if (res.status === 'success') {
+                    addProduct({
+                      id: product.id,
+                      name: product.name,
+                      photo: product.image_url,
+                      quantity: cardQuantity,
+                      sale_price: product.sale_price,
+                      unit: product.unit_sale
+                    })
+                  }
+                }
+              }}
+            >
               <FaShoppingBasket />
             </aside>
           </BuyContainer>
         </Info>
       </Card>
-      <SucessAddProduct isOpen={openSucessAddProduct} time={time}>
-        Producto adicionado a cesta
-      </SucessAddProduct>
-      <ErrorAddProduct isOpen={openErrorAddProduct} time={time}>
-        {errorMessage}
-      </ErrorAddProduct>
+      <ModalMessages
+        message={successMessage.message || errorMessage.message}
+        open={errorMessage.open || successMessage.open}
+        timer={timer}
+        type={
+          (successMessage.open && 'success') || (errorMessage.open && 'error')
+        }
+      />
     </>
   )
 }

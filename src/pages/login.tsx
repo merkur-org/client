@@ -26,6 +26,7 @@ import {
   ButtonContainer,
   LinksContainer
 } from '@/styles/pages/login'
+import ModalMessage from '@/components/ModalMessages'
 interface formProps {
   cpfTab: boolean
   emailTab: boolean
@@ -119,7 +120,14 @@ const Login: NextPage = () => {
                     <a href="forgotPassword">esqueceu sua senha?</a>
                     <a href="noRegister">não possui cadastro?</a>
                   </LinksContainer>
-                  {errors && <Error>Email ou Senha incorreto(s)</Error>}
+                  {errors && (
+                    <ModalMessage
+                      message="Usuário ou senha incorretos"
+                      type="error"
+                      open={errors}
+                      timer={2000}
+                    />
+                  )}
                 </>
               )}
 
@@ -134,7 +142,14 @@ const Login: NextPage = () => {
                     label="Telefone"
                     mask={phoneInputMask}
                   />
-                  {errors && <Error>Cpf ou Telefone incorreto(s)</Error>}
+                  {errors && (
+                    <ModalMessage
+                      message="CPF ou telefone incorretos"
+                      type="error"
+                      open={errors}
+                      timer={2000}
+                    />
+                  )}
                 </>
               )}
               <ButtonContainer>

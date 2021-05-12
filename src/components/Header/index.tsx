@@ -21,6 +21,9 @@ import { useAuth } from '@/hooks/auth'
 import { useBag } from '@/hooks/bag'
 
 const Header: React.FC = () => {
+  const { user, signOut } = useAuth()
+  const { bagItems } = useBag()
+
   const [openDropDown, setOpenDropDown] = useState(false)
   const [bagNotification, setBagNotification] = useState(0)
   const [tabs, setTabs] = useState([
@@ -36,8 +39,6 @@ const Header: React.FC = () => {
     }
   ])
 
-  const { user, signOut } = useAuth()
-  const { bagItems } = useBag()
   const router = useRouter()
 
   useEffect(() => {
