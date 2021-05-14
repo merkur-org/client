@@ -28,6 +28,7 @@ import {
   BottomContainer
 } from '@/styles/pages/cadastro'
 import { FaCheck } from 'react-icons/fa'
+import ModalMessage from '@/components/ModalMessages'
 
 interface formProps {
   pessoal: boolean
@@ -164,7 +165,14 @@ const Cadastro: React.FC = () => {
                   linkLabel="termos de condições"
                 />
               </BottomContainer>
-              {errors && <Error>Algo deu errado, tente novamente</Error>}
+              {errors && (
+                <ModalMessage
+                  message="Ocorreu um erro, tente novamente"
+                  type="error"
+                  open={errors}
+                  timer={2000}
+                />
+              )}
             </Form>
           </FormContainer>
         </BackgroundWhiteRectangle>

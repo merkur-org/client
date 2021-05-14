@@ -1,5 +1,5 @@
-import { effects, transitions } from '@/styles/constants'
-import styled from 'styled-components'
+import { border, effects, transitions } from '@/styles/constants'
+import styled, { css, keyframes } from 'styled-components'
 
 export const Card = styled.section`
   width: 22rem;
@@ -13,7 +13,7 @@ export const Card = styled.section`
   > img {
     cursor: pointer;
     width: 100%;
-    height: 29.8rem;
+    height: 17.6rem;
     object-fit: cover;
     object-position: top;
     border-radius: 0.8rem 0.8rem 0 0;
@@ -103,4 +103,84 @@ export const BuyQuantity = styled.section`
     font-size: 1.6rem;
     padding: 0.8rem 1.2rem;
   }
+`
+
+interface OpenModalProps {
+  isOpen: boolean
+  time: number
+}
+
+const openAnimation = keyframes`
+  0% {
+    transform: translate(0, 200%);
+  }
+
+  25%{
+    transform: translate(0, 0);
+  }
+
+  70%{
+    transform: translate(0, 0);
+  }
+
+  85%{
+    transform: translate(0, -20%);
+  }
+
+  100%{
+    transform: translate(0, 200%);
+  }
+`
+
+export const Success = styled.div<OpenModalProps>`
+  display: none;
+
+  ${props =>
+    props.isOpen &&
+    css`
+      display: initial;
+
+      position: fixed;
+      z-index: 100;
+      bottom: 3.2rem;
+      padding: 0.8rem;
+
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-align: center;
+
+      background-color: ${({ theme }) => theme.colors.greenPrimary};
+      color: ${({ theme }) => theme.colors.white};
+      box-shadow: ${effects.dropShadow};
+
+      border-radius: ${border.borderRadius};
+
+      animation: ${openAnimation} 2s ease-in-out;
+    `}
+`
+
+export const Error = styled.div<OpenModalProps>`
+  display: none;
+  ${props =>
+    props.isOpen &&
+    css`
+      display: inline-block;
+
+      position: fixed;
+      z-index: 100;
+      bottom: 3.2rem;
+      padding: 0.8rem;
+
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-align: center;
+
+      background-color: ${({ theme }) => theme.colors.redPrimary};
+      color: ${({ theme }) => theme.colors.white};
+      box-shadow: ${effects.dropShadow};
+
+      border-radius: ${border.borderRadius};
+
+      animation: ${openAnimation} 2s ease-in-out;
+    `}
 `

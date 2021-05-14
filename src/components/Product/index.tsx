@@ -1,62 +1,184 @@
-import { Card, Data, BuyContainer, Info } from './styles'
+import { Card, Data, BuyContainer, Info, Success, Error } from './styles'
 import { FaShoppingBasket } from 'react-icons/fa'
-import { useCallback, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
+
+import { useBag } from '@/hooks/bag'
+import { useAuth, User } from '@/hooks/auth'
+
+import { ProductData } from '@/pages'
+
 import ModalProductDetails from '@/components/ModalProductDetails'
 import BuyQuantityInput from '@/components/BuyQuantityInput'
+import ModalMessages from '@/components/ModalMessages'
 
-interface IDataProps {
-  photo?: string
-  productName: string
-  category: string
-  price: string
-  unity: string
-  quantity?: number
+interface ProductCardProps {
+  product: ProductData
 }
 
-const ProductCardData: React.FC<IDataProps> = ({
-  photo,
-  productName,
-  category,
-  price,
-  unity,
-  quantity = 0
-}) => {
+interface MessagesProps {
+  message: string
+  open: boolean
+  timer: number
+}
+
+export function handleValidateAddProduct(
+  quantity: number,
+  user: User
+): { message: string; status: string } {
+  if (user) {
+    if (quantity === 0) {
+      return {
+        message: 'Adicione pelo menos um produto',
+        status: 'error'
+      }
+    } else {
+      return {
+        message: 'Produto adicinado a cesta',
+        status: 'success'
+      }
+    }
+  } else {
+    return {
+      message: 'Você precisa efetuar login para adicionar a cesta',
+      status: 'error'
+    }
+  }
+}
+
+export function handleFireMessages(
+  status: string,
+  message: string,
+  timer: number,
+  setSuccessMessage: Dispatch<SetStateAction<Omit<MessagesProps, 'timer'>>>,
+  setErrorMessage: Dispatch<SetStateAction<Omit<MessagesProps, 'timer'>>>
+): void {
+  if (status === 'success') {
+    setSuccessMessage(oldState => ({
+      ...oldState,
+      message,
+      open: true
+    }))
+
+    setErrorMessage(oldState => ({
+      ...oldState,
+      message: '',
+      open: false
+    }))
+
+    setTimeout(() => {
+      setSuccessMessage(oldState => ({
+        ...oldState,
+        open: false
+      }))
+    }, timer)
+  } else {
+    setErrorMessage(oldState => ({
+      ...oldState,
+      message,
+      open: true
+    }))
+
+    setSuccessMessage(oldState => ({
+      ...oldState,
+      message: '',
+      open: false
+    }))
+
+    setTimeout(() => {
+      setErrorMessage(oldState => ({
+        ...oldState,
+        open: false
+      }))
+    }, timer)
+  }
+}
+
+const ProductCardData: React.FC<ProductCardProps> = ({ product }) => {
   const [isOpenModalDetails, setIsOpenModalDetails] = useState(false)
+  const [errorMessage, setErrorMessage] = useState({ message: '', open: false })
+  const [successMessage, setSuccessMessage] = useState({
+    message: '',
+    open: false
+  })
+  const [cardQuantity, setCardQuantity] = useState(0)
+
+  const { addProduct } = useBag()
+  const { user } = useAuth()
+
+  const timer = 2000
+
   return (
-    <Card>
+    <>
       <ModalProductDetails
         isOpen={isOpenModalDetails}
         setIsOpen={setIsOpenModalDetails}
+        product={product}
+        quantity={cardQuantity}
+        setQuantity={setCardQuantity}
       />
-      <img
-        onClick={() => {
-          setIsOpenModalDetails(true)
-          console.log('aaaaaaa')
-        }}
-        src="https://images.unsplash.com/photo-1508313880080-c4bef0730395?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80"
+      <Card>
+        <img
+          onClick={() => {
+            setIsOpenModalDetails(true)
+          }}
+          src={product.image_url}
+        />
+
+        <Info>
+          <Data>
+            <aside>
+              <h3>{product.category || 'legumes'}</h3>
+              <h1>{product.name}</h1>
+            </aside>
+            <h2>
+              R$ {product.sale_price}/{product.unit_sale}
+            </h2>
+          </Data>
+
+          <BuyContainer>
+            <BuyQuantityInput
+              quantity={cardQuantity}
+              setQuantity={setCardQuantity}
+            />
+            <aside
+              onClick={() => {
+                const res = handleValidateAddProduct(cardQuantity, user)
+                if (res) {
+                  handleFireMessages(
+                    res.status,
+                    res.message,
+                    timer,
+                    setSuccessMessage,
+                    setErrorMessage
+                  )
+
+                  if (res.status === 'success') {
+                    addProduct({
+                      id: product.id,
+                      name: product.name,
+                      photo: product.image_url,
+                      quantity: cardQuantity,
+                      sale_price: product.sale_price,
+                      unit: product.unit_sale
+                    })
+                  }
+                }
+              }}
+            >
+              <FaShoppingBasket />
+            </aside>
+          </BuyContainer>
+        </Info>
+      </Card>
+      <ModalMessages
+        message={successMessage.message || errorMessage.message}
+        open={errorMessage.open || successMessage.open}
+        timer={timer}
+        type={
+          (successMessage.open && 'success') || (errorMessage.open && 'error')
+        }
       />
-
-      <Info>
-        <Data>
-          <aside>
-            <h3>Legumes</h3>
-            <h1>Batata Inglesa</h1>
-          </aside>
-          <h2>R$ 10/Kg</h2>
-        </Data>
-
-        <BuyContainer>
-          <BuyQuantityInput />
-          <aside
-            onClick={() => {
-              console.log('oi')
-            }}
-          >
-            <FaShoppingBasket />
-          </aside>
-        </BuyContainer>
-      </Info>
-    </Card>
+    </>
   )
 }
 

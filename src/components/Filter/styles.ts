@@ -1,17 +1,25 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import { breakPoints, effects, transitions } from '@/styles/constants'
 
 interface styleProps {
   asideOpen: boolean
 }
-export const DropdownContent = styled.ul`
-  opacity: 0;
-  visibility: hidden;
-  float: right;
+export const DropdownContent = styled.ul<styleProps>`
+  ${props =>
+    props.asideOpen
+      ? css`
+          opacity: 1;
+          visibility: visible;
+        `
+      : css`
+          opacity: 0;
+          visibility: hidden;
+        `}
+
   position: absolute;
   z-index: 100;
-  right: 0;
+  left: 0;
   top: 4.8rem;
 
   padding: 1.6rem;
@@ -44,7 +52,7 @@ export const DropdownContent = styled.ul`
     }
   }
 `
-export const BodyButton = styled.div<styleProps>`
+export const BodyButton = styled.div`
   border: 0;
   background: transparent;
   position: relative;
@@ -59,26 +67,23 @@ export const BodyButton = styled.div<styleProps>`
 
     display: flex;
     align-items: center;
-    font-size: 1.6rem;
+    justify-content: center;
 
-    margin-left: 3.2rem;
+    font-size: 1.6rem;
+    text-align: left;
     padding: 0.8rem;
+
+    span {
+      color: ${({ theme }) => theme.colors.gray};
+    }
 
     &:hover {
       background-color: ${({ theme }) => theme.colors.lightGray};
     }
 
-    &:active {
-      font-size: 1.2rem;
-    }
-
     svg {
       margin: 0 1.6rem;
     }
-  }
-  ${props => props.asideOpen && DropdownContent} {
-    opacity: 1;
-    visibility: visible;
   }
 
   ${breakPoints.tablet} {

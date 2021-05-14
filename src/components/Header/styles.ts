@@ -226,40 +226,19 @@ export const Burguer = styled.div<PropsBurguer>`
       background-color: white;
       min-width: 100vw;
       box-shadow: 0px 8px 10px 0px rgba(0, 0, 0, 0.2);
-      top: 10.4rem;
+      top: 8rem;
       z-index: 2;
 
       div {
         border-top: 2px solid ${({ theme }) => theme.colors.yellowPrimary};
+        border-bottom: 2px solid ${({ theme }) => theme.colors.yellowPrimary};
         width: 100vw;
         background: ${({ theme }) => theme.colors.orangePrimary};
         section {
-          width: 90%;
+          width: 100%;
           display: flex;
           flex-direction: column;
           margin: auto;
-          padding: 1.6rem 0;
-
-          a {
-            color: ${({ theme }) => theme.colors.white};
-            align-items: center;
-
-            font-size: 1.6rem;
-            font-weight: bold;
-
-            svg {
-              color: ${({ theme }) => theme.colors.white};
-              font-size: 1.6rem;
-              margin-right: 0.8rem;
-            }
-
-            & + a {
-              margin-top: 0.8rem;
-              padding-top: 0.8rem;
-
-              border-top: 1px solid ${({ theme }) => theme.colors.yellowPrimary};
-            }
-          }
         }
       }
     }
@@ -342,16 +321,28 @@ export const HeaderLink = styled.a<HeaderLinkProps>`
   ${props =>
     props.isSelected &&
     css`
-      border-bottom: 4px solid ${({ theme }) => theme.colors.yellowSecundary};
       background-color: ${({ theme }) => theme.colors.yellowPrimary};
+
+      @media ${device.tablet} {
+        border-bottom: 4px solid ${({ theme }) => theme.colors.yellowSecundary};
+      }
     `}
 
   color: ${({ theme }) => theme.colors.white};
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.6rem;
+
+  font-size: 1.6rem;
+  font-weight: bold;
+
+  svg {
+    color: ${({ theme }) => theme.colors.white};
+    font-size: 1.6rem;
+    margin-right: 0.8rem;
+  }
 
   @media ${device.tablet} {
-    display: flex;
-    align-items: center;
-
     font-weight: bold;
     font-size: 1.6rem;
     padding: 0 1.2rem;

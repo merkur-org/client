@@ -18,7 +18,7 @@ interface SignUpCredentials {
   cnpj?: string
 }
 
-interface User {
+export interface User {
   id: string
   name: string
   email: string
@@ -80,6 +80,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const signOut = useCallback(() => {
     Cookie.remove('token')
     Cookie.remove('user')
+    Cookie.remove('bag')
 
     setData({} as AuthData)
   }, [])

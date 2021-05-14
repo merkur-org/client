@@ -1,6 +1,8 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { BodyButton, DropdownContent } from './styles'
 
+import ReactSelect from 'react-select'
+
 interface DropdownProps {
   buttonContent?: React.ReactNode
 }
@@ -18,6 +20,7 @@ interface DropdownProps {
 const Filter: React.FC<DropdownProps> = ({ buttonContent, children }) => {
   const filterRef = useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = useState(false)
+  const [selectedFilter, setSelectedFilter] = useState(children[0])
 
   const handleClick = useCallback(() => {
     setIsOpen(!isOpen)
@@ -36,9 +39,12 @@ const Filter: React.FC<DropdownProps> = ({ buttonContent, children }) => {
   }, [isOpen])
 
   return (
-    <BodyButton ref={filterRef} asideOpen={isOpen}>
-      <button onClick={handleClick}>{buttonContent}</button>
-      <DropdownContent>{children}</DropdownContent>
+    <BodyButton ref={filterRef}>
+      <button onClick={handleClick}>
+        {buttonContent}
+        <span>{selectedFilter}</span>
+      </button>
+      <DropdownContent asideOpen={isOpen}>{children}</DropdownContent>
     </BodyButton>
   )
 }
