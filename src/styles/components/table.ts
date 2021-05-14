@@ -69,6 +69,7 @@ export const Table = styled.table`
     border: none;
     background-color: transparent;
     font-size: 1.6rem;
+    font-weight: 100;
     width: 100%;
 
     display: flex;
@@ -81,5 +82,28 @@ export const Table = styled.table`
 
   .error {
     color: ${({ theme }) => theme.colors.error};
+  }
+
+  .details {
+    color: ${({ theme }) => theme.colors.orangePrimary};
+  }
+
+  .date {
+    font-size: 2.4rem;
+    text-align: center;
+    font-weight: 100;
+    padding-left: 2.4rem;
+
+    width: fit-content;
+
+    color: ${({ theme }) => theme.colors.gray};
+  }
+
+  .text {
+    font-size: 1.6rem;
+    text-align: center;
+    font-weight: 100;
+
+    color: ${({ theme }) => theme.colors.gray};
   }
 `

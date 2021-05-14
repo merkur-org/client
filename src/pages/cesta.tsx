@@ -64,43 +64,44 @@ const Bag: React.FC = () => {
           <th>Total</th>
           <th>Ações</th>
         </tr>
-        {bagItems.map(product => (
-          <tr key={product.id}>
-            <td>
-              <div className="product-image">
-                <img src={product.photo} />
-                <p className="product-name">{product.name}</p>
-              </div>
-            </td>
-            <td>
-              <h4 className="price">{`R$ ${product.sale_price}`}</h4>
-            </td>
-            <td>
-              <div className="actions">
-                <BuyQuantityInput
-                  quantity={product.quantity}
-                  product={product}
-                  type="BAG"
-                />
-              </div>
-            </td>
-            <td>
-              <h4 className="total">{`R$ ${
-                (product.sale_price as number) * product.quantity
-              }`}</h4>
-            </td>
-            <td>
-              <button
-                type="button"
-                className="actions error"
-                onClick={() => handleRemoveProduct(product)}
-              >
-                <FiTrash2 />
-                <span>remover</span>
-              </button>
-            </td>
-          </tr>
-        ))}
+        {bagItems &&
+          bagItems.map(product => (
+            <tr key={product.id}>
+              <td>
+                <div className="product-image">
+                  <img src={product.photo} />
+                  <p className="product-name">{product.name}</p>
+                </div>
+              </td>
+              <td>
+                <h4 className="price">{`R$ ${product.sale_price}`}</h4>
+              </td>
+              <td>
+                <div className="actions">
+                  <BuyQuantityInput
+                    quantity={product.quantity}
+                    product={product}
+                    type="BAG"
+                  />
+                </div>
+              </td>
+              <td>
+                <h4 className="total">{`R$ ${
+                  (product.sale_price as number) * product.quantity
+                }`}</h4>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  className="actions error"
+                  onClick={() => handleRemoveProduct(product)}
+                >
+                  <FiTrash2 />
+                  <span>remover</span>
+                </button>
+              </td>
+            </tr>
+          ))}
       </Table>
 
       <SummaryOrder onSubmit={handleFinishOrder} ref={formRef}>
