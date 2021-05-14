@@ -30,16 +30,20 @@ export const BannerContainer = styled.div`
     box-shadow: ${effects.dropShadow};
   }
 
-  @media ${device.tablet} {
+  @media ${device.laptopL} {
     border-radius: ${border.borderRadius};
     width: calc(100vw - calc(12.2rem * 2));
 
     margin: 5.6rem auto;
+
     img {
       height: 100%;
 
       border-radius: 0.8rem;
     }
+  }
+
+  @media ${device.desktopL} {
   }
 `
 
@@ -48,10 +52,8 @@ export const OffersContainer = styled.div`
   overflow: auto;
   width: 100%;
 
-  padding: 0 1.6rem;
-
-  @media ${device.tablet} {
-    padding: 0;
+  @media ${device.laptop} {
+    overflow: visible;
   }
 `
 
@@ -78,6 +80,6 @@ export const OffersTopTitle = styled.div`
 export const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-column-gap: 2.4rem;
-  grid-row-gap: 2.4rem;
+  grid-column-gap: 1.6rem;
+  grid-row-gap: 1.6rem;
 `

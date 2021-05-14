@@ -13,7 +13,8 @@ export const CloseButton = styled.button`
   width: 6.4rem;
 
   border: 0;
-  border-bottom-left-radius: 16px;
+  border-bottom-left-radius: 1.6rem;
+  border-top-left-radius: 1.6rem;
 
   right: 0rem;
   top: 0rem;
@@ -27,14 +28,16 @@ export const CloseButton = styled.button`
     transform: rotate(45deg);
   }
   &:hover {
-    background: '#CB7903';
+    background: ${({ theme }) => theme.colors.orangeSecundary};
   }
 `
 
 export const BodyButton = styled.div<styleProps>`
   border: 0;
   background: transparent;
-  position: relative;
+  position: absolute;
+
+  border: 1px solid red;
 
   cursor: default;
   > span {
@@ -43,6 +46,12 @@ export const BodyButton = styled.div<styleProps>`
     width: 100%;
     cursor: pointer;
   }
+
+  ${props =>
+    !props.asideOpen &&
+    css`
+      display: none;
+    `}
 `
 interface ModalProps {
   isOpen: boolean
@@ -147,7 +156,7 @@ export const ContentUp = styled.aside`
     padding: 3.2rem;
 
     img {
-      width: 40%;
+      width: 60%;
       border-radius: 1.6rem;
     }
 
@@ -231,12 +240,6 @@ export const ButtonsContainer = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.division};
   background-color: ${({ theme }) => theme.colors.white};
 
-  button {
-    & + button {
-      margin-top: 1.6rem;
-    }
-  }
-
   @media ${device.tablet} {
     padding: 3.2rem;
     flex-direction: row;
@@ -244,12 +247,5 @@ export const ButtonsContainer = styled.div`
     justify-content: center;
 
     width: 50vw;
-
-    button {
-      & + button {
-        margin-top: 0;
-        margin-left: 2.4rem;
-      }
-    }
   }
 `

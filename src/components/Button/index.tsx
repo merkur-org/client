@@ -9,9 +9,14 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   buttonType?: string
 }
 
-const Button: React.FC<ButtonProps> = ({ text, icon: Icon, buttonType }) => {
+const Button: React.FC<ButtonProps> = ({
+  text,
+  icon: Icon,
+  buttonType,
+  ...rest
+}) => {
   return (
-    <Container buttonType={buttonType || 'greenPrimary'}>
+    <Container buttonType={buttonType || 'greenPrimary'} {...rest}>
       <span>{text}</span>
       {Icon && <Icon />}
     </Container>

@@ -132,7 +132,7 @@ const openAnimation = keyframes`
   }
 `
 
-export const SucessAddProduct = styled.div<OpenModalProps>`
+export const Success = styled.div<OpenModalProps>`
   display: none;
 
   ${props =>
@@ -141,6 +141,7 @@ export const SucessAddProduct = styled.div<OpenModalProps>`
       display: initial;
 
       position: fixed;
+      z-index: 100;
       bottom: 3.2rem;
       padding: 0.8rem;
 
@@ -158,15 +159,15 @@ export const SucessAddProduct = styled.div<OpenModalProps>`
     `}
 `
 
-export const ErrorAddProduct = styled.div<OpenModalProps>`
+export const Error = styled.div<OpenModalProps>`
   display: none;
-
   ${props =>
     props.isOpen &&
     css`
-      display: initial;
+      display: inline-block;
 
       position: fixed;
+      z-index: 100;
       bottom: 3.2rem;
       padding: 0.8rem;
 
