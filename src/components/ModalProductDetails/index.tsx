@@ -28,14 +28,14 @@ import {
 
 import { BuyQuantityInput } from '@/components'
 
-import { ProductData } from '@/pages'
 import { useBag } from '@/hooks/bag'
 import { useAuth } from '@/hooks/auth'
+import { IProductsDTO } from '@/dtos/IProductsDTO'
 
 interface ModalProductDetailsProps {
   isOpen: boolean
   setIsOpen(isOpen: boolean): void
-  product: ProductData
+  product: IProductsDTO
   quantity: number
   setQuantity: Dispatch<SetStateAction<number>>
 }
@@ -105,20 +105,12 @@ const ModalProductDetails: React.FC<ModalProductDetailsProps> = ({
             <hr />
             <Info>
               <h2>Detalhes do produto</h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Venenatis euismod in sed felis amet, pharetra cursus
-                pellentesque etiam. Et lacus magna enim, id in etiam.
-              </p>
+              <p>{product.observation}</p>
             </Info>
             <hr />
             <Info>
               <h2>Informações nutricionais</h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Venenatis euismod in sed felis amet, pharetra cursus
-                pellentesque etiam. Et lacus magna enim, id in etiam.
-              </p>
+              <p>{product.nutritional_information}</p>
             </Info>
           </InfoContent>
           <ButtonsContainer>
@@ -138,12 +130,8 @@ const ModalProductDetails: React.FC<ModalProductDetailsProps> = ({
 
                   if (res.status === 'success') {
                     addProduct({
-                      id: product.id,
-                      name: product.name,
-                      photo: product.image_url,
-                      quantity,
-                      sale_price: product.sale_price,
-                      unit: product.unit_sale
+                      ...product,
+                      quantity
                     })
                   }
                 }

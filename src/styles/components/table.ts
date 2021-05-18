@@ -14,6 +14,8 @@ export const Table = styled.table`
 
   th {
     width: 100%;
+    white-space: nowrap;
+
     background-color: ${({ theme }) => theme.colors.orangePrimary};
     padding: 0.8rem 5.6rem;
 
@@ -34,6 +36,9 @@ export const Table = styled.table`
 
   td {
     border-bottom: 0.1rem solid ${({ theme }) => theme.colors.orangePrimary};
+    width: 100%;
+    white-space: nowrap;
+    padding: 0 4.8rem;
   }
 
   .product-image {
@@ -72,6 +77,9 @@ export const Table = styled.table`
     font-weight: 100;
     width: 100%;
 
+    white-space: nowrap;
+    padding: 0 2.4rem;
+
     display: flex;
     justify-content: center;
 
@@ -92,9 +100,7 @@ export const Table = styled.table`
     font-size: 2.4rem;
     text-align: center;
     font-weight: 100;
-    padding-left: 2.4rem;
-
-    width: fit-content;
+    padding: 2.4rem 0;
 
     color: ${({ theme }) => theme.colors.gray};
   }
@@ -102,7 +108,7 @@ export const Table = styled.table`
   .text {
     font-size: 1.6rem;
     text-align: center;
-    font-weight: 100;
+    font-weight: 400;
 
     color: ${({ theme }) => theme.colors.gray};
   }

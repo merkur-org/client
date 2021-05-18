@@ -11,36 +11,18 @@ import { FaLongArrowAltRight } from 'react-icons/fa'
 
 import api from '@/services/api'
 
+import { IProductsDTO } from '@/dtos/IProductsDTO'
+
 import Title from '@/components/Title'
 import Filter from '@/components/Filter'
 import Pagination from '@/components/Pagination'
 
 import { GetServerSideProps, NextPage } from 'next'
-export interface ProductData {
-  id: string
-  name: string
-  category: string
-  image: string
-  nutritional_information: string
-  observation: string
-  unit_sale: string
-  unit_buy: string
-  fraction_buy: number
-  fraction_sale: number
-  cost_price: number
-  sale_price: number
-  wholesale_price: number
-  organic: boolean
-  highlights: boolean
-  created_at: string
-  updated_at: string
-  image_url: string
-}
 interface HomeProps {
   limit: number
   page: number
   total_count: number
-  listProducts: ProductData[]
+  listProducts: IProductsDTO[]
 }
 
 const Home: NextPage<HomeProps> = ({

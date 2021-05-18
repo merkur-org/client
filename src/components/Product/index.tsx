@@ -5,14 +5,14 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { useBag } from '@/hooks/bag'
 import { useAuth, User } from '@/hooks/auth'
 
-import { ProductData } from '@/pages'
-
 import ModalProductDetails from '@/components/ModalProductDetails'
 import BuyQuantityInput from '@/components/BuyQuantityInput'
 import ModalMessages from '@/components/ModalMessages'
 
+import { IProductsDTO } from '@/dtos/IProductsDTO'
+
 interface ProductCardProps {
-  product: ProductData
+  product: IProductsDTO
 }
 
 interface MessagesProps {
@@ -154,12 +154,8 @@ const ProductCardData: React.FC<ProductCardProps> = ({ product }) => {
 
                   if (res.status === 'success') {
                     addProduct({
-                      id: product.id,
-                      name: product.name,
-                      photo: product.image_url,
-                      quantity: cardQuantity,
-                      sale_price: product.sale_price,
-                      unit: product.unit_sale
+                      ...product,
+                      quantity: cardQuantity
                     })
                   }
                 }
