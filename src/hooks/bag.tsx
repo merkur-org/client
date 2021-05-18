@@ -2,29 +2,25 @@ import { useContext, createContext, useCallback, useReducer } from 'react'
 import Cookie from 'js-cookie'
 
 import { BagReducer, sumItems } from './bagReducer'
-import { boolean } from 'yup/lib/locale'
 
-export interface IProduct {
-  id: string
-  name: string
+import { IProductsDTO } from '@/dtos/IProductsDTO'
+
+interface BagProducts extends IProductsDTO {
   quantity: number
-  photo: string
-  unit: string
-  sale_price: string | number
 }
 
 export interface StateProps {
-  bagItems: IProduct[]
-  sumItems(bagItems: IProduct[]): { itemCount: number; total: string }
+  bagItems: BagProducts[]
+  sumItems(bagItems: BagProducts[]): { itemCount: number; total: string }
   checkout: boolean
 }
 interface BagContextData {
-  addProduct(product: IProduct): void
-  removeProduct(product: IProduct): void
-  increseProductQuantity(product: IProduct): void
-  decreaseProductQuantity(product: IProduct): void
+  addProduct(product: BagProducts): void
+  removeProduct(product: IProductsDTO): void
+  increseProductQuantity(product: BagProducts): void
+  decreaseProductQuantity(product: BagProducts): void
   clearBag(): void
-  bagItems: IProduct[]
+  bagItems: BagProducts[]
 }
 
 const storage = Cookie.get('bag') ? JSON.parse(Cookie.get('bag')) : []
@@ -39,19 +35,19 @@ export const BagContext = createContext<BagContextData>({} as BagContextData)
 export const BagProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(BagReducer, initialState)
 
-  const addProduct = useCallback((product: IProduct) => {
+  const addProduct = useCallback((product: BagProducts) => {
     dispatch({ type: 'ADD_PRODUCT', product })
   }, [])
 
-  const removeProduct = useCallback((product: IProduct) => {
+  const removeProduct = useCallback((product: IProductsDTO) => {
     dispatch({ type: 'REMOVE_PRODUCT', product })
   }, [])
 
-  const increseProductQuantity = useCallback((product: IProduct) => {
+  const increseProductQuantity = useCallback((product: BagProducts) => {
     dispatch({ type: 'INCREASE', product })
   }, [])
 
-  const decreaseProductQuantity = useCallback((product: IProduct) => {
+  const decreaseProductQuantity = useCallback((product: BagProducts) => {
     dispatch({ type: 'DECREASE', product })
   }, [])
 

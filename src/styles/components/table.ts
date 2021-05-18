@@ -14,6 +14,8 @@ export const Table = styled.table`
 
   th {
     width: 100%;
+    white-space: nowrap;
+
     background-color: ${({ theme }) => theme.colors.orangePrimary};
     padding: 0.8rem 5.6rem;
 
@@ -34,6 +36,9 @@ export const Table = styled.table`
 
   td {
     border-bottom: 0.1rem solid ${({ theme }) => theme.colors.orangePrimary};
+    width: 100%;
+    white-space: nowrap;
+    padding: 0 4.8rem;
   }
 
   .product-image {
@@ -69,7 +74,11 @@ export const Table = styled.table`
     border: none;
     background-color: transparent;
     font-size: 1.6rem;
+    font-weight: 100;
     width: 100%;
+
+    white-space: nowrap;
+    padding: 0 2.4rem;
 
     display: flex;
     justify-content: center;
@@ -81,5 +90,26 @@ export const Table = styled.table`
 
   .error {
     color: ${({ theme }) => theme.colors.error};
+  }
+
+  .details {
+    color: ${({ theme }) => theme.colors.orangePrimary};
+  }
+
+  .date {
+    font-size: 2.4rem;
+    text-align: center;
+    font-weight: 100;
+    padding: 2.4rem 0;
+
+    color: ${({ theme }) => theme.colors.gray};
+  }
+
+  .text {
+    font-size: 1.6rem;
+    text-align: center;
+    font-weight: 400;
+
+    color: ${({ theme }) => theme.colors.gray};
   }
 `

@@ -31,6 +31,7 @@ const openAnimation = keyframes`
 
 export const Container = styled.div<OpenModalProps>`
   display: none;
+  transform: translate(0, 300%);
 
   p {
     transform: translateX(-50%);
@@ -66,8 +67,6 @@ export const Container = styled.div<OpenModalProps>`
       position: fixed;
       z-index: 100;
       left: 50%;
-
-      bottom: 3.2rem;
 
       animation: ${openAnimation} 2s ease-in-out;
     `}
