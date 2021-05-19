@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef, useContext } from 'react'
+import { useCallback, useState, useRef, useContext, useEffect } from 'react'
 import { GetServerSideProps, NextPage } from 'next'
 import { FaShoppingBasket, FaCheck } from 'react-icons/fa'
 import { FiTrash2 } from 'react-icons/fi'
@@ -42,12 +42,18 @@ interface BagPageProps {
   pointsList: IDeliveryPointsDTO[]
 }
 const Bag: NextPage<BagPageProps> = ({ limit, total_count, pointsList }) => {
+  const { addOrder } = useOrders()
+  const { bagItems, removeProduct, clearBag, sumItems } = useBag()
+
   const [errors, setErrors] = useState<Yup.ValidationError>()
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const { addOrder } = useOrders()
-  const { bagItems, removeProduct, clearBag } = useBag()
+  const [totalItems, setTotalItems] = useState({ itemCount: 0, total: '' })
+
+  useEffect(() => {
+    setTotalItems(sumItems(bagItems))
+  }, [bagItems])
 
   function handleRemoveProduct(product: IProductsDTO) {
     removeProduct(product)
@@ -128,6 +134,7 @@ const Bag: NextPage<BagPageProps> = ({ limit, total_count, pointsList }) => {
                       quantity={product.quantity}
                       product={product}
                       type="BAG"
+                      factor={0.65}
                     />
                   </div>
                 </td>
@@ -158,7 +165,7 @@ const Bag: NextPage<BagPageProps> = ({ limit, total_count, pointsList }) => {
             <SummaryDelivery>
               <section>
                 <strong>Total</strong>
-                <span>R$ 40,00</span>
+                <span>R$ {totalItems.total}</span>
               </section>
               <section>
                 <Select

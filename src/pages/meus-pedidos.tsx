@@ -71,21 +71,26 @@ const Orders: NextPage<OrderPageProps> = ({
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const token = context.req.cookies?.token
+  if (token) {
+    const { data } = await api.get('/orders/me', {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
 
-  const { data } = await api.get('/orders/me', {
-    headers: {
-      Authorization: 'Bearer ' + token
+    const { data: orderProducts, limit, total_count } = data
+
+    return {
+      props: {
+        limit,
+        total_count,
+        orderProducts
+      }
     }
-  })
-
-  const { data: orderProducts, limit, total_count } = data
+  }
 
   return {
-    props: {
-      limit,
-      total_count,
-      orderProducts
-    }
+    props: {}
   }
 }
 

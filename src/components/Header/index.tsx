@@ -19,30 +19,45 @@ import Dropdown from '@/components/Dropdown'
 import { SearchProducts } from '@/components'
 import { useAuth } from '@/hooks/auth'
 import { useBag } from '@/hooks/bag'
+import { GetStaticProps } from 'next'
+
+interface TabsProps {
+  name: string
+  path: string
+  selected: boolean
+}
 
 const Header: React.FC = () => {
   const { user, signOut } = useAuth()
   const { bagItems } = useBag()
 
-  const [openDropDown, setOpenDropDown] = useState(false)
-  const [bagNotification, setBagNotification] = useState(0)
-  const [tabs, setTabs] = useState([
-    {
-      name: 'Produtos',
-      path: '/',
-      selected: true
-    },
-    {
-      name: 'Meus Pedidos',
-      path: '/meus-pedidos',
-      selected: false
-    }
-  ])
-
   const router = useRouter()
 
+  const [openDropDown, setOpenDropDown] = useState(false)
+  const [bagNotification, setBagNotification] = useState(0)
+  const [tabs, setTabs] = useState<TabsProps[]>([])
+
   useEffect(() => {
-    setBagNotification(oldState => oldState + 1)
+    setTabs([
+      {
+        name: 'Produtos',
+        path: '/',
+        selected: router.pathname === '/'
+      },
+      {
+        name: 'Meus Pedidos',
+        path: '/meus-pedidos',
+        selected: router.pathname === '/meus-pedidos'
+      }
+    ])
+  }, [router.pathname])
+
+  useEffect(() => {
+    if (router.pathname !== '/cesta') {
+      setBagNotification(oldState => oldState + 1)
+    } else {
+      setBagNotification(0)
+    }
   }, [bagItems])
 
   const handleOpenDropDown = useCallback(() => {
@@ -52,21 +67,6 @@ const Header: React.FC = () => {
   const handleClearNotifications = useCallback(() => {
     setBagNotification(0)
   }, [])
-
-  const handleChangeTab = useCallback(tabName => {
-    setTabs(oldTabs =>
-      oldTabs.map(tab => {
-        if (tabName === tab.name) {
-          tab.selected = true
-        } else {
-          tab.selected = false
-        }
-
-        return tab
-      })
-    )
-  }, [])
-
   async function handleSignOut() {
     signOut()
     router.reload()
@@ -97,7 +97,7 @@ const Header: React.FC = () => {
                   <div>Cesta</div>
                   <aside>
                     <FaShoppingBasket />
-                    {bagNotification > 0 && router.pathname === 'cesta' && (
+                    {bagNotification > 0 && (
                       <span>
                         {bagNotification < 9 ? bagNotification : '+9'}
                       </span>
@@ -116,7 +116,6 @@ const Header: React.FC = () => {
                     <aside>
                       {' '}
                       <FaUserAlt />
-                      <span>1</span>
                     </aside>
                   </Manager>
                 }
@@ -128,18 +127,10 @@ const Header: React.FC = () => {
         </ManagerArea>
       </HeaderUp>
       <HeaderDown>
-        <button>
-          <FiMapPin /> <p>Cidade - UF</p>
-        </button>
         <aside>
           {tabs.map(tab => (
             <Link href={tab.path} key={tab.name}>
-              <HeaderLink
-                isSelected={tab.selected}
-                onClick={() => handleChangeTab(tab.name)}
-              >
-                {tab.name}
-              </HeaderLink>
+              <HeaderLink isSelected={tab.selected}>{tab.name}</HeaderLink>
             </Link>
           ))}
         </aside>
@@ -163,10 +154,7 @@ const Header: React.FC = () => {
                 <section>
                   {tabs.map(tab => (
                     <Link href={tab.path} key={tab.name}>
-                      <HeaderLink
-                        isSelected={tab.selected}
-                        onClick={() => handleChangeTab(tab.name)}
-                      >
+                      <HeaderLink isSelected={tab.selected}>
                         {tab.name}
                       </HeaderLink>
                     </Link>
@@ -180,5 +168,4 @@ const Header: React.FC = () => {
     </Main>
   )
 }
-
 export default Header

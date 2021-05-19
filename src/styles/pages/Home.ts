@@ -52,7 +52,7 @@ export const OffersContainer = styled.div`
   overflow: auto;
   width: 100%;
 
-  @media ${device.laptop} {
+  @media ${device.laptopL} {
     overflow: visible;
   }
 `

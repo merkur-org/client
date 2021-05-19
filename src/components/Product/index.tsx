@@ -139,6 +139,8 @@ const ProductCardData: React.FC<ProductCardProps> = ({ product }) => {
             <BuyQuantityInput
               quantity={cardQuantity}
               setQuantity={setCardQuantity}
+              product={product}
+              factor={0.55}
             />
             <aside
               onClick={() => {

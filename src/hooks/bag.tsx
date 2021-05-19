@@ -5,7 +5,7 @@ import { BagReducer, sumItems } from './bagReducer'
 
 import { IProductsDTO } from '@/dtos/IProductsDTO'
 
-interface BagProducts extends IProductsDTO {
+export interface BagProducts extends IProductsDTO {
   quantity: number
 }
 
@@ -21,6 +21,7 @@ interface BagContextData {
   decreaseProductQuantity(product: BagProducts): void
   clearBag(): void
   bagItems: BagProducts[]
+  sumItems(bagItems: BagProducts[]): { itemCount: number; total: string }
 }
 
 const storage = Cookie.get('bag') ? JSON.parse(Cookie.get('bag')) : []
@@ -39,7 +40,7 @@ export const BagProvider: React.FC = ({ children }) => {
     dispatch({ type: 'ADD_PRODUCT', product })
   }, [])
 
-  const removeProduct = useCallback((product: IProductsDTO) => {
+  const removeProduct = useCallback((product: BagProducts) => {
     dispatch({ type: 'REMOVE_PRODUCT', product })
   }, [])
 
@@ -63,6 +64,7 @@ export const BagProvider: React.FC = ({ children }) => {
         decreaseProductQuantity,
         increseProductQuantity,
         clearBag,
+        sumItems,
         ...state
       }}
     >
