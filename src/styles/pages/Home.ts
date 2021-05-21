@@ -42,6 +42,9 @@ export const BannerContainer = styled.div`
       border-radius: 0.8rem;
     }
   }
+
+  @media ${device.desktopL} {
+  }
 `
 
 export const OffersContainer = styled.div`

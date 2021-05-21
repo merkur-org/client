@@ -111,3 +111,83 @@ export const BuyQuantity = styled.section`
     padding: 0.8rem 1.2rem;
   }
 `
+
+interface OpenModalProps {
+  isOpen: boolean
+  time: number
+}
+
+const openAnimation = keyframes`
+  0% {
+    transform: translate(0, 200%);
+  }
+
+  25%{
+    transform: translate(0, 0);
+  }
+
+  70%{
+    transform: translate(0, 0);
+  }
+
+  85%{
+    transform: translate(0, -20%);
+  }
+
+  100%{
+    transform: translate(0, 200%);
+  }
+`
+
+export const Success = styled.div<OpenModalProps>`
+  display: none;
+
+  ${props =>
+    props.isOpen &&
+    css`
+      display: initial;
+
+      position: fixed;
+      z-index: 100;
+      bottom: 3.2rem;
+      padding: 0.8rem;
+
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-align: center;
+
+      background-color: ${({ theme }) => theme.colors.greenPrimary};
+      color: ${({ theme }) => theme.colors.white};
+      box-shadow: ${effects.dropShadow};
+
+      border-radius: ${border.borderRadius};
+
+      animation: ${openAnimation} 2s ease-in-out;
+    `}
+`
+
+export const Error = styled.div<OpenModalProps>`
+  display: none;
+  ${props =>
+    props.isOpen &&
+    css`
+      display: inline-block;
+
+      position: fixed;
+      z-index: 100;
+      bottom: 3.2rem;
+      padding: 0.8rem;
+
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-align: center;
+
+      background-color: ${({ theme }) => theme.colors.redPrimary};
+      color: ${({ theme }) => theme.colors.white};
+      box-shadow: ${effects.dropShadow};
+
+      border-radius: ${border.borderRadius};
+
+      animation: ${openAnimation} 2s ease-in-out;
+    `}
+`

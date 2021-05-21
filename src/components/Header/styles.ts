@@ -231,7 +231,7 @@ export const Burguer = styled.div<PropsBurguer>`
       background-color: white;
       min-width: 100vw;
       box-shadow: 0px 8px 10px 0px rgba(0, 0, 0, 0.2);
-      top: 10.4rem;
+      top: 8rem;
       z-index: 2;
 
       div {

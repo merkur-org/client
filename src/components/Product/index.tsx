@@ -1,4 +1,4 @@
-import { Card, Data, BuyContainer, Info } from './styles'
+import { Card, Data, BuyContainer, Info, Success, Error } from './styles'
 import { FaShoppingBasket } from 'react-icons/fa'
 import { Dispatch, SetStateAction, useState } from 'react'
 
