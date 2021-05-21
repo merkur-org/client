@@ -2,8 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { BodyButton, DropdownContent } from './styles'
 
 interface DropdownProps {
-  IconButton: React.ReactNode
-  text: string
+  buttonContent?: React.ReactNode
 }
 /**
  *
@@ -16,7 +15,7 @@ interface DropdownProps {
  * </Dropdown>
  * )
  */
-const Dropdown: React.FC<DropdownProps> = ({ IconButton, text, children }) => {
+const Dropdown: React.FC<DropdownProps> = ({ buttonContent, children }) => {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = useState(false)
   const handleClick = useCallback(() => {
@@ -36,12 +35,8 @@ const Dropdown: React.FC<DropdownProps> = ({ IconButton, text, children }) => {
   }, [isOpen])
   return (
     <BodyButton ref={dropdownRef} asideOpen={isOpen}>
-      <span onClick={handleClick} id="btn-drop">
-        {text}
-        {IconButton}
-      </span>
-
-      <DropdownContent>{children}</DropdownContent>
+      <button onClick={handleClick}>{buttonContent}</button>
+      <DropdownContent onClick={handleClick}>{children}</DropdownContent>
     </BodyButton>
   )
 }

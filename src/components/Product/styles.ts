@@ -1,19 +1,19 @@
-import { transitions } from '@/styles/constants'
-import styled from 'styled-components'
+import { border, effects, transitions } from '@/styles/constants'
+import styled, { css, keyframes } from 'styled-components'
 
 export const Card = styled.section`
-  margin: 2.4rem;
   width: 22rem;
   height: 36.4rem;
   border-radius: 0.8rem;
   background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 0px 10px 0px rgb(0, 0, 0, 0.2);
+  box-shadow: ${effects.dropShadow};
+
   > img {
     cursor: pointer;
     width: 100%;
-    height: 29.8rem;
+    height: 17.6rem;
     object-fit: cover;
     object-position: top;
     border-radius: 0.8rem 0.8rem 0 0;
@@ -30,21 +30,28 @@ export const Data = styled.section`
   flex-direction: column;
   height: 12.8rem;
   justify-content: space-between;
-  padding: 1.6rem 0;
+  padding: 1.6rem 0 0.8rem;
   aside {
     > h1 {
       font-size: 2.4rem;
-      font-weight: bold;
+      font-weight: 400;
     }
 
     > h3 {
-      font-size: 1.4rem;
+      display: flex;
+      justify-content: space-between;
+
+      font-size: 1.2rem;
       font-weight: normal;
       color: ${({ theme }) => theme.colors.orangePrimary};
+
+      span {
+        color: ${({ theme }) => theme.colors.greenPrimary};
+      }
     }
   }
   > h2 {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: normal;
     color: ${({ theme }) => theme.colors.gray};
   }
@@ -53,7 +60,7 @@ export const BuyContainer = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
+  width: 100%;
   margin-bottom: 1.6rem;
 
   aside {

@@ -1,89 +1,85 @@
 import styled from 'styled-components'
-import { border } from '../constants'
+import { border, effects } from '../constants'
 import device from '../constants/breakPoints'
 
 export const Container = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  margin: 0 auto;
+
+  max-width: 119.6rem;
 `
 
 export const BannerContainer = styled.div`
   display: flex;
   width: 100vw;
-  height: 75vw;
+  height: 100vw;
   background: ${({ theme }) => theme.colors.gray};
   max-height: 39.8rem;
   max-width: 120rem;
   margin: 0 auto 3.6rem;
+  height: fit-content;
 
   img {
     width: 100%;
-    height: 100%;
+    height: fit-content;
+    object-fit: contain;
+
+    box-shadow: ${effects.dropShadow};
   }
 
-  @media ${device.tablet} {
+  @media ${device.laptopL} {
     border-radius: ${border.borderRadius};
     width: calc(100vw - calc(12.2rem * 2));
 
     margin: 5.6rem auto;
+
     img {
-      border-radius: ${border.borderRadius};
+      height: 100%;
+
+      border-radius: 0.8rem;
     }
+  }
+
+  @media ${device.desktopL} {
   }
 `
 
 export const OffersContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: block;
+  overflow: auto;
+  width: 100%;
+
+  @media ${device.laptopL} {
+    overflow: visible;
+  }
 `
 
 export const OffersTopTitle = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+  align-items: flex-start;
 
-  section {
-    display: flex;
-    align-items: center;
+  margin-bottom: 2.4rem;
+  margin-left: 1.6rem;
 
-    svg {
-      color: ${({ theme }) => theme.colors.orangePrimary};
-      font-size: 1.6rem;
-    }
-
-    span {
-      font-weight: bold;
-      font-size: 2.4rem;
-      margin-left: 1.6rem;
-    }
-  }
+  width: 100%;
 
   @media ${device.tablet} {
-    section {
-      span {
-        font-size: 4rem;
-      }
-    }
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-left: 0;
   }
-`
-export const Filter = styled.div`
-  display: flex;
-  flex-direction: column;
 `
 
 export const GridContainer = styled.div`
   display: grid;
-
-  @media (min-width: 500px) {
-    grid-template-columns: repeat(2, 50%);
-  }
-  @media ${device.laptop} {
-    grid-template-columns: repeat(3, 33%);
-  }
-  @media ${device.laptopL} {
-    grid-template-columns: repeat(4, 25%);
-  }
-  @media ${device.desktopL} {
-    grid-template-columns: repeat(5, 20%);
-  }
+  grid-template-columns: repeat(5, 1fr);
+  grid-column-gap: 1.6rem;
+  grid-row-gap: 1.6rem;
 `

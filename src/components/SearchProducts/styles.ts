@@ -1,4 +1,4 @@
-import { border } from '@/styles/constants'
+import { border, effects } from '@/styles/constants'
 import device from '@/styles/constants/breakPoints'
 import styled from 'styled-components'
 
@@ -7,14 +7,13 @@ export const Container = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  border: 1px solid ${({ theme }) => theme.colors.gray};
-  border-radius: ${border.borderRadius};
-  border-color: ${({ theme }) => theme.colors.gray};
+  border-radius: 0.8rem;
+  box-shadow: ${effects.dropShadow};
 
-  padding: 0.4rem;
+  padding: 0.8rem;
 
   height: 3.2rem;
-  width: 50%;
+  width: 40%;
   max-width: 51.2rem;
 
   input {
@@ -22,24 +21,36 @@ export const Container = styled.div`
     width: 80%;
     height: 2.8rem;
 
+    font-size: 1.6rem;
+    color: ${({ theme }) => theme.colors.gray};
+    font-weight: 400;
+
     &::placeholder {
       color: transparent;
     }
   }
 
   svg {
-    margin: 1rem;
     height: 1.2rem;
+    width: 1.2rem;
     color: ${({ theme }) => theme.colors.gray};
   }
 
   @media ${device.tablet} {
     height: 4.8rem;
+    padding: 1.6rem;
+
     input {
-      margin: 0.6rem;
       &::placeholder {
+        font-size: 1.6rem;
         color: ${({ theme }) => theme.colors.gray};
+        font-weight: 400;
       }
+    }
+
+    svg {
+      height: 1.6rem;
+      width: 1.6rem;
     }
   }
 `

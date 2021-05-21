@@ -1,24 +1,25 @@
 import styled, { css } from 'styled-components'
-import { breakPoints as device } from '@/styles/constants'
+import { breakPoints as device, effects, transitions } from '@/styles/constants'
 
 export const Main = styled.header``
 export const HeaderUp = styled.section`
-  padding: 1.6rem;
   background: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100vw;
-  max-width: 120rem;
   margin: 0 auto;
-  overflow: hidden;
-  height: 7rem;
+  height: 7.2rem;
+  padding: 0 0.8rem;
+
   img {
     height: 4.8rem;
     cursor: pointer;
   }
 
   @media ${device.tablet} {
+    padding: 0 12rem;
+    height: 10.4rem;
     img {
       height: 6rem;
       width: 12rem;
@@ -29,22 +30,29 @@ export const ManagerArea = styled.section`
   > aside {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
 
     a {
+      font-weight: 100;
       font-size: 1.2rem;
       color: ${({ theme }) => theme.colors.black};
+      margin: 0 1.6rem;
+
+      & + a {
+        font-weight: bold;
+        color: ${({ theme }) => theme.colors.yellowPrimary};
+      }
+
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.lightGray};
+        transition: ${transitions.hover};
+      }
     }
   }
 
   > section {
     display: flex;
     align-items: center;
-
-    a {
-      & + a {
-        margin-left: 1.6rem;
-      }
-    }
   }
 
   @media ${device.tablet} {
@@ -53,6 +61,7 @@ export const ManagerArea = styled.section`
       align-items: center;
       a {
         font-size: 1.6rem;
+        padding: 0.8rem;
         & + a {
           margin-left: 1.6rem;
         }
@@ -62,6 +71,9 @@ export const ManagerArea = styled.section`
 `
 export const Manager = styled.a`
   cursor: pointer;
+  display: flex;
+  align-items: center;
+
   div {
     display: none;
   }
@@ -91,34 +103,47 @@ export const Manager = styled.a`
     }
   }
 
+  > svg {
+    margin-right: 0.8rem;
+  }
+
   @media ${device.tablet} {
-    display: flex;
-    align-items: center;
-
     div {
-      margin-left: 1.6rem;
-      display: flex;
-
       flex-direction: column;
       color: ${({ theme }) => theme.colors.black};
       font-size: 1.2rem;
 
       span + span {
+        font-size: 1.2rem;
         color: ${({ theme }) => theme.colors.gray};
       }
     }
 
+    aside {
+      span {
+        display: initial;
+      }
+    }
+
     svg {
-      margin-left: 1.6rem;
+      font-size: 1.2rem;
     }
   }
+
   @media ${device.laptop} {
     div {
+      display: flex;
+      text-align: right;
       font-size: 1.6rem;
     }
 
     svg {
       margin-left: 1.6rem;
+    }
+
+    > svg {
+      display: initial;
+      margin-right: 0.8rem;
     }
   }
 `
@@ -130,18 +155,16 @@ export const Burguer = styled.div<PropsBurguer>`
   label {
     div {
       background: transparent;
-      border-radius: 50%;
       width: 60px;
-      height: 60px;
-
       span {
         position: relative;
         display: block;
         background: #fff;
-        width: 30px;
+        width: 24px;
         height: 2px;
+        border-radius: 0.4rem;
         top: 50%;
-        left: 15px;
+        left: 16px;
         transition: 0.5s ease-in-out;
 
         &:before,
@@ -153,14 +176,15 @@ export const Burguer = styled.div<PropsBurguer>`
           height: 100%;
           position: absolute;
           transition: 0.5s ease-in-out;
+          border-radius: 0.4rem;
         }
 
         &:before {
-          top: -10px;
+          top: -8px;
         }
 
         &:after {
-          bottom: -10px;
+          bottom: -8px;
         }
       }
     }
@@ -195,7 +219,7 @@ export const Burguer = styled.div<PropsBurguer>`
         : css`
             display: none;
           `}
-    width:100vw;
+    width: 100vw;
     height: 100vh;
     position: absolute;
     z-index: 10;
@@ -212,31 +236,14 @@ export const Burguer = styled.div<PropsBurguer>`
 
       div {
         border-top: 2px solid ${({ theme }) => theme.colors.yellowPrimary};
+        border-bottom: 2px solid ${({ theme }) => theme.colors.yellowPrimary};
         width: 100vw;
         background: ${({ theme }) => theme.colors.orangePrimary};
         section {
-          width: 90%;
+          width: 100%;
           display: flex;
           flex-direction: column;
-          margin: 0 auto;
-          padding: 1.6rem 0;
-          a {
-            color: ${({ theme }) => theme.colors.white};
-            align-items: center;
-
-            svg {
-              color: ${({ theme }) => theme.colors.white};
-              font-size: 1.6rem;
-              margin-right: 0.8rem;
-            }
-
-            & + a {
-              margin-top: 0.8rem;
-              padding-top: 0.8rem;
-
-              border-top: 1px solid ${({ theme }) => theme.colors.yellowPrimary};
-            }
-          }
+          margin: auto;
         }
       }
     }
@@ -250,58 +257,69 @@ export const Burguer = styled.div<PropsBurguer>`
 export const HeaderDown = styled.section`
   background: ${props => props.theme.colors.orangePrimary};
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  height: 4rem;
+  height: 3.2rem;
 
-  button {
-    background: transparent;
-    border: 0;
-    color: ${({ theme }) => theme.colors.white};
-    font-size: 1.2rem;
-    padding: 1rem 1.6rem;
-
-    svg {
-      font-size: 1.2rem;
-      color: ${({ theme }) => theme.colors.white};
-    }
-  }
+  box-shadow: ${effects.dropShadow};
 
   aside {
     display: none;
-    a {
-      color: ${({ theme }) => theme.colors.white};
-    }
   }
   @media ${device.tablet} {
-    padding: 1.6rem;
-    height: 4rem;
+    height: 4.8rem;
     justify-content: initial;
 
     width: 100%;
 
-    button {
-      margin-left: 10%;
-    }
-
     aside {
-      margin-left: 10%;
       display: flex;
 
-      border-left: 1px solid ${({ theme }) => theme.colors.yellowPrimary};
+      border-left: 2px solid ${({ theme }) => theme.colors.yellowPrimary};
+      padding: 0 12rem;
 
-      a {
-        display: flex;
-        align-items: center;
+      width: 100%;
+      height: 4.8rem;
+    }
+  }
+`
 
-        font-weight: bold;
-        font-size: 1.6rem;
-        margin-left: 2.4rem;
+interface HeaderLinkProps {
+  isSelected: boolean
+}
 
-        svg {
-          margin-right: 0.8rem;
-        }
+export const HeaderLink = styled.a<HeaderLinkProps>`
+  ${props =>
+    props.isSelected &&
+    css`
+      background-color: ${({ theme }) => theme.colors.yellowPrimary};
+
+      @media ${device.tablet} {
+        border-bottom: 4px solid ${({ theme }) => theme.colors.yellowSecundary};
       }
+    `}
+
+  color: ${({ theme }) => theme.colors.white};
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.6rem;
+
+  font-size: 1.6rem;
+  font-weight: bold;
+
+  svg {
+    color: ${({ theme }) => theme.colors.white};
+    font-size: 1.6rem;
+    margin-right: 0.8rem;
+  }
+
+  @media ${device.tablet} {
+    font-weight: bold;
+    font-size: 1.6rem;
+    padding: 0 1.2rem;
+
+    svg {
+      margin-right: 0.8rem;
     }
   }
 `

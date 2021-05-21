@@ -8,7 +8,7 @@ export const BuyQuantity = styled.section`
   .quantity-selector {
     display: flex;
     align-items: center;
-    border: 1px solid ${({ theme }) => theme.colors.gray};
+    border: 0.25px solid ${({ theme }) => theme.colors.lightGray};
     border-radius: 0.8rem;
 
     button {
@@ -19,19 +19,31 @@ export const BuyQuantity = styled.section`
       background: transparent;
       border: none;
       width: 3.2rem;
-    }
-    .quantity-label {
-      width: 3.2rem;
-    }
-  }
+      height: 3.2rem;
 
-  .quantity-label {
-    border-left: 1px solid ${({ theme }) => theme.colors.gray};
-    border-right: 1px solid ${({ theme }) => theme.colors.gray};
+      svg {
+        font-size: 0.8rem;
+        margin: 0 auto;
+      }
+    }
   }
 
   span {
     font-size: 1.6rem;
+  }
+
+  .quantity-label {
+    border-left: 0.25px solid ${({ theme }) => theme.colors.lightGray};
+    border-right: 0.25px solid ${({ theme }) => theme.colors.lightGray};
+    height: 3.2rem;
+
+    padding: 0 0.8rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .unit {
     padding: 0.8rem 0 0.8rem 1.2rem;
   }
 `

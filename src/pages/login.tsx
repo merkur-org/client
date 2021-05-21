@@ -5,6 +5,7 @@ import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 
 import validateLogin from '@/utils/validateLogin'
+import phoneInputMask from '@/utils/phoneInputMask'
 import { useAuth } from '@/hooks/auth'
 
 import Button from '@/components/Button'
@@ -12,6 +13,7 @@ import Input from '@/components/Input'
 import TabMenu from '@/components/TabMenu'
 import withUserLogged from '@/components/WithUserLogged'
 import { Error } from '@/components/ErrorLabel/styles'
+import BackButton from '@/components/BackButton'
 
 import { FaCheck } from 'react-icons/fa'
 import {
@@ -24,7 +26,7 @@ import {
   ButtonContainer,
   LinksContainer
 } from '@/styles/pages/login'
-import BackButton from '@/components/BackButton'
+import ModalMessage from '@/components/ModalMessages'
 interface formProps {
   cpfTab: boolean
   emailTab: boolean
@@ -41,6 +43,7 @@ const Login: NextPage = () => {
   const [emailSelected, setEmailSelected] = useState(true)
   const [cpfSelected, setCpfSelected] = useState(false)
   const [errors, setErrors] = useState()
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     setErrors(undefined)
@@ -51,19 +54,23 @@ const Login: NextPage = () => {
     try {
       const data = await validateLogin(formData, formRef) // validar o formulário
       if (data) {
+        setIsLoading(true)
+
         await signIn(data)
         router.push('/')
       }
     } catch (err) {
       formRef.current.setErrors(err)
       setErrors(err)
+
+      setIsLoading(false)
     }
   }, [])
 
   return (
     <>
       <BackButton />
-      <Container>
+      <Container isLoading={isLoading}>
         <BackgroundWhiteRectangle>
           <WelcomeContainer>
             <h1>BEM VINDO</h1>
@@ -103,12 +110,24 @@ const Login: NextPage = () => {
                   <InputContainer>
                     <Input name="email" type="email" label="Email" />
                   </InputContainer>
-                  <Input name="password" type="password" label="Senha" />
+                  <Input
+                    name="password"
+                    type="password"
+                    label="Senha"
+                    subLabel="esqueceu sua senha"
+                  />
                   <LinksContainer>
                     <a href="forgotPassword">esqueceu sua senha?</a>
                     <a href="noRegister">não possui cadastro?</a>
                   </LinksContainer>
-                  {errors && <Error>Email ou Senha incorreto(s)</Error>}
+                  {errors && (
+                    <ModalMessage
+                      message="Usuário ou senha incorretos"
+                      type="error"
+                      open={errors}
+                      timer={2000}
+                    />
+                  )}
                 </>
               )}
 
@@ -117,8 +136,20 @@ const Login: NextPage = () => {
                   <InputContainer>
                     <Input name="cpf" type="text" label="CPF" />
                   </InputContainer>
-                  <Input name="phone" type="string" label="Telefone" />
-                  {errors && <Error>Cpf ou Telefone incorreto(s)</Error>}
+                  <Input
+                    name="phone"
+                    type="string"
+                    label="Telefone"
+                    mask={phoneInputMask}
+                  />
+                  {errors && (
+                    <ModalMessage
+                      message="CPF ou telefone incorretos"
+                      type="error"
+                      open={errors}
+                      timer={2000}
+                    />
+                  )}
                 </>
               )}
               <ButtonContainer>

@@ -1,25 +1,76 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { MdLocationOn } from 'react-icons/md'
-import { FaShoppingBasket, FaUserAlt } from 'react-icons/fa'
 
+import { useRouter } from 'next/router'
+import { FaShoppingBasket, FaUserAlt } from 'react-icons/fa'
+import { FiMapPin, FiChevronDown } from 'react-icons/fi'
 import {
   Main,
   HeaderUp,
   ManagerArea,
   Manager,
   Burguer,
-  HeaderDown
+  HeaderDown,
+  HeaderLink
 } from './styles'
 
+import Dropdown from '@/components/Dropdown'
+
 import { SearchProducts } from '@/components'
+import { useAuth } from '@/hooks/auth'
+import { useBag } from '@/hooks/bag'
+import { GetStaticProps } from 'next'
+
+interface TabsProps {
+  name: string
+  path: string
+  selected: boolean
+}
 
 const Header: React.FC = () => {
+  const { user, signOut } = useAuth()
+  const { bagItems } = useBag()
+
+  const router = useRouter()
+
   const [openDropDown, setOpenDropDown] = useState(false)
+  const [bagNotification, setBagNotification] = useState(0)
+  const [tabs, setTabs] = useState<TabsProps[]>([])
+
+  useEffect(() => {
+    setTabs([
+      {
+        name: 'Produtos',
+        path: '/',
+        selected: router.pathname === '/'
+      },
+      {
+        name: 'Meus Pedidos',
+        path: '/meus-pedidos',
+        selected: router.pathname === '/meus-pedidos'
+      }
+    ])
+  }, [router.pathname])
+
+  useEffect(() => {
+    if (router.pathname !== '/cesta') {
+      setBagNotification(oldState => oldState + 1)
+    } else {
+      setBagNotification(0)
+    }
+  }, [bagItems])
 
   const handleOpenDropDown = useCallback(() => {
     setOpenDropDown(state => !state)
   }, [])
+
+  const handleClearNotifications = useCallback(() => {
+    setBagNotification(0)
+  }, [])
+  async function handleSignOut() {
+    signOut()
+    router.reload()
+  }
 
   return (
     <Main>
@@ -30,60 +81,58 @@ const Header: React.FC = () => {
         <SearchProducts />
 
         <ManagerArea>
-          {false ? (
+          {!user ? (
             <aside>
-              <Link href="/">
+              <Link href="/cadastro">
                 <a> cadastre-se</a>
               </Link>
-              <Link href="/">
+              <Link href="/login">
                 <a>entrar</a>
               </Link>
             </aside>
           ) : (
             <section>
               <Link href="/cesta">
-                <Manager>
+                <Manager onClick={handleClearNotifications}>
                   <div>Cesta</div>
                   <aside>
                     <FaShoppingBasket />
-
-                    <span>1</span>
+                    {bagNotification > 0 && (
+                      <span>
+                        {bagNotification < 9 ? bagNotification : '+9'}
+                      </span>
+                    )}
                   </aside>
                 </Manager>
               </Link>
-              <Link href="/">
-                <Manager>
-                  <div>
-                    <span>Daniel Gustavo Favero</span>
-                    <span>danielfavero17@gmail.com</span>
-                  </div>
-                  <aside>
-                    <FaUserAlt />
-                    <span>1</span>
-                  </aside>
-                </Manager>
-              </Link>
+              <Dropdown
+                buttonContent={
+                  <Manager>
+                    <FiChevronDown />
+                    <div>
+                      <span>{user.name}</span>
+                      <span>{user.email}</span>
+                    </div>
+                    <aside>
+                      {' '}
+                      <FaUserAlt />
+                    </aside>
+                  </Manager>
+                }
+              >
+                <li onClick={handleSignOut}>Sair</li>
+              </Dropdown>
             </section>
           )}
         </ManagerArea>
       </HeaderUp>
       <HeaderDown>
-        <button>
-          <MdLocationOn /> Cidade - UF
-        </button>
         <aside>
-          <Link href="/">
-            <a>Categorias</a>
-          </Link>
-          <Link href="/">
-            <a>Produtos</a>
-          </Link>
-          <Link href="/">
-            <a>Listas semanais</a>
-          </Link>
-          <Link href="/">
-            <a>Meus pedidos</a>
-          </Link>
+          {tabs.map(tab => (
+            <Link href={tab.path} key={tab.name}>
+              <HeaderLink isSelected={tab.selected}>{tab.name}</HeaderLink>
+            </Link>
+          ))}
         </aside>
 
         <Burguer openMenu={openDropDown}>
@@ -103,18 +152,13 @@ const Header: React.FC = () => {
             <div className="menu-links">
               <div>
                 <section>
-                  <Link href="/">
-                    <a>Categorias</a>
-                  </Link>
-                  <Link href="/">
-                    <a>Produtos</a>
-                  </Link>
-                  <Link href="/">
-                    <a>Listas semanais</a>
-                  </Link>
-                  <Link href="/">
-                    <a>Meus pedidos</a>
-                  </Link>
+                  {tabs.map(tab => (
+                    <Link href={tab.path} key={tab.name}>
+                      <HeaderLink isSelected={tab.selected}>
+                        {tab.name}
+                      </HeaderLink>
+                    </Link>
+                  ))}
                 </section>
               </div>
             </div>
@@ -124,5 +168,4 @@ const Header: React.FC = () => {
     </Main>
   )
 }
-
 export default Header

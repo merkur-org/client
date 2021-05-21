@@ -13,6 +13,7 @@ import { Error } from '@/components/ErrorLabel/styles'
 import WithUserLogged from '@/components/WithUserLogged'
 
 import validateRegister from '@/utils/validateRegister'
+import phoneInputMask from '@/utils/phoneInputMask'
 import { useAuth } from '@/hooks/auth'
 
 import {
@@ -27,6 +28,7 @@ import {
   BottomContainer
 } from '@/styles/pages/cadastro'
 import { FaCheck } from 'react-icons/fa'
+import ModalMessage from '@/components/ModalMessages'
 
 interface formProps {
   pessoal: boolean
@@ -48,6 +50,7 @@ const Cadastro: React.FC = () => {
   const [cpfSelected, setCpfSelected] = useState(true)
   const [cnpjSelected, setCnpjSelected] = useState(false)
   const [errors, setErrors] = useState()
+  const [isLoading, setisLoading] = useState(false)
 
   useEffect(() => {
     setErrors(undefined)
@@ -59,19 +62,22 @@ const Cadastro: React.FC = () => {
       const data = await validateRegister(formData, formRef)
 
       if (data) {
+        setisLoading(true)
+
         await signUp(data)
         router.push('/')
       }
     } catch (err) {
       formRef.current.setErrors(err)
       setErrors(err)
+      setisLoading(false)
     }
   }, [])
 
   return (
     <>
       <BackButton />
-      <Container>
+      <Container isLoading={isLoading}>
         <BackgroundWhiteRectangle>
           <WelcomeContainer>
             <h1>BEM VINDO</h1>
@@ -108,7 +114,12 @@ const Cadastro: React.FC = () => {
                     <Input name="email" type="email" label="Email" />
                   </InputContainer>
                   <InputContainer>
-                    <Input name="phone" type="text" label="Telefone" />
+                    <Input
+                      name="phone"
+                      type="text"
+                      label="Telefone"
+                      mask={phoneInputMask}
+                    />
                   </InputContainer>
                   {cpfSelected && (
                     <InputContainer>
@@ -153,8 +164,15 @@ const Cadastro: React.FC = () => {
                   link="/"
                   linkLabel="termos de condições"
                 />
-                {errors && <Error>Algo deu errado, tente novamente</Error>}
               </BottomContainer>
+              {errors && (
+                <ModalMessage
+                  message="Ocorreu um erro, tente novamente"
+                  type="error"
+                  open={errors}
+                  timer={2000}
+                />
+              )}
             </Form>
           </FormContainer>
         </BackgroundWhiteRectangle>

@@ -18,7 +18,7 @@ interface SignUpCredentials {
   cnpj?: string
 }
 
-interface User {
+export interface User {
   id: string
   name: string
   email: string
@@ -65,12 +65,12 @@ export const AuthProvider: React.FC = ({ children }) => {
         response = await api.post('/sessions', { cpf: cpf, phone: phone })
       }
 
+      console.log(response)
+
       const { token, user } = response.data
 
       Cookie.set('token', token)
       Cookie.set('user', JSON.stringify(user))
-
-      api.defaults.headers.authorization = `Bearer ${token}`
 
       setData({ token, user })
     },
@@ -80,35 +80,34 @@ export const AuthProvider: React.FC = ({ children }) => {
   const signOut = useCallback(() => {
     Cookie.remove('token')
     Cookie.remove('user')
+    Cookie.remove('bag')
 
     setData({} as AuthData)
   }, [])
 
   const signUp = useCallback(
     async ({ email, password, cpf, phone, cnpj, name }: SignUpCredentials) => {
-      let response
       if (cpf) {
         console.log({ email, password, cpf, phone, cnpj, name })
-        response = await api.post('/users', {
-          name: name,
-          cpf: cpf,
-          phone: phone,
-          email: email,
-          password: password,
-          role: 'r'
-        })
+        await api
+          .post('/users', {
+            name: name,
+            cpf: cpf,
+            phone: phone,
+            email: email,
+            password: password
+          })
+          .then(() => signIn({ email: email, password: password }))
       } else {
-        response = await api.post('/sessions', {
-          name: name,
-          cnpj: cnpj,
-          phone: phone,
-          email: email,
-          password: password,
-          role: 'r'
-        })
-      }
-      if (response) {
-        await signIn({ email: response.email, password: response.password })
+        await api
+          .post('/users', {
+            name: name,
+            cnpj: cnpj,
+            phone: phone,
+            email: email,
+            password: password
+          })
+          .then(() => signIn({ email: email, password: password }))
       }
     },
     []

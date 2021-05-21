@@ -3,53 +3,91 @@ import {
   BannerContainer,
   GridContainer,
   OffersContainer,
-  OffersTopTitle,
-  Filter
+  OffersTopTitle
 } from '@/styles/pages/Home'
 import SEO from '@/components/SEO'
 import ProductCard from '@/components/Product'
-import { FaDotCircle, FaArrowRight } from 'react-icons/fa'
-import Dropdown from '@/components/Dropdown'
+import { FaLongArrowAltRight } from 'react-icons/fa'
 
-const a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+import api from '@/services/api'
 
-const Home: React.FC = () => {
+import { IProductsDTO } from '@/dtos/IProductsDTO'
+
+import Title from '@/components/Title'
+import Filter from '@/components/Filter'
+import Pagination from '@/components/Pagination'
+
+import { GetServerSideProps, NextPage } from 'next'
+interface HomeProps {
+  limit: number
+  page: number
+  total_count: number
+  listProducts: IProductsDTO[]
+}
+
+const Home: NextPage<HomeProps> = ({
+  page,
+  limit,
+  total_count,
+  listProducts
+}) => {
   return (
     <Container>
       <SEO title="HOME" image="/banner.png" />
-      <BannerContainer>
-        <img src="http://placeimg.com/640/480/business" alt="" />
-      </BannerContainer>
+      {page <= 1 && (
+        <BannerContainer>
+          <img src="banner.png" alt="" />
+        </BannerContainer>
+      )}
 
+      <OffersTopTitle>
+        <Title title="Ofertas" />
+        <Filter
+          buttonContent={
+            <>
+              <p>Filtrar por</p>
+              <FaLongArrowAltRight />
+            </>
+          }
+        >
+          <li>Adicionados Recentemente</li>
+          <li>Categorias</li>
+          <li>Menor Preço</li>
+          <li>Maior Preço</li>
+          <li>Ordem Alfabética</li>
+          <li>Promoções</li>
+        </Filter>
+      </OffersTopTitle>
       <OffersContainer>
-        <OffersTopTitle>
-          <section>
-            <FaDotCircle />
-            <span>Ofertas</span>
-          </section>
-          <Filter>
-            <Dropdown text="Filtrar por" IconButton={<FaArrowRight />}>
-              <li>Voce tem novo convite</li>
-              <li>Que tal aproveitar</li>
-            </Dropdown>
-          </Filter>
-        </OffersTopTitle>
         <GridContainer>
-          {a.map(b => (
-            <ProductCard
-              key={b}
-              photo="photo"
-              productName="Batata"
-              category="Legumes"
-              price="10"
-              unity="kg"
-              quantity={1}
-            />
-          ))}
+          {listProducts &&
+            listProducts.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
         </GridContainer>
       </OffersContainer>
+      <Pagination
+        page={page}
+        itemsPerPage={page >= 1 ? 10 : 15}
+        total_count={total_count}
+      />
     </Container>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const page = query.page || 1
+
+  const { data } = await api.get(`/products/in-list?type=offer&page=${page}`)
+  const { data: listProducts, limit, total_count } = data
+  return {
+    props: {
+      page,
+      limit,
+      total_count,
+      listProducts
+    }
+  }
 }
 
 export default Home

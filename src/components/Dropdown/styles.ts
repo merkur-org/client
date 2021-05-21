@@ -1,69 +1,83 @@
 import styled from 'styled-components'
 
-import { effects } from '@/styles/constants'
+import { breakPoints, effects, transitions } from '@/styles/constants'
 
 interface styleProps {
   asideOpen: boolean
 }
-export const DropdownContent = styled.div`
-  --arrowWidth: 8px;
-  --arrowRight: 16px;
+export const DropdownContent = styled.ul`
   opacity: 0;
   visibility: hidden;
+  float: right;
   position: absolute;
-  background-color: ${({ theme }) => theme.colors.gray};
-  min-width: 10rem;
-  width: fit-content;
-  min-height: 2rem;
-  height: fit-content;
-  right: calc(50% - var(--arrowRight) - var(--arrowWidth));
-  margin-top: 0.8rem;
   z-index: 100;
-  border-radius: 0.4rem;
+  right: 0;
+  top: 4.8rem;
+
+  padding: 1.6rem;
+
+  width: fit-content;
+  height: fit-content;
+  white-space: nowrap;
+
+  background-color: ${({ theme }) => theme.colors.white};
   box-shadow: ${effects.dropShadow};
+
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 0.8rem 0 0.6rem;
-  &:before,
-  &:after {
-    content: '';
-    position: absolute;
-    height: 0px;
-    width: 0px;
-    right: var(--arrowRight);
-    border-width: var(--arrowWidth);
-    border-style: solid;
-  }
-  &:before {
-    border-color: transparent transparent ${({ theme }) => theme.colors.gray}
-      transparent;
-    bottom: calc(100% + 0.1rem);
-    filter: blur(2px);
-    right: calc(var(--arrowRight) - 0.1rem);
-    border-width: calc(var(--arrowWidth) + 0.1rem);
-    z-index: 80;
-  }
-  &:after {
-    border-color: transparent transparent ${({ theme }) => theme.colors.gray}
-      transparent;
-    bottom: 100%;
-    z-index: 100;
+  align-items: flex-end;
+
+  li {
+    font-size: 1.6rem;
+    text-align: right;
+
+    cursor: pointer;
+
+    width: 100%;
+
+    & + li {
+      margin-top: 0.8rem;
+    }
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.orangePrimary};
+    }
   }
 `
 export const BodyButton = styled.div<styleProps>`
   border: 0;
   background: transparent;
   position: relative;
+
   cursor: default;
-  > span {
+  > button {
     background: transparent;
     border: 0;
-    width: 100%;
+    width: fit-content;
     cursor: pointer;
+    transition: all ${transitions.hover};
+
+    display: flex;
+    align-items: center;
+    font-size: 1.6rem;
+
+    margin-left: 3.2rem;
+    padding: 0.8rem;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.lightGray};
+    }
+
+    &:active {
+      font-size: 1.2rem;
+    }
   }
   ${props => props.asideOpen && DropdownContent} {
     opacity: 1;
     visibility: visible;
+  }
+
+  ${breakPoints.tablet} {
+    margin: 0;
   }
 `
