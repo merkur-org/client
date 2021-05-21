@@ -2,10 +2,8 @@ import styled from 'styled-components'
 
 export const Table = styled.table`
   width: 100%;
-
   font-size: 1.6rem;
   margin-top: 2.4rem;
-
   border-spacing: 0;
   display: block;
   overflow: auto;
@@ -15,16 +13,12 @@ export const Table = styled.table`
   th {
     width: 100%;
     white-space: nowrap;
-
     background-color: ${({ theme }) => theme.colors.orangePrimary};
     padding: 0.8rem 5.6rem;
-
     color: ${({ theme }) => theme.colors.white};
-
     &:first-child {
       border-radius: 1.6rem 0 0 0;
     }
-
     &:last-child {
       border-radius: 0 1.6rem 0 0;
     }
@@ -38,12 +32,12 @@ export const Table = styled.table`
     border-bottom: 0.1rem solid ${({ theme }) => theme.colors.orangePrimary};
     width: 100%;
     white-space: nowrap;
+    padding: 0 4.8rem;
   }
 
   .product-image {
     display: flex;
     align-items: center;
-
     img {
       width: fit-content;
       object-fit: cover;
@@ -65,7 +59,6 @@ export const Table = styled.table`
     font-size: 2.4rem;
     text-align: center;
     font-weight: 400;
-
     color: ${({ theme }) => theme.colors.gray};
   }
 
@@ -75,13 +68,10 @@ export const Table = styled.table`
     font-size: 1.6rem;
     font-weight: 100;
     width: 100%;
-
     white-space: nowrap;
     padding: 0 2.4rem;
-
     display: flex;
     justify-content: center;
-
     svg {
       margin-right: 0.8rem;
     }
@@ -100,17 +90,13 @@ export const Table = styled.table`
     text-align: center;
     font-weight: 100;
     padding: 2.4rem 0;
-
     color: ${({ theme }) => theme.colors.gray};
-
-    padding: 0 4.8rem;
   }
 
   .text {
     font-size: 1.6rem;
     text-align: center;
     font-weight: 400;
-
     color: ${({ theme }) => theme.colors.gray};
   }
 `

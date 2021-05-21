@@ -35,7 +35,7 @@ export const OrdersProvider: React.FC = ({ children }) => {
 
   const addOrder = useCallback(async (order: IOrderDTO) => {
     console.log(order)
-    clearBag()
+    // clearBag()
   }, [])
 
   return (

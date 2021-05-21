@@ -14,7 +14,7 @@ const ModalMessage: React.FC<MessagesProps> = ({
   type
 }) => {
   return (
-    <Container isOpen={open} time={timer} type={type}>
+    <Container isOpen={open} type={type}>
       <p>{message}</p>
     </Container>
   )
