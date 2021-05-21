@@ -1,10 +1,10 @@
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useRef, useCallback, useEffect, Dispatch, SetStateAction } from 'react'
 import { BodyButton, DropdownContent } from './styles'
-
-import ReactSelect from 'react-select'
-
 interface DropdownProps {
   buttonContent?: React.ReactNode
+  label?: React.ReactNode
+  isOpenModalFilter: boolean
+  setIsOpenModalFilter: Dispatch<SetStateAction<boolean>>
 }
 /**
  *
@@ -17,34 +17,40 @@ interface DropdownProps {
  * </Dropdown>
  * )
  */
-const Filter: React.FC<DropdownProps> = ({ buttonContent, children }) => {
+const Filter: React.FC<DropdownProps> = ({
+  buttonContent,
+  isOpenModalFilter,
+  setIsOpenModalFilter,
+  children,
+  label = ''
+}) => {
   const filterRef = useRef<HTMLDivElement>(null)
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedFilter, setSelectedFilter] = useState(children[0])
 
   const handleClick = useCallback(() => {
-    setIsOpen(!isOpen)
-  }, [isOpen])
+    setIsOpenModalFilter(!isOpenModalFilter)
+  }, [isOpenModalFilter])
 
   useEffect(() => {
     document.addEventListener('mousedown', (event: MouseEvent) => {
       if (
         event.target &&
         !filterRef.current?.contains(event.target as Node) &&
-        isOpen
+        isOpenModalFilter
       ) {
-        setIsOpen(false)
+        setIsOpenModalFilter(false)
       }
     })
-  }, [isOpen])
+  }, [isOpenModalFilter])
 
   return (
     <BodyButton ref={filterRef}>
       <button onClick={handleClick}>
         {buttonContent}
-        <span>{selectedFilter}</span>
+        <span>{label}</span>
       </button>
-      <DropdownContent asideOpen={isOpen}>{children}</DropdownContent>
+      <DropdownContent asideOpen={isOpenModalFilter}>
+        {children}
+      </DropdownContent>
     </BodyButton>
   )
 }
