@@ -44,7 +44,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     const user = Cookie.get('user')
 
     if (token && user) {
-      api.defaults.headers.authorization = `Bearer ${token}`
+      api.defaults.headers.Authorization = `Bearer ${token}`
 
       return { token, user: JSON.parse(user) }
     }

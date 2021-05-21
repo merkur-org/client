@@ -34,7 +34,9 @@ export const OrdersProvider: React.FC = ({ children }) => {
   })
 
   const addOrder = useCallback(async (order: IOrderDTO) => {
-    console.log(order)
+    const res = await api.post('/orders', order)
+
+    console.log(res.data)
     clearBag()
   }, [])
 

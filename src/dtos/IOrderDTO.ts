@@ -22,11 +22,9 @@ export interface IOrderDTO {
   payment_status: IPaymentStatus
   sales_type: ISalesType
   delivery_point_id: string
-  user_id: string
   list_id: string
   details: {
     product_id: string
-    unit_price: number
     quantity: number
     discount: number
   }[]

@@ -9,7 +9,7 @@ const SearchProducts: React.FC = () => {
   const router = useRouter()
   const handleSubmit = () => {
     if (search.length === 0) {
-      return
+      router.push('/')
     }
 
     router.push(`/?search=${search}`)
@@ -20,6 +20,9 @@ const SearchProducts: React.FC = () => {
         type="text"
         placeholder="Procure por produtos de sua preferência..."
         onChange={e => setSearch(e.target.value)}
+        onKeyDown={(e: React.KeyboardEvent) =>
+          e.key === 'Enter' && handleSubmit()
+        }
       />
       <FaSearch onClick={handleSubmit} />
     </Container>

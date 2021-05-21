@@ -103,20 +103,31 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
 
         setIsLoading(true)
 
+        const total = bagItems.reduce((accumulator: number, item) => {
+          accumulator += item.sale_price * item.quantity
+
+          return accumulator
+        }, 0)
+
         addOrder({
           date: new Date(),
           delivery_point_id: formData.delivery_point,
+          payment_status: 'processing',
+          payment_type: 'money',
+          final_value: total,
+          list_id: 'c74dd032-1568-4406-89e9-d0c80b526438',
+          sales_type: 'retail',
+          value: total,
           details:
             bagItems &&
             bagItems.map(item => {
               return {
                 product_id: item.id,
-                unit_price: item.sale_price,
                 quantity: item.quantity,
-                discount: 1
+                discount: 0
               }
             })
-        } as IOrderDTO)
+        })
 
         setSuccess(true)
       } catch (error) {
