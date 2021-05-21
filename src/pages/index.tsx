@@ -18,12 +18,36 @@ import Filter from '@/components/Filter'
 import Pagination from '@/components/Pagination'
 
 import { GetServerSideProps, NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 interface HomeProps {
   limit: number
   page: number
   total_count: number
   listProducts: IProductsDTO[]
 }
+const objectFilter = [
+  {
+    field: 'created_at',
+    order: 'asc',
+    laber: 'Adicionados Recentemente'
+  },
+  {
+    field: 'sale_price',
+    order: 'asc',
+    laber: 'Menor Preço'
+  },
+  {
+    field: 'sale_price',
+    order: 'desc',
+    laber: 'Maior Preço'
+  },
+  {
+    field: 'name',
+    order: 'asc',
+    laber: 'Ordem Alfabética'
+  }
+]
 
 const Home: NextPage<HomeProps> = ({
   page,
@@ -31,6 +55,19 @@ const Home: NextPage<HomeProps> = ({
   total_count,
   listProducts
 }) => {
+  const router = useRouter()
+  const [filterLabel, setFilterLabel] = useState('')
+  const [isOpenModalFilter, setIsOpenModalFilter] = useState(false)
+
+  const handleFilter = (positionFilter: number) => {
+    const { field, laber, order } = objectFilter[positionFilter]
+
+    setFilterLabel(laber)
+    setIsOpenModalFilter(false)
+
+    router.push(`/?sort_by=${field}&order=${order}`)
+  }
+
   return (
     <Container>
       <SEO title="HOME" image="/banner.png" />
@@ -43,6 +80,9 @@ const Home: NextPage<HomeProps> = ({
       <OffersTopTitle>
         <Title title="Ofertas" />
         <Filter
+          label={filterLabel}
+          isOpenModalFilter={isOpenModalFilter}
+          setIsOpenModalFilter={setIsOpenModalFilter}
           buttonContent={
             <>
               <p>Filtrar por</p>
@@ -50,12 +90,12 @@ const Home: NextPage<HomeProps> = ({
             </>
           }
         >
-          <li>Adicionados Recentemente</li>
-          <li>Categorias</li>
-          <li>Menor Preço</li>
-          <li>Maior Preço</li>
-          <li>Ordem Alfabética</li>
-          <li>Promoções</li>
+          <li onClick={() => handleFilter(0)}>Adicionados Recentemente</li>
+          {/* <li onClick={() => handleFilter('')}>Categorias</li> */}
+          <li onClick={() => handleFilter(1)}>Menor Preço</li>
+          <li onClick={() => handleFilter(2)}>Maior Preço</li>
+          <li onClick={() => handleFilter(3)}>Ordem Alfabética</li>
+          {/* <li onClick={() => handleFilter('')}>Promoções</li> */}
         </Filter>
       </OffersTopTitle>
       <OffersContainer>
@@ -72,11 +112,17 @@ const Home: NextPage<HomeProps> = ({
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const page = query.page || 1
+  const { page = 1, search, sort_by, order } = query
 
-  const { data } = await api.get(
-    `/products/in-list?type=offer&page=${page}&limit=${page > 1 ? 15 : 10}`
-  )
+  let url = `/products/in-list?type=offer&page=${page}&limit=${
+    page > 1 ? 15 : 10
+  }`
+
+  search && search.length > 0 && (url = url + `&name=${search}`)
+  sort_by && sort_by.length > 0 && (url = url + `&sort_by=${sort_by}`)
+  order && order.length > 0 && (url = url + `&order=${order}`)
+
+  const { data } = await api.get(url)
   const { data: listProducts, limit, total_count } = data
 
   return {
