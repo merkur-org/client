@@ -1,6 +1,6 @@
 import { PaginationComponent, PageButton } from './styles'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 interface IPaginationProps {
   page: number
   itemsPerPage: number
@@ -21,13 +21,16 @@ const Pagination: React.FC<IPaginationProps> = ({
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0)
 
   const pages = []
-  for (let i = 1; i <= Math.ceil(total_count / itemsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(total_count / 15); i++) {
     pages.push(i)
   }
 
+  useEffect(() => {
+    handlePushQuery(currentPage)
+  }, [currentPage])
+
   const handleSelectPage = (page: number) => {
     setCurrentPage(page)
-    handlePushQuery(page, page === 1 ? 10 : 15)
   }
 
   const handleNext = () => {
@@ -39,8 +42,6 @@ const Pagination: React.FC<IPaginationProps> = ({
       setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit)
       setminPageNumberLimit(minPageNumberLimit + pageNumberLimit)
     }
-
-    handlePushQuery(currentPage)
   }
 
   const handlePrevious = () => {
@@ -50,16 +51,14 @@ const Pagination: React.FC<IPaginationProps> = ({
       setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit)
       setminPageNumberLimit(minPageNumberLimit - pageNumberLimit)
     }
-
-    handlePushQuery(currentPage)
   }
 
-  const handlePushQuery = (page: number, limit?: number) => {
+  const handlePushQuery = (page: number) => {
     const path = router.pathname
     const query = router.query
 
     query.page = `${page}`
-    query.limit = `${limit}`
+    query.limit = `${itemsPerPage}`
 
     router.push({ pathname: path, query: query })
   }

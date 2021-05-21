@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
   return (
     <Container>
       <section>
-        <img src="logo.jpg" alt="" />
+        <img src="merkur_horizontal.png" alt="" />
 
         <aside>
           <span>Cnpj nº 99.999.999/0001-00</span>

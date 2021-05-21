@@ -13,16 +13,17 @@ export const HeaderUp = styled.section`
   padding: 0 0.8rem;
 
   img {
-    height: 4.8rem;
+    height: 3.2rem;
+
     cursor: pointer;
   }
 
   @media ${device.tablet} {
     padding: 0 12rem;
     height: 10.4rem;
+
     img {
-      height: 6rem;
-      width: 12rem;
+      height: 6.4rem;
     }
   }
 `
@@ -31,7 +32,6 @@ export const ManagerArea = styled.section`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-
     a {
       font-weight: 100;
       font-size: 1.2rem;

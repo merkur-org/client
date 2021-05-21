@@ -76,7 +76,7 @@ const Header: React.FC = () => {
     <Main>
       <HeaderUp>
         <Link href="/">
-          <img src="logo.jpg" alt="" />
+          <img src="merkur_horizontal.png" alt="" />
         </Link>
         <SearchProducts />
 

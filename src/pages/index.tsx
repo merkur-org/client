@@ -66,11 +66,7 @@ const Home: NextPage<HomeProps> = ({
             ))}
         </GridContainer>
       </OffersContainer>
-      <Pagination
-        page={page}
-        itemsPerPage={page >= 1 ? 10 : 15}
-        total_count={total_count}
-      />
+      <Pagination page={page} itemsPerPage={limit} total_count={total_count} />
     </Container>
   )
 }
@@ -78,8 +74,11 @@ const Home: NextPage<HomeProps> = ({
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const page = query.page || 1
 
-  const { data } = await api.get(`/products/in-list?type=offer&page=${page}`)
+  const { data } = await api.get(
+    `/products/in-list?type=offer&page=${page}&limit=${page > 1 ? 15 : 10}`
+  )
   const { data: listProducts, limit, total_count } = data
+
   return {
     props: {
       page,

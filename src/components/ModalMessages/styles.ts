@@ -3,35 +3,29 @@ import styled, { keyframes, css } from 'styled-components'
 
 interface OpenModalProps {
   isOpen: boolean
-  time: number
   type: string
 }
 
 const openAnimation = keyframes`
   0% {
-    transform: translate(0, 200%);
+    bottom: -3.2rem;
   }
-
   25%{
-    transform: translate(0, 0);
+    bottom: 3.2rem;
   }
-
   70%{
-    transform: translate(0, 0);
+    bottom: 3.2rem;
   }
-
   85%{
-    transform: translate(0, -20%);
+    bottom: 4rem;
   }
-
   100%{
-    transform: translate(0, 200%);
+    bottom: -3.2rem;
   }
 `
 
 export const Container = styled.div<OpenModalProps>`
   display: none;
-  transform: translate(0, 300%);
 
   p {
     transform: translateX(-50%);
@@ -68,6 +62,6 @@ export const Container = styled.div<OpenModalProps>`
       z-index: 100;
       left: 50%;
 
-      animation: ${openAnimation} 2s ease-in-out;
+      animation: ${openAnimation} 2s ease-out;
     `}
 `
