@@ -5,14 +5,14 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { useBag } from '@/hooks/bag'
 import { useAuth, User } from '@/hooks/auth'
 
-import { ProductData } from '@/pages'
-
 import ModalProductDetails from '@/components/ModalProductDetails'
 import BuyQuantityInput from '@/components/BuyQuantityInput'
 import ModalMessages from '@/components/ModalMessages'
 
+import { IProductsDTO } from '@/dtos/IProductsDTO'
+
 interface ProductCardProps {
-  product: ProductData
+  product: IProductsDTO
 }
 
 interface MessagesProps {
@@ -121,17 +121,20 @@ const ProductCardData: React.FC<ProductCardProps> = ({ product }) => {
           onClick={() => {
             setIsOpenModalDetails(true)
           }}
-          src={product.image_url}
+          src={product.image_url || '/not-found.png'}
         />
 
         <Info>
           <Data>
             <aside>
-              <h3>{product.category || 'legumes'}</h3>
+              <h3>
+                {product.category}
+                <span>{product.organic && 'orgânico'}</span>
+              </h3>
               <h1>{product.name}</h1>
             </aside>
             <h2>
-              R$ {product.sale_price}/{product.unit_sale}
+              R$ {product.sale_price.toFixed(2)}/{product.unit_sale}
             </h2>
           </Data>
 
@@ -139,6 +142,7 @@ const ProductCardData: React.FC<ProductCardProps> = ({ product }) => {
             <BuyQuantityInput
               quantity={cardQuantity}
               setQuantity={setCardQuantity}
+              product={product}
             />
             <aside
               onClick={() => {
@@ -154,12 +158,8 @@ const ProductCardData: React.FC<ProductCardProps> = ({ product }) => {
 
                   if (res.status === 'success') {
                     addProduct({
-                      id: product.id,
-                      name: product.name,
-                      photo: product.image_url,
-                      quantity: cardQuantity,
-                      sale_price: product.sale_price,
-                      unit: product.unit_sale
+                      ...product,
+                      quantity: cardQuantity
                     })
                   }
                 }

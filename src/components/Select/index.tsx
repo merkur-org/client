@@ -52,6 +52,7 @@ const Select: React.FC<Props> = ({
     (option: any) => {
       if (onChange) {
         onChange(option)
+        setSelectIsEmpty(false)
       } else {
         if (option.value !== '') {
           setSelectIsEmpty(false)
@@ -81,6 +82,8 @@ const Select: React.FC<Props> = ({
           defaultValue={rest.defaultValue}
           placeholder=""
           styles={selectStyles}
+          menuPosition="fixed"
+          {...rest}
         />
       </FieldText>
     </BodySelect>

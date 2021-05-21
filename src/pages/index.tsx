@@ -11,36 +11,18 @@ import { FaLongArrowAltRight } from 'react-icons/fa'
 
 import api from '@/services/api'
 
+import { IProductsDTO } from '@/dtos/IProductsDTO'
+
 import Title from '@/components/Title'
 import Filter from '@/components/Filter'
 import Pagination from '@/components/Pagination'
 
 import { GetServerSideProps, NextPage } from 'next'
-export interface ProductData {
-  id: string
-  name: string
-  category: string
-  image: string
-  nutritional_information: string
-  observation: string
-  unit_sale: string
-  unit_buy: string
-  fraction_buy: number
-  fraction_sale: number
-  cost_price: number
-  sale_price: number
-  wholesale_price: number
-  organic: boolean
-  highlights: boolean
-  created_at: string
-  updated_at: string
-  image_url: string
-}
 interface HomeProps {
   limit: number
   page: number
   total_count: number
-  listProducts: ProductData[]
+  listProducts: IProductsDTO[]
 }
 
 const Home: NextPage<HomeProps> = ({
@@ -84,11 +66,7 @@ const Home: NextPage<HomeProps> = ({
             ))}
         </GridContainer>
       </OffersContainer>
-      <Pagination
-        page={page}
-        itemsPerPage={page >= 1 ? 10 : 15}
-        total_count={total_count}
-      />
+      <Pagination page={page} itemsPerPage={limit} total_count={total_count} />
     </Container>
   )
 }
@@ -96,7 +74,9 @@ const Home: NextPage<HomeProps> = ({
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const page = query.page || 1
 
-  const { data } = await api.get(`/products/in-list?type=offer&page=${page}`)
+  const { data } = await api.get(
+    `/products/in-list?type=offer&page=${page}&limit=${page > 1 ? 15 : 10}`
+  )
   const { data: listProducts, limit, total_count } = data
 
   return {

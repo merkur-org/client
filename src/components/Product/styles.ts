@@ -38,9 +38,16 @@ export const Data = styled.section`
     }
 
     > h3 {
+      display: flex;
+      justify-content: space-between;
+
       font-size: 1.2rem;
       font-weight: normal;
       color: ${({ theme }) => theme.colors.orangePrimary};
+
+      span {
+        color: ${({ theme }) => theme.colors.greenPrimary};
+      }
     }
   }
   > h2 {

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { breakPoints as device, effects } from '@/styles/constants'
+import { breakPoints as device, effects, transitions } from '@/styles/constants'
 
 export const Main = styled.header``
 export const HeaderUp = styled.section`
@@ -8,20 +8,22 @@ export const HeaderUp = styled.section`
   align-items: center;
   justify-content: space-between;
   width: 100vw;
-  max-width: 120rem;
   margin: 0 auto;
-  height: 100%;
+  height: 7.2rem;
+  padding: 0 0.8rem;
 
   img {
-    height: 4.8rem;
+    height: 3.2rem;
+
     cursor: pointer;
   }
 
   @media ${device.tablet} {
+    padding: 0 12rem;
     height: 10.4rem;
+
     img {
-      height: 6rem;
-      width: 12rem;
+      height: 6.4rem;
     }
   }
 `
@@ -30,7 +32,6 @@ export const ManagerArea = styled.section`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-
     a {
       font-weight: 100;
       font-size: 1.2rem;
@@ -41,18 +42,17 @@ export const ManagerArea = styled.section`
         font-weight: bold;
         color: ${({ theme }) => theme.colors.yellowPrimary};
       }
+
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.lightGray};
+        transition: ${transitions.hover};
+      }
     }
   }
 
   > section {
     display: flex;
     align-items: center;
-
-    a {
-      & + a {
-        margin-left: 1.6rem;
-      }
-    }
   }
 
   @media ${device.tablet} {
@@ -61,6 +61,7 @@ export const ManagerArea = styled.section`
       align-items: center;
       a {
         font-size: 1.6rem;
+        padding: 0.8rem;
         & + a {
           margin-left: 1.6rem;
         }
@@ -70,11 +71,12 @@ export const ManagerArea = styled.section`
 `
 export const Manager = styled.a`
   cursor: pointer;
+  display: flex;
+  align-items: center;
+
   div {
     display: none;
   }
-
-  margin-right: 1.6rem;
 
   aside {
     position: relative;
@@ -101,10 +103,11 @@ export const Manager = styled.a`
     }
   }
 
-  @media ${device.tablet} {
-    display: flex;
-    align-items: center;
+  > svg {
+    margin-right: 0.8rem;
+  }
 
+  @media ${device.tablet} {
     div {
       flex-direction: column;
       color: ${({ theme }) => theme.colors.black};
@@ -116,12 +119,15 @@ export const Manager = styled.a`
       }
     }
 
+    aside {
+      span {
+        display: initial;
+      }
+    }
+
     svg {
       font-size: 1.2rem;
     }
-  }
-  > svg {
-    display: none;
   }
 
   @media ${device.laptop} {
@@ -150,14 +156,12 @@ export const Burguer = styled.div<PropsBurguer>`
     div {
       background: transparent;
       width: 60px;
-      height: 60px;
-
       span {
         position: relative;
         display: block;
         background: #fff;
-        width: 30px;
-        height: 3px;
+        width: 24px;
+        height: 2px;
         border-radius: 0.4rem;
         top: 50%;
         left: 16px;
@@ -172,14 +176,15 @@ export const Burguer = styled.div<PropsBurguer>`
           height: 100%;
           position: absolute;
           transition: 0.5s ease-in-out;
+          border-radius: 0.4rem;
         }
 
         &:before {
-          top: -10px;
+          top: -8px;
         }
 
         &:after {
-          bottom: -10px;
+          bottom: -8px;
         }
       }
     }
@@ -214,7 +219,7 @@ export const Burguer = styled.div<PropsBurguer>`
         : css`
             display: none;
           `}
-    width:100vw;
+    width: 100vw;
     height: 100vh;
     position: absolute;
     z-index: 10;
@@ -252,34 +257,11 @@ export const Burguer = styled.div<PropsBurguer>`
 export const HeaderDown = styled.section`
   background: ${props => props.theme.colors.orangePrimary};
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   height: 3.2rem;
 
   box-shadow: ${effects.dropShadow};
-
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-
-    background: transparent;
-    border: 0;
-
-    color: ${({ theme }) => theme.colors.white};
-    font-size: 1.2rem;
-
-    width: 100%;
-    height: 3.2rem;
-    padding-left: 1.6rem;
-
-    svg {
-      font-size: 1.2rem;
-      color: ${({ theme }) => theme.colors.white};
-
-      margin-right: 0.8rem;
-    }
-  }
 
   aside {
     display: none;
@@ -290,22 +272,11 @@ export const HeaderDown = styled.section`
 
     width: 100%;
 
-    button {
-      padding-left: 12rem;
-      width: 25%;
-      height: 4.8rem;
-
-      font-size: 1.6rem;
-
-      svg {
-        font-size: 1.6rem;
-      }
-    }
-
     aside {
       display: flex;
 
       border-left: 2px solid ${({ theme }) => theme.colors.yellowPrimary};
+      padding: 0 12rem;
 
       width: 100%;
       height: 4.8rem;

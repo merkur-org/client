@@ -4,7 +4,7 @@ import Cookie from 'js-cookie'
 
 // impedir que o usuário entre em rotas caso ele NÃO esteja logado
 // EX: Página de finalização de compra
-const WithAuth = (Component: ElementType) => {
+const WithAuth = (Component: ElementType): React.FC => {
   const Wrapper = (props: any) => {
     const router = useRouter()
 

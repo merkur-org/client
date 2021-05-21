@@ -1,38 +1,49 @@
 import { BuyQuantity } from './styles'
 import { FaPlus, FaMinus } from 'react-icons/fa'
-import { Dispatch, useState, SetStateAction, useContext } from 'react'
+import {
+  Dispatch,
+  useState,
+  SetStateAction,
+  useContext,
+  useEffect
+} from 'react'
 
-import { BagContext, IProduct } from '@/hooks/bag'
+import { IProductsDTO } from '@/dtos/IProductsDTO'
 
+import { BagContext } from '@/hooks/bag'
 interface IDataProps {
   quantity?: number
   setQuantity?: Dispatch<SetStateAction<number>>
-  product?: IProduct
+  product?: IProductsDTO
   type?: string
+  factor?: number
 }
 
 const BuyQuantityInput: React.FC<IDataProps> = ({
+  product,
   quantity = 0,
   setQuantity,
-  product,
-  type = 'CARD'
+  type = 'CARD',
+  factor = 1
 }) => {
   const { increseProductQuantity, decreaseProductQuantity } = useContext(
     BagContext
   )
-
   let handleIncrease, handleDecrease
 
   switch (type) {
     case 'CARD':
-      handleIncrease = () => setQuantity(count => count + 1)
-      handleDecrease = () => setQuantity(count => (count > 0 ? count - 1 : 0))
+      handleIncrease = () => setQuantity(count => count + factor)
+      handleDecrease = () =>
+        setQuantity(count => (count > 0 ? count - factor : 0))
 
       break
 
     case 'BAG':
-      handleIncrease = () => increseProductQuantity(product)
-      handleDecrease = () => decreaseProductQuantity(product)
+      handleIncrease = () =>
+        increseProductQuantity({ ...product, quantity: quantity + factor })
+      handleDecrease = () =>
+        decreaseProductQuantity({ ...product, quantity: quantity - factor })
 
       break
   }
@@ -44,13 +55,15 @@ const BuyQuantityInput: React.FC<IDataProps> = ({
           <FaMinus />
         </button>
 
-        <span className="quantity-label">{quantity}</span>
+        <span className="quantity-label">
+          {Math.round(quantity * 100) / 100}
+        </span>
 
         <button type="button" onClick={handleIncrease}>
           <FaPlus />
         </button>
       </div>
-      <span>kg</span>
+      <span className="unit">{product && product.unit_sale}</span>
     </BuyQuantity>
   )
 }

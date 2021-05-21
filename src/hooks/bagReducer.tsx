@@ -1,13 +1,13 @@
 import Cookie from 'js-cookie'
 
-import { IProduct, StateProps } from '@/hooks/bag'
+import { StateProps, BagProducts } from '@/hooks/bag'
 
-const Storage = (bagItems: IProduct[]) => {
+const Storage = (bagItems: BagProducts[]) => {
   Cookie.set('bag', JSON.stringify(bagItems.length > 0 ? bagItems : []))
 }
 
 export const sumItems = (
-  bagItems: IProduct[]
+  bagItems: BagProducts[]
 ): { itemCount: number; total: string } => {
   Storage(bagItems)
 
@@ -29,7 +29,7 @@ export const sumItems = (
 
 export const BagReducer = (
   state: StateProps,
-  action: { type: string; product: IProduct }
+  action: { type: string; product: BagProducts }
 ): any => {
   switch (action.type) {
     case 'ADD_PRODUCT': {

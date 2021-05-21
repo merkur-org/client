@@ -65,12 +65,12 @@ export const AuthProvider: React.FC = ({ children }) => {
         response = await api.post('/sessions', { cpf: cpf, phone: phone })
       }
 
+      console.log(response)
+
       const { token, user } = response.data
 
       Cookie.set('token', token)
       Cookie.set('user', JSON.stringify(user))
-
-      api.defaults.headers.authorization = `Bearer ${token}`
 
       setData({ token, user })
     },

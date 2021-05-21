@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components'
 
-import { border, effects } from '@/styles/constants'
+import { border, breakPoints, effects } from '@/styles/constants'
 import device from '@/styles/constants/breakPoints'
 
 interface styleProps {
@@ -140,6 +140,8 @@ export const ContentUp = styled.aside`
 
     height: 21.2rem;
     object-fit: cover;
+
+    box-shadow: ${effects.dropShadow};
   }
 
   > aside {
@@ -176,12 +178,21 @@ export const Data = styled.div`
   justify-content: space-between;
 
   height: 100%;
+  width: 100%;
 
   aside {
     h3 {
+      display: flex;
+      justify-content: space-between;
+
       color: ${({ theme }) => theme.colors.orangePrimary};
       font-size: 1.6rem;
       font-weight: 400;
+
+      span {
+        color: ${({ theme }) => theme.colors.greenPrimary};
+        font-size: 1.2rem;
+      }
     }
     h1 {
       color: ${({ theme }) => theme.colors.black};
@@ -194,6 +205,14 @@ export const Data = styled.div`
     font-size: 2.4rem;
     margin-bottom: 0.8rem;
     font-weight: 400;
+  }
+
+  @media ${breakPoints.tablet} {
+    aside {
+      h3 {
+        flex-direction: column;
+      }
+    }
   }
 `
 

@@ -116,10 +116,14 @@ export const SummaryDelivery = styled.div`
         margin-top: 0.4rem;
       }
     }
+  }
 
-    & + section {
-      margin-top: 3.2rem;
-    }
+  aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+
+    margin-top: 3.2rem;
   }
 
   @media ${device.tablet} {
@@ -127,12 +131,19 @@ export const SummaryDelivery = styled.div`
     padding: 0 3.2rem;
     border-left: 0.1rem solid ${({ theme }) => theme.colors.division};
   }
+
+  @media ${device.laptopL} {
+    aside {
+      flex-direction: row;
+    }
+  }
 `
 export const SummaryButtons = styled.div`
   margin-top: 3.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   button + button {
     margin-top: 1.6rem;
@@ -143,5 +154,38 @@ export const SummaryButtons = styled.div`
     padding: 0 3.2rem;
     border-left: 0.1rem solid ${({ theme }) => theme.colors.division};
     border-right: 0.1rem solid ${({ theme }) => theme.colors.division};
+  }
+`
+
+export const SummaryInfo = styled.div`
+  margin-top: 3.2rem;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+
+  section {
+    display: flex;
+    justify-content: space-between;
+
+    strong {
+      color: ${({ theme }) => theme.colors.black};
+      font-size: 2.4rem;
+      display: flex;
+      align-items: center;
+    }
+
+    span {
+      color: ${({ theme }) => theme.colors.black};
+      font-size: 2.4rem;
+      display: flex;
+      align-items: center;
+    }
+
+    & + section {
+      margin-top: 3.2rem;
+    }
+  }
+  @media ${device.tablet} {
+    width: 28%;
   }
 `

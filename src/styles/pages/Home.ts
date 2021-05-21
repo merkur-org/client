@@ -19,7 +19,7 @@ export const BannerContainer = styled.div`
   background: ${({ theme }) => theme.colors.gray};
   max-height: 39.8rem;
   max-width: 120rem;
-  margin: 0 auto 3.6rem;
+  margin: 0 auto 3.6rem auto;
   height: fit-content;
 
   img {
@@ -34,7 +34,7 @@ export const BannerContainer = styled.div`
     border-radius: ${border.borderRadius};
     width: calc(100vw - calc(12.2rem * 2));
 
-    margin: 5.6rem auto;
+    margin: 5.6rem auto 0 auto;
 
     img {
       height: 100%;
@@ -52,7 +52,7 @@ export const OffersContainer = styled.div`
   overflow: auto;
   width: 100%;
 
-  @media ${device.laptop} {
+  @media ${device.laptopL} {
     overflow: visible;
   }
 `
@@ -63,8 +63,7 @@ export const OffersTopTitle = styled.div`
   justify-content: space-between;
   align-items: flex-start;
 
-  margin-bottom: 2.4rem;
-  margin-left: 1.6rem;
+  margin-top: 3.6rem 0 2.4rem 1.6rem;
 
   width: 100%;
 
@@ -73,7 +72,7 @@ export const OffersTopTitle = styled.div`
     justify-content: space-between;
     align-items: center;
 
-    margin-left: 0;
+    margin: 5.6rem 0 2.4rem 0;
   }
 `
 
