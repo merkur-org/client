@@ -15,7 +15,7 @@ const SEO = ({
   shouldExcludeTitleSufix = false,
   shouldIndexPage = true
 }: SEOProps): JSX.Element => {
-  const pageTitle = `${title} ${!shouldExcludeTitleSufix ? 'Client' : ''}`
+  const pageTitle = `${title} ${!shouldExcludeTitleSufix ? 'Merkur' : ''}`
 
   const pageImage = image ? `${process.env.NEXT_PUBLIC_SITE_URL}${image}` : null
 

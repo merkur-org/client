@@ -48,7 +48,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          <link rel="icon" href="/banner.png" />
+          <link rel="icon" href="/merkur_icon.png" />
         </Head>
         <body>
           <Main />

@@ -38,17 +38,6 @@ const ModalOrderDetails: React.FC<ModalOrderDetailsProps> = ({
 }) => {
   const ModalProductDetailsRef = useRef<HTMLDivElement>(null)
 
-  const [errorMessage, setErrorMessage] = useState({ message: '', open: false })
-  const [successMessage, setSuccessMessage] = useState({
-    message: '',
-    open: false
-  })
-
-  const { addProduct } = useBag()
-  const { user } = useAuth()
-
-  const timer = 2000
-
   useEffect(() => {
     document.addEventListener('mousedown', (event: MouseEvent) => {
       if (
@@ -90,7 +79,7 @@ const ModalOrderDetails: React.FC<ModalOrderDetailsProps> = ({
                     {order.total_items}
                   </li>
                   <li>
-                    <b>Total:</b>
+                    <b>Total: </b>
                     R$ {order.final_value.toFixed(2)}
                   </li>
                   <li>

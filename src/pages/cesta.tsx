@@ -1,12 +1,12 @@
-import { useCallback, useState, useRef, useContext, useEffect } from 'react'
-import { GetServerSideProps, GetStaticProps, NextPage } from 'next'
+import { useCallback, useState, useRef, useEffect } from 'react'
+import { GetStaticProps, NextPage } from 'next'
 import { FaShoppingBasket, FaCheck } from 'react-icons/fa'
 import { FiTrash2 } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
 
 import api from '@/services/api'
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 
 import BuyQuantityInput from '@/components/BuyQuantityInput'
 import Button from '@/components/Button'
@@ -22,7 +22,6 @@ import { useOrders } from '@/hooks/orders'
 
 import { IProductsDTO } from '@/dtos/IProductsDTO'
 import IDeliveryPointsDTO from '@/dtos/IDeliveryPointsDTO'
-import { IOrderDTO } from '@/dtos/IOrderDTO'
 
 import {
   Container,
@@ -36,6 +35,7 @@ import {
 } from '@/styles/pages/cesta'
 import { Table } from '@/styles/components/table'
 import ModalMessage from '@/components/ModalMessages'
+import { SEO } from '@/components'
 interface UFProps {
   id: number
   sigla: string
@@ -59,7 +59,6 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
 
   const [errors, setErrors] = useState<Yup.ValidationError>()
   const [success, setSuccess] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
 
   const [selectedUf, setSelectedUf] = useState('')
   const [pointsList, setPointsList] = useState<any>([])
@@ -102,8 +101,6 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
       })
 
       if (bagItems.length > 0) {
-        setIsLoading(true)
-
         const total = bagItems.reduce((accumulator: number, item) => {
           accumulator += item.sale_price * item.quantity
 
@@ -138,7 +135,6 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
 
         setErrors(error)
         setSuccess(false)
-        setIsLoading(false)
       }
     }
   }, [])
@@ -146,12 +142,13 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
   return (
     <>
       <Container>
+        <SEO title="Cesta - " image="/banner.png" />
         <TopTitle>
           <Title title="Minha cesta" />
           <ClearBasket>
-            <h2 onClick={clearBag}>
+            <button onClick={clearBag}>
               <h2>Limpar Cesta</h2>
-            </h2>
+            </button>
           </ClearBasket>
         </TopTitle>
         <Table>

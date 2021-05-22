@@ -29,7 +29,7 @@ interface TabsProps {
 
 const Header: React.FC = () => {
   const { user, signOut } = useAuth()
-  const { bagItems } = useBag()
+  const { bagItems, sumItems } = useBag()
 
   const router = useRouter()
 
@@ -53,20 +53,13 @@ const Header: React.FC = () => {
   }, [router.pathname])
 
   useEffect(() => {
-    if (router.pathname !== '/cesta') {
-      setBagNotification(oldState => oldState + 1)
-    } else {
-      setBagNotification(0)
-    }
+    setBagNotification(sumItems(bagItems).itemCount)
   }, [bagItems])
 
   const handleOpenDropDown = useCallback(() => {
     setOpenDropDown(state => !state)
   }, [])
 
-  const handleClearNotifications = useCallback(() => {
-    setBagNotification(0)
-  }, [])
   async function handleSignOut() {
     signOut()
     router.reload()
@@ -93,7 +86,7 @@ const Header: React.FC = () => {
           ) : (
             <section>
               <Link href="/cesta">
-                <Manager onClick={handleClearNotifications}>
+                <Manager>
                   <div>Cesta</div>
                   <aside>
                     <FaShoppingBasket />

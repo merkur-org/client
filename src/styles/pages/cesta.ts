@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { border, breakPoints } from '../constants'
+import { border, breakPoints, transitions } from '../constants'
 import { Form } from '@unform/web'
 import device from '../constants/breakPoints'
 
@@ -63,14 +63,25 @@ export const ClearBasket = styled.div`
   align-items: center;
   cursor: pointer;
 
-  h2 {
-    color: ${({ theme }) => theme.colors.orangePrimary};
-    font-size: 1.6rem;
-    font-family: Roboto Slab;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 1.6rem;
-    line-height: 21px;
+  button {
+    padding: 0.8rem;
+    background: transparent;
+    border: none;
+
+    transition: ${transitions.hover} background;
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.division};
+    }
+
+    h2 {
+      color: ${({ theme }) => theme.colors.orangePrimary};
+      font-size: 1.6rem;
+      font-family: Roboto Slab;
+      font-style: normal;
+      font-weight: 300;
+      font-size: 1.6rem;
+      line-height: 21px;
+    }
   }
 `
 

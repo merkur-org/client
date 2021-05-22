@@ -9,9 +9,7 @@ import { Container } from '@/styles/pages/cesta'
 import { Table } from '@/styles/components/table'
 import ModalOrderDetails from '@/components/ModalOrderDetails'
 
-import { useOrders } from '@/hooks/orders'
 import api from '@/services/api'
-import { useAuth } from '@/hooks/auth'
 import { IOrderDTO } from '@/dtos/IOrderDTO'
 import IDeliveryPointsDTO from '@/dtos/IDeliveryPointsDTO'
 
@@ -19,6 +17,7 @@ import formatDate from '@/utils/formatDate'
 import serializeDeliveryPoint from '@/utils/serializeDeliveryPoint'
 import { IProductsDTO } from '@/dtos/IProductsDTO'
 import Pagination from '@/components/Pagination'
+import { SEO } from '@/components'
 
 export interface OrderProps extends IOrderDTO {
   delivery_point: string
@@ -63,6 +62,7 @@ const Orders: NextPage<OrderPageProps> = ({
         setIsOpen={setIsOpenModalDetails}
       />
       <Container>
+        <SEO title="Meus Pedidos - " image="/banner.png" />
         <Title title="Meus Pedidos" />
         {orders && (
           <Table>
@@ -82,7 +82,7 @@ const Orders: NextPage<OrderPageProps> = ({
                   <h4 className="price">{order.total_items}</h4>
                 </td>
                 <td>
-                  <h4 className="total">{order.final_value}</h4>
+                  <h4 className="total">R$ {order.final_value}</h4>
                 </td>
                 <td>
                   <h4 className="text">{order.delivery_point}</h4>

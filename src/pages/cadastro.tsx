@@ -29,6 +29,7 @@ import {
 } from '@/styles/pages/cadastro'
 import { FaCheck } from 'react-icons/fa'
 import ModalMessage from '@/components/ModalMessages'
+import { SEO } from '@/components'
 
 interface formProps {
   pessoal: boolean
@@ -78,6 +79,7 @@ const Cadastro: React.FC = () => {
     <>
       <BackButton />
       <Container isLoading={isLoading}>
+        <SEO title="Cadastro - " image="/banner.png" />
         <BackgroundWhiteRectangle>
           <WelcomeContainer>
             <h1>BEM VINDO</h1>

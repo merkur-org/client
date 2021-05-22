@@ -83,7 +83,7 @@ const Home: NextPage<HomeProps> = ({
 
   return (
     <Container>
-      <SEO title="HOME" image="/banner.png" />
+      <SEO title="Início - " image="/banner.png" />
       {search === '' && page <= 1 && (
         <BannerContainer>
           <img src="banner.png" alt="" />
