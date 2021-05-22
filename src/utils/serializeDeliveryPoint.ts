@@ -1,8 +1,6 @@
 import IDeliveryPointsDTO from '@/dtos/IDeliveryPointsDTO'
 
 const serializeDeliveryPoint = (deliveryPoint: IDeliveryPointsDTO): string => {
-  console.log(deliveryPoint)
-
   return (
     deliveryPoint.city +
     ', ' +

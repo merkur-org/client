@@ -64,29 +64,38 @@ const Pagination: React.FC<IPaginationProps> = ({
   }
 
   return (
-    <PaginationComponent>
-      <button onClick={handlePrevious}>&lt;</button>
-      {minPageNumberLimit >= 1 && <button onClick={handlePrevious}>...</button>}
-      <section className="pageNumbers">
-        {pages.map(number => {
-          if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-            return (
-              <PageButton
-                key={number}
-                isSelected={currentPage === number}
-                onClick={() => handleSelectPage(number)}
-              >
-                {number}
-              </PageButton>
-            )
-          }
-        })}
-      </section>
-      {pages.length > maxPageNumberLimit && (
-        <button onClick={handleNext}>...</button>
+    <>
+      {pages.length > 0 && (
+        <PaginationComponent>
+          <button onClick={handlePrevious}>&lt;</button>
+          {minPageNumberLimit >= 1 && (
+            <button onClick={handlePrevious}>...</button>
+          )}
+          <section className="pageNumbers">
+            {pages.map(number => {
+              if (
+                number < maxPageNumberLimit + 1 &&
+                number > minPageNumberLimit
+              ) {
+                return (
+                  <PageButton
+                    key={number}
+                    isSelected={currentPage === number}
+                    onClick={() => handleSelectPage(number)}
+                  >
+                    {number}
+                  </PageButton>
+                )
+              }
+            })}
+          </section>
+          {pages.length > maxPageNumberLimit && (
+            <button onClick={handleNext}>...</button>
+          )}
+          <button onClick={handleNext}>&gt;</button>
+        </PaginationComponent>
       )}
-      <button onClick={handleNext}>&gt;</button>
-    </PaginationComponent>
+    </>
   )
 }
 

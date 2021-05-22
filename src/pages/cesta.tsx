@@ -55,7 +55,7 @@ interface BagPageProps {
 }
 const Bag: NextPage<BagPageProps> = ({ states }) => {
   const { addOrder } = useOrders()
-  const { bagItems, removeProduct, clearBag, sumItems } = useBag()
+  const { bagItems, removeProduct, clearBag, sumItems, activeList } = useBag()
 
   const [errors, setErrors] = useState<Yup.ValidationError>()
   const [success, setSuccess] = useState(false)
@@ -91,16 +91,17 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
   const handleFinishOrder = useCallback(async formData => {
     formRef.current?.setErrors({})
 
-    if (bagItems.length > 0) {
-      try {
-        const schema = Yup.object().shape({
-          delivery_point: Yup.string().required(formMessages.required)
-        })
+    try {
+      const schema = Yup.object().shape({
+        delivery_point: Yup.string().required(formMessages.required),
+        payment_type: Yup.string().required(formMessages.required)
+      })
 
-        await schema.validate(formData, {
-          abortEarly: false
-        })
+      await schema.validate(formData, {
+        abortEarly: false
+      })
 
+      if (bagItems.length > 0) {
         setIsLoading(true)
 
         const total = bagItems.reduce((accumulator: number, item) => {
@@ -110,12 +111,11 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
         }, 0)
 
         addOrder({
-          date: new Date(),
           delivery_point_id: formData.delivery_point,
           payment_status: 'processing',
-          payment_type: 'money',
+          payment_type: formData.payment_type,
           final_value: total,
-          list_id: 'c74dd032-1568-4406-89e9-d0c80b526438',
+          list_id: activeList.id,
           sales_type: 'retail',
           value: total,
           details:
@@ -130,15 +130,15 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
         })
 
         setSuccess(true)
-      } catch (error) {
-        if (error instanceof Yup.ValidationError) {
-          const errors = getValidationErrors(error)
-          formRef.current?.setErrors(errors)
+      }
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(error)
+        formRef.current?.setErrors(errors)
 
-          setErrors(error)
-          setSuccess(false)
-          setIsLoading(false)
-        }
+        setErrors(error)
+        setSuccess(false)
+        setIsLoading(false)
       }
     }
   }, [])
@@ -212,8 +212,36 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
           <SummaryContent>
             <SummaryDelivery>
               <section>
-                <strong>Total</strong>
-                <span>R$ {totalItems.total}</span>
+                <strong>
+                  Total <span>R$ {totalItems.total}</span>
+                </strong>
+                <Select
+                  name="payment_type"
+                  label="Forma de pagamento"
+                  defaultOption="Forma de pagamento"
+                  options={[
+                    {
+                      label: 'Cartão de crédito',
+                      value: 'credit_card'
+                    },
+                    {
+                      label: 'Dinheiro',
+                      value: 'money'
+                    },
+                    {
+                      label: 'Pix',
+                      value: 'pix'
+                    },
+                    {
+                      label: 'Boleto',
+                      value: 'bank_slip'
+                    },
+                    {
+                      label: 'Transferência bancária',
+                      value: 'bank_transfer'
+                    }
+                  ]}
+                />
               </section>
               <aside>
                 <Select

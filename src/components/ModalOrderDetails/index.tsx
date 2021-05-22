@@ -6,14 +6,7 @@ import {
   SetStateAction,
   Dispatch
 } from 'react'
-import { FaShoppingBasket, FaPlus } from 'react-icons/fa'
-
-import Button from '@/components/Button'
-import {
-  handleValidateAddProduct,
-  handleFireMessages
-} from '@/components/Product'
-import ModalMessages from '@/components/ModalMessages'
+import { FaPlus } from 'react-icons/fa'
 
 import {
   CloseButton,
@@ -22,21 +15,20 @@ import {
   Data,
   InfoContent,
   Info,
-  ModalContent,
-  ButtonsContainer
+  ModalContent
 } from './styles'
-
-import { BuyQuantityInput } from '@/components'
+import { Table } from '@/styles/components/table'
 
 import { useBag } from '@/hooks/bag'
 import { useAuth } from '@/hooks/auth'
-import { IOrderDTO } from '@/dtos/IOrderDTO'
+import { OrderProps } from '@/pages/meus-pedidos'
+
 import formatDate from '@/utils/formatDate'
 
 interface ModalOrderDetailsProps {
   isOpen: boolean
   setIsOpen: Dispatch<SetStateAction<{ isOpen: boolean }>>
-  order: IOrderDTO
+  order: OrderProps
 }
 
 const ModalOrderDetails: React.FC<ModalOrderDetailsProps> = ({
@@ -95,24 +87,51 @@ const ModalOrderDetails: React.FC<ModalOrderDetailsProps> = ({
                   </li>
                   <li>
                     <b>Quantidade de itens comprados:</b>
-                    {order.details.reduce((accumulator: number, item) => {
-                      accumulator += item.quantity
-
-                      return accumulator
-                    }, 0)}
+                    {order.total_items}
                   </li>
                   <li>
                     <b>Total:</b>
-                    {order.final_value}
+                    R$ {order.final_value.toFixed(2)}
                   </li>
                   <li>
-                    <b>Local de entrega</b>
-                    {order.delivery_point_id}
+                    <b>Local de entrega:</b>
+                    {order.delivery_point}
                   </li>
                 </ul>
               </Info>
               <hr />
-              <Info></Info>
+              <Info>
+                <h2>Produtos Comprados</h2>
+                <Table>
+                  <tr>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                    <th>Total</th>
+                  </tr>
+                  {order.products.map(product => (
+                    <tr key={product.id}>
+                      <td>
+                        <div className="product-image">
+                          <img src={product.image_url || '/not-found.png'} />
+                          <p className="product-name">
+                            {product.name} x {product.quantity}
+                          </p>
+                        </div>
+                      </td>
+                      <td>
+                        <h4 className="price">{`R$ ${product.sale_price.toFixed(
+                          2
+                        )}`}</h4>
+                      </td>
+                      <td>
+                        <h4 className="price">{`R$ ${(
+                          product.sale_price * product.quantity
+                        ).toFixed(2)}`}</h4>
+                      </td>
+                    </tr>
+                  ))}
+                </Table>
+              </Info>
             </InfoContent>
           </ModalContent>
         </BodyButton>

@@ -210,10 +210,16 @@ export const Info = styled.div`
     color: ${({ theme }) => theme.colors.orangePrimary};
   }
 
-  p {
+  li {
     font-size: 1.6rem;
     font-weight: 100;
     color: ${({ theme }) => theme.colors.black};
+
+    margin-bottom: 0.8rem;
+
+    b {
+      margin-right: 0.8rem;
+    }
   }
 `
 

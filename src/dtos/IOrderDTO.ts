@@ -23,6 +23,21 @@ export interface IOrderDTO {
   sales_type: ISalesType
   delivery_point_id: string
   list_id: string
+  order_details: {
+    product_id: string
+    quantity: number
+    discount: number
+  }[]
+}
+
+export interface ICreateOrderDTO {
+  delivery_point_id: string
+  list_id: string
+  final_value: number
+  payment_status: IPaymentStatus
+  payment_type: IPaymentType
+  sales_type: ISalesType
+  value: number
   details: {
     product_id: string
     quantity: number

@@ -4,6 +4,7 @@ import { breakPoints } from '@/styles/constants'
 export const Container = styled.div`
   display: flex;
   align-items: center;
+
   div {
     content: '';
     width: 1.6rem;
@@ -17,6 +18,12 @@ export const Container = styled.div`
 
   h1 {
     font-size: 2.4rem;
+    margin-right: 1.6rem;
+  }
+
+  span {
+    font-size: 1.2rem;
+    font-weight: 100;
   }
 
   @media ${breakPoints.tablet} {
@@ -29,6 +36,10 @@ export const Container = styled.div`
 
     h1 {
       font-size: 4rem;
+    }
+
+    span {
+      font-size: 1.6rem;
     }
   }
 `

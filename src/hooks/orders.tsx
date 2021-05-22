@@ -5,14 +5,14 @@ import { useBag } from '@/hooks/bag'
 
 import api from '@/services/api'
 
-import { IOrderDTO } from '@/dtos/IOrderDTO'
+import { ICreateOrderDTO, IOrderDTO } from '@/dtos/IOrderDTO'
 
 interface IOrders {
   orders: IOrderDTO[]
 }
 
 interface OrdersContextData {
-  addOrder(order: IOrderDTO): void
+  addOrder(order: ICreateOrderDTO): void
   orders: IOrderDTO[]
 }
 
@@ -33,10 +33,8 @@ export const OrdersProvider: React.FC = ({ children }) => {
     return {} as IOrders
   })
 
-  const addOrder = useCallback(async (order: IOrderDTO) => {
-    const res = await api.post('/orders', order)
-
-    console.log(res.data)
+  const addOrder = useCallback(async (order: ICreateOrderDTO) => {
+    await api.post('/orders', order)
     clearBag()
   }, [])
 

@@ -91,29 +91,27 @@ export const SummaryDelivery = styled.div`
 
   section {
     display: flex;
-
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
 
     strong {
       color: ${({ theme }) => theme.colors.black};
       font-size: 2.4rem;
       display: flex;
       align-items: center;
-    }
-    span {
-      font-size: 2.4rem;
-      color: ${({ theme }) => theme.colors.black};
+      justify-content: space-between;
+      margin-right: 1.6rem;
+      margin-bottom: 3.2rem;
+      width: 100%;
 
-      display: flex;
-      flex-direction: column;
+      span {
+        font-size: 2.4rem;
+        font-weight: 100;
+        color: ${({ theme }) => theme.colors.black};
 
-      button {
-        border: 0;
-        background: transparent;
-        cursor: pointer;
-        color: ${({ theme }) => theme.colors.redPrimary};
-        margin-top: 0.4rem;
+        display: flex;
+        flex-direction: column;
       }
     }
   }
@@ -128,11 +126,15 @@ export const SummaryDelivery = styled.div`
 
   @media ${device.tablet} {
     width: 50%;
-    padding: 0 3.2rem;
+    padding: 0 1.6rem;
     border-left: 0.1rem solid ${({ theme }) => theme.colors.division};
   }
 
   @media ${device.laptopL} {
+    section {
+      flex-direction: row;
+    }
+
     aside {
       flex-direction: row;
     }
@@ -151,7 +153,7 @@ export const SummaryButtons = styled.div`
 
   @media ${device.tablet} {
     width: 50%;
-    padding: 0 3.2rem;
+    padding: 0 1.6rem;
     border-left: 0.1rem solid ${({ theme }) => theme.colors.division};
     border-right: 0.1rem solid ${({ theme }) => theme.colors.division};
   }

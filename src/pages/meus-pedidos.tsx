@@ -17,14 +17,18 @@ import IDeliveryPointsDTO from '@/dtos/IDeliveryPointsDTO'
 
 import formatDate from '@/utils/formatDate'
 import serializeDeliveryPoint from '@/utils/serializeDeliveryPoint'
+import { IProductsDTO } from '@/dtos/IProductsDTO'
+import Pagination from '@/components/Pagination'
 
-interface OrderProps extends IOrderDTO {
+export interface OrderProps extends IOrderDTO {
   delivery_point: string
   total_items: number
+  products: IProductsDTO[]
 }
 interface OrderPageProps {
   limit: number
   total_count: number
+  page: number
   orders: OrderProps[]
 }
 interface DetailModalProps {
@@ -32,7 +36,12 @@ interface DetailModalProps {
   isOpen: boolean
 }
 
-const Orders: NextPage<OrderPageProps> = ({ limit, total_count, orders }) => {
+const Orders: NextPage<OrderPageProps> = ({
+  limit,
+  total_count,
+  orders,
+  page
+}) => {
   const [
     isOpenModalDetails,
     setIsOpenModalDetails
@@ -92,6 +101,11 @@ const Orders: NextPage<OrderPageProps> = ({ limit, total_count, orders }) => {
             ))}
           </Table>
         )}
+        <Pagination
+          itemsPerPage={limit}
+          page={page}
+          total_count={total_count}
+        />
       </Container>
     </>
   )
@@ -104,35 +118,68 @@ interface OrderResponse {
   data: IOrderDTO[]
 }
 
-export const getServerSideProps: GetServerSideProps = async context => {
-  const token = context.req.cookies?.token
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req
+}) => {
+  const token = req.cookies?.token
+  const { page = 1 } = query
+
   if (token) {
-    const { data } = await api.get<OrderResponse>('/orders/me', {
-      headers: {
-        Authorization: 'Bearer ' + token
+    const { data } = await api.get<OrderResponse>(
+      `/orders/me?page=${page}&limit=15`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
       }
-    })
+    )
 
     if (data) {
       const { data: orderProducts, limit, total_count } = data
 
-      const orders = orderProducts.map(async order => {
-        const { data: deliverPoint } = await api.get<IDeliveryPointsDTO>(
-          `/delivery-points/${order.delivery_point_id}`
-        )
+      const orders = await Promise.all(
+        orderProducts.map(async order => {
+          const { data: deliverPoint } = await api.get<IDeliveryPointsDTO>(
+            `/delivery-points/${order.delivery_point_id}`
+          )
 
-        const serializedDeliveryPoints = serializeDeliveryPoint(deliverPoint)
+          const products = await Promise.all(
+            order.order_details.map(async detail => {
+              const { data: product } = await api.get<IProductsDTO>(
+                `products/${detail.product_id}`
+              )
 
-        const totalItems = order.details.reduce((accumulator: number, item) => {
-          accumulator += item.quantity
+              product.quantity = detail.quantity
 
-          return accumulator
-        }, 0)
-      })
+              return product
+            })
+          )
+
+          const serializedDeliveryPoints = serializeDeliveryPoint(deliverPoint)
+
+          const totalItems = order.order_details.reduce(
+            (accumulator: number, item) => {
+              accumulator += item.quantity
+
+              return accumulator
+            },
+            0
+          )
+
+          return {
+            ...order,
+            delivery_point: serializedDeliveryPoints,
+            total_items: totalItems,
+            products
+          }
+        })
+      )
 
       return {
         props: {
           limit,
+          page,
           total_count,
           orders
         }

@@ -1,9 +1,18 @@
-import { useContext, createContext, useCallback, useReducer } from 'react'
+import {
+  useContext,
+  createContext,
+  useCallback,
+  useReducer,
+  useState,
+  Dispatch,
+  SetStateAction
+} from 'react'
 import Cookie from 'js-cookie'
 
 import { BagReducer, sumItems } from './bagReducer'
 
 import { IProductsDTO } from '@/dtos/IProductsDTO'
+import { IListDTO } from '@/dtos/IListDTO'
 
 export interface BagProducts extends IProductsDTO {
   quantity: number
@@ -22,6 +31,8 @@ interface BagContextData {
   clearBag(): void
   bagItems: BagProducts[]
   sumItems(bagItems: BagProducts[]): { itemCount: number; total: string }
+  activeList: IListDTO
+  setActiveList: Dispatch<SetStateAction<IListDTO>>
 }
 
 const storage = Cookie.get('bag') ? JSON.parse(Cookie.get('bag')) : []
@@ -35,6 +46,8 @@ export const BagContext = createContext<BagContextData>({} as BagContextData)
 
 export const BagProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(BagReducer, initialState)
+
+  const [activeList, setActiveList] = useState<IListDTO>()
 
   const addProduct = useCallback((product: BagProducts) => {
     dispatch({ type: 'ADD_PRODUCT', product })
@@ -65,6 +78,8 @@ export const BagProvider: React.FC = ({ children }) => {
         increseProductQuantity,
         clearBag,
         sumItems,
+        activeList,
+        setActiveList,
         ...state
       }}
     >

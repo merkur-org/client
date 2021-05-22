@@ -12,19 +12,23 @@ import { FaLongArrowAltRight } from 'react-icons/fa'
 import api from '@/services/api'
 
 import { IProductsDTO } from '@/dtos/IProductsDTO'
+import { IListDTO } from '@/dtos/IListDTO'
 
 import Title from '@/components/Title'
 import Filter from '@/components/Filter'
 import Pagination from '@/components/Pagination'
+import { useBag } from '@/hooks/bag'
 
 import { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import formatDate from '@/utils/formatDate'
 interface HomeProps {
   limit: number
   page: number
   total_count: number
   listProducts: IProductsDTO[]
+  list: IListDTO
   search: string | string[]
 }
 const objectFilter = [
@@ -55,11 +59,18 @@ const Home: NextPage<HomeProps> = ({
   limit,
   total_count,
   listProducts,
-  search
+  search,
+  list
 }) => {
   const router = useRouter()
+  const { setActiveList } = useBag()
+
   const [filterLabel, setFilterLabel] = useState('')
   const [isOpenModalFilter, setIsOpenModalFilter] = useState(false)
+
+  useEffect(() => {
+    setActiveList(list)
+  }, [])
 
   const handleFilter = (positionFilter: number) => {
     const { field, laber, order } = objectFilter[positionFilter]
@@ -80,7 +91,12 @@ const Home: NextPage<HomeProps> = ({
       )}
 
       <OffersTopTitle>
-        <Title title="Ofertas" />
+        <Title
+          title="Ofertas"
+          subtitle={`(Disponível de ${formatDate(
+            list.start_date
+          )} à ${formatDate(list.end_date)})`}
+        />
         <Filter
           label={filterLabel}
           isOpenModalFilter={isOpenModalFilter}
@@ -93,11 +109,9 @@ const Home: NextPage<HomeProps> = ({
           }
         >
           <li onClick={() => handleFilter(0)}>Adicionados Recentemente</li>
-          {/* <li onClick={() => handleFilter('')}>Categorias</li> */}
           <li onClick={() => handleFilter(1)}>Menor Preço</li>
           <li onClick={() => handleFilter(2)}>Maior Preço</li>
           <li onClick={() => handleFilter(3)}>Ordem Alfabética</li>
-          {/* <li onClick={() => handleFilter('')}>Promoções</li> */}
         </Filter>
       </OffersTopTitle>
       <OffersContainer>

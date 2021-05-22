@@ -17,4 +17,5 @@ export interface IProductsDTO {
   highlights: boolean
   created_at: string
   updated_at: string
+  quantity?: number
 }
