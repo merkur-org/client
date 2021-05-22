@@ -1,4 +1,4 @@
-export default function formatData(date: Date): string {
+export default function formatDate(date: Date): string {
   const formatedDate = new Date(date)
 
   const day = formatedDate.getDay()
