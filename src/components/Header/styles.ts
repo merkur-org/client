@@ -53,9 +53,11 @@ export const ManagerArea = styled.section`
   > section {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
   }
 
-  @media ${device.tablet} {
+  @media ${device.laptop} {
     > aside {
       flex-direction: row;
       align-items: center;
@@ -66,6 +68,10 @@ export const ManagerArea = styled.section`
           margin-left: 1.6rem;
         }
       }
+    }
+
+    > section {
+      gap: 5.6rem;
     }
   }
 `
@@ -231,7 +237,7 @@ export const Burguer = styled.div<PropsBurguer>`
       background-color: white;
       min-width: 100vw;
       box-shadow: 0px 8px 10px 0px rgba(0, 0, 0, 0.2);
-      top: 8rem;
+      top: 10.4rem;
       z-index: 2;
 
       div {

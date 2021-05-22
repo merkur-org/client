@@ -60,8 +60,6 @@ export const BodyButton = styled.div<styleProps>`
     display: flex;
     align-items: center;
     font-size: 1.6rem;
-
-    margin-left: 3.2rem;
     padding: 0.8rem;
 
     &:hover {

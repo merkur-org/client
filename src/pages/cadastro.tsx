@@ -137,10 +137,7 @@ const Cadastro: React.FC = () => {
                     <Input name="password" type="password" label="Senha" />
                     <aside>
                       <p>A senha deve conter</p>
-                      <p>- Condição 1</p>
-                      <p>- Condição 2</p>
-                      <p>- Condição 3</p>
-                      <p>- Condição 4</p>
+                      <p>- Pelo menos 8 caractéres</p>
                     </aside>
                   </InputContainer>
                   <InputContainer>
@@ -165,19 +162,19 @@ const Cadastro: React.FC = () => {
                   linkLabel="termos de condições"
                 />
               </BottomContainer>
-              {errors && (
-                <ModalMessage
-                  message="Ocorreu um erro, tente novamente"
-                  type="error"
-                  open={errors}
-                  timer={2000}
-                />
-              )}
             </Form>
           </FormContainer>
         </BackgroundWhiteRectangle>
         <BackgroundOrange />
       </Container>
+      {errors && (
+        <ModalMessage
+          message="Ocorreu um erro, tente novamente"
+          type="error"
+          open={errors}
+          timer={2000}
+        />
+      )}
     </>
   )
 }

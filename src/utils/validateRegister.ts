@@ -39,7 +39,9 @@ const validateRegister = async (
         is: true,
         then: Yup.string().required(formMessages.required)
       }),
-      password: Yup.string().required(formMessages.required),
+      password: Yup.string()
+        .required(formMessages.required)
+        .matches(/(?=.{8,})/, 'A senha não atende as condições'),
       passwordConfirmation: Yup.string()
         .oneOf([Yup.ref('password'), null], formMessages.samePassword)
         .required(formMessages.required),

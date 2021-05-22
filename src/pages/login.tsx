@@ -120,14 +120,6 @@ const Login: NextPage = () => {
                     <a href="forgotPassword">esqueceu sua senha?</a>
                     <a href="noRegister">não possui cadastro?</a>
                   </LinksContainer>
-                  {errors && (
-                    <ModalMessage
-                      message="Usuário ou senha incorretos"
-                      type="error"
-                      open={errors}
-                      timer={2000}
-                    />
-                  )}
                 </>
               )}
 
@@ -142,14 +134,6 @@ const Login: NextPage = () => {
                     label="Telefone"
                     mask={phoneInputMask}
                   />
-                  {errors && (
-                    <ModalMessage
-                      message="CPF ou telefone incorretos"
-                      type="error"
-                      open={errors}
-                      timer={2000}
-                    />
-                  )}
                 </>
               )}
               <ButtonContainer>
@@ -160,6 +144,14 @@ const Login: NextPage = () => {
         </BackgroundWhiteRectangle>
         <BackgroundOrange />
       </Container>
+      {errors && (
+        <ModalMessage
+          message="Ocorreu um erro tente novamente"
+          type="error"
+          open={errors}
+          timer={2000}
+        />
+      )}
     </>
   )
 }

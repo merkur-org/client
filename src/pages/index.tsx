@@ -25,6 +25,7 @@ interface HomeProps {
   page: number
   total_count: number
   listProducts: IProductsDTO[]
+  search: string | string[]
 }
 const objectFilter = [
   {
@@ -53,7 +54,8 @@ const Home: NextPage<HomeProps> = ({
   page,
   limit,
   total_count,
-  listProducts
+  listProducts,
+  search
 }) => {
   const router = useRouter()
   const [filterLabel, setFilterLabel] = useState('')
@@ -71,7 +73,7 @@ const Home: NextPage<HomeProps> = ({
   return (
     <Container>
       <SEO title="HOME" image="/banner.png" />
-      {page <= 1 && (
+      {search === '' && page <= 1 && (
         <BannerContainer>
           <img src="banner.png" alt="" />
         </BannerContainer>
@@ -123,14 +125,16 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   order && order.length > 0 && (url = url + `&order=${order}`)
 
   const { data } = await api.get(url)
-  const { data: listProducts, limit, total_count } = data
+  const { data: listProducts, limit, total_count, list } = data
 
   return {
     props: {
       page,
       limit,
       total_count,
-      listProducts
+      listProducts,
+      list,
+      search: search || ''
     }
   }
 }

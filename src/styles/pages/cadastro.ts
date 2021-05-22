@@ -86,7 +86,7 @@ export const FormContainer = styled.div`
 
     p {
       font-size: 1.2rem;
-      color: ${({ theme }) => theme.colors.yellowPrimary};
+      color: ${({ theme }) => theme.colors.orangeSecundary};
     }
   }
 `
