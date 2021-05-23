@@ -27,6 +27,7 @@ import {
   LinksContainer
 } from '@/styles/pages/login'
 import ModalMessage from '@/components/ModalMessages'
+import { SEO } from '@/components'
 interface formProps {
   cpfTab: boolean
   emailTab: boolean
@@ -71,6 +72,7 @@ const Login: NextPage = () => {
     <>
       <BackButton />
       <Container isLoading={isLoading}>
+        <SEO title="Entrar - " image="/banner.png" />
         <BackgroundWhiteRectangle>
           <WelcomeContainer>
             <h1>BEM VINDO</h1>

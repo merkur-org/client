@@ -13,7 +13,7 @@ export const HeaderUp = styled.section`
   padding: 0 0.8rem;
 
   img {
-    height: 3.2rem;
+    height: 2.4rem;
 
     cursor: pointer;
   }
@@ -23,7 +23,7 @@ export const HeaderUp = styled.section`
     height: 10.4rem;
 
     img {
-      height: 6.4rem;
+      height: 4.8rem;
     }
   }
 `

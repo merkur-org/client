@@ -23,7 +23,7 @@ export const Container = styled.footer`
 
     img {
       width: 12.8rem;
-      margin-bottom: 2.4rem;
+      margin: 2.4rem 0;
     }
 
     aside {

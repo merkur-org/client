@@ -1,12 +1,12 @@
-import { useCallback, useState, useRef, useContext, useEffect } from 'react'
-import { GetServerSideProps, GetStaticProps, NextPage } from 'next'
+import { useCallback, useState, useRef, useEffect } from 'react'
+import { GetStaticProps, NextPage } from 'next'
 import { FaShoppingBasket, FaCheck } from 'react-icons/fa'
 import { FiTrash2 } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
 
 import api from '@/services/api'
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 
 import BuyQuantityInput from '@/components/BuyQuantityInput'
 import Button from '@/components/Button'
@@ -22,7 +22,6 @@ import { useOrders } from '@/hooks/orders'
 
 import { IProductsDTO } from '@/dtos/IProductsDTO'
 import IDeliveryPointsDTO from '@/dtos/IDeliveryPointsDTO'
-import { IOrderDTO } from '@/dtos/IOrderDTO'
 
 import {
   Container,
@@ -36,6 +35,7 @@ import {
 } from '@/styles/pages/cesta'
 import { Table } from '@/styles/components/table'
 import ModalMessage from '@/components/ModalMessages'
+import { SEO } from '@/components'
 interface UFProps {
   id: number
   sigla: string
@@ -55,11 +55,10 @@ interface BagPageProps {
 }
 const Bag: NextPage<BagPageProps> = ({ states }) => {
   const { addOrder } = useOrders()
-  const { bagItems, removeProduct, clearBag, sumItems } = useBag()
+  const { bagItems, removeProduct, clearBag, sumItems, activeList } = useBag()
 
   const [errors, setErrors] = useState<Yup.ValidationError>()
   const [success, setSuccess] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
 
   const [selectedUf, setSelectedUf] = useState('')
   const [pointsList, setPointsList] = useState<any>([])
@@ -91,18 +90,17 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
   const handleFinishOrder = useCallback(async formData => {
     formRef.current?.setErrors({})
 
-    if (bagItems.length > 0) {
-      try {
-        const schema = Yup.object().shape({
-          delivery_point: Yup.string().required(formMessages.required)
-        })
+    try {
+      const schema = Yup.object().shape({
+        delivery_point: Yup.string().required(formMessages.required),
+        payment_type: Yup.string().required(formMessages.required)
+      })
 
-        await schema.validate(formData, {
-          abortEarly: false
-        })
+      await schema.validate(formData, {
+        abortEarly: false
+      })
 
-        setIsLoading(true)
-
+      if (bagItems.length > 0) {
         const total = bagItems.reduce((accumulator: number, item) => {
           accumulator += item.sale_price * item.quantity
 
@@ -110,12 +108,11 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
         }, 0)
 
         addOrder({
-          date: new Date(),
           delivery_point_id: formData.delivery_point,
           payment_status: 'processing',
-          payment_type: 'money',
+          payment_type: formData.payment_type,
           final_value: total,
-          list_id: 'c74dd032-1568-4406-89e9-d0c80b526438',
+          list_id: activeList.id,
           sales_type: 'retail',
           value: total,
           details:
@@ -130,15 +127,14 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
         })
 
         setSuccess(true)
-      } catch (error) {
-        if (error instanceof Yup.ValidationError) {
-          const errors = getValidationErrors(error)
-          formRef.current?.setErrors(errors)
+      }
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(error)
+        formRef.current?.setErrors(errors)
 
-          setErrors(error)
-          setSuccess(false)
-          setIsLoading(false)
-        }
+        setErrors(error)
+        setSuccess(false)
       }
     }
   }, [])
@@ -146,12 +142,13 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
   return (
     <>
       <Container>
+        <SEO title="Cesta - " image="/banner.png" />
         <TopTitle>
           <Title title="Minha cesta" />
           <ClearBasket>
-            <h2 onClick={clearBag}>
+            <button onClick={clearBag}>
               <h2>Limpar Cesta</h2>
-            </h2>
+            </button>
           </ClearBasket>
         </TopTitle>
         <Table>
@@ -212,8 +209,36 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
           <SummaryContent>
             <SummaryDelivery>
               <section>
-                <strong>Total</strong>
-                <span>R$ {totalItems.total}</span>
+                <strong>
+                  Total <span>R$ {totalItems.total}</span>
+                </strong>
+                <Select
+                  name="payment_type"
+                  label="Forma de pagamento"
+                  defaultOption="Forma de pagamento"
+                  options={[
+                    {
+                      label: 'Cartão de crédito',
+                      value: 'credit_card'
+                    },
+                    {
+                      label: 'Dinheiro',
+                      value: 'money'
+                    },
+                    {
+                      label: 'Pix',
+                      value: 'pix'
+                    },
+                    {
+                      label: 'Boleto',
+                      value: 'bank_slip'
+                    },
+                    {
+                      label: 'Transferência bancária',
+                      value: 'bank_transfer'
+                    }
+                  ]}
+                />
               </section>
               <aside>
                 <Select
