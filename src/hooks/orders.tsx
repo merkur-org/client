@@ -34,7 +34,14 @@ export const OrdersProvider: React.FC = ({ children }) => {
   })
 
   const addOrder = useCallback(async (order: ICreateOrderDTO) => {
-    await api.post('/orders', order)
+    const token = Cookie.get('token')
+
+    await api.post('/orders', order, {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
+
     clearBag()
   }, [])
 
