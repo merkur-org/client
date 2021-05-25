@@ -41,6 +41,7 @@ export const OrdersProvider: React.FC = ({ children }) => {
         Authorization: 'Bearer ' + token
       }
     })
+
     clearBag()
   }, [])
 
