@@ -4,12 +4,13 @@ services:
   front:
     build:
       context: ./
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_API_URL: 'http://localhost:3333/api'
+      dockerfile: Dockerfile.dev
     container_name: merkur-front
-    command: yarn start
+    command: yarn dev
     environment:
       - NEXT_PUBLIC_API_URL='http://localhost:3333/api'
+    volumes:
+      - .:/home/node/front
+      - /home/node/front/node_modules
     ports:
       - '3000:3000'

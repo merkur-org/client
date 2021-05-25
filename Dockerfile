@@ -7,8 +7,9 @@ WORKDIR /home/node/front
 ENV PATH /home/node/front/node_modules/.bin:$PATH
 
 COPY package.json yarn.* ./
-
 USER node
+
+ARG NEXT_PUBLIC_API_URL
 
 RUN yarn
 
