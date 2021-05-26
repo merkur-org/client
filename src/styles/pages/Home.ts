@@ -13,18 +13,13 @@ export const Container = styled.div`
 `
 
 export const BannerContainer = styled.div`
-  display: flex;
   width: 100vw;
-  height: 100vw;
-  background: ${({ theme }) => theme.colors.gray};
   max-height: 39.8rem;
   max-width: 120rem;
   margin: 0 auto 3.6rem auto;
-  height: fit-content;
 
   img {
     width: 100%;
-    height: fit-content;
     object-fit: contain;
 
     box-shadow: ${effects.dropShadow};
@@ -41,9 +36,6 @@ export const BannerContainer = styled.div`
 
       border-radius: 0.8rem;
     }
-  }
-
-  @media ${device.desktopL} {
   }
 `
 

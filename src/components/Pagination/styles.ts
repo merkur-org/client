@@ -3,11 +3,12 @@ import styled, { css } from 'styled-components'
 export const PaginationComponent = styled.section`
   display: inline-flex;
   white-space: nowrap;
-  width: 100%;
   overflow-x: auto;
   justify-content: flex-start;
 
   margin-top: 5.6rem;
+
+  border: 1px solid red;
 
   button {
     padding: 1.6rem 2.4rem;

@@ -5,4 +5,5 @@ node_modules
 .eslintrc.json
 prettier.config.js
 README.md
-.env*
+.env
+.env.*
