@@ -1,12 +1,13 @@
 import { breakPoints } from '@/styles/constants'
 import styled, { css } from 'styled-components'
 export const PaginationComponent = styled.section`
-  display: inline-flex;
-  white-space: nowrap;
+  display: flex;
   width: 100%;
   overflow-x: auto;
-  justify-content: flex-start;
 
+  justify-content: center;
+
+  padding: 0 1.6rem;
   margin-top: 5.6rem;
 
   button {
@@ -29,24 +30,27 @@ export const PaginationComponent = styled.section`
     border-bottom-right-radius: 0.8rem;
   }
 
-  .pageNumbers {
-    list-style: none;
-    display: flex;
-  }
-
-  .pageNumbers button {
-    border-radius: 0;
-  }
-
   @media ${breakPoints.tablet} {
-    justify-content: center;
+    padding: 0;
   }
 `
 interface PaginationStyleProps {
   isSelected: boolean
+  isCurrentPage: boolean
 }
 
 export const PageButton = styled.button<PaginationStyleProps>`
+  ${props =>
+    props.isCurrentPage
+      ? css`
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        `
+      : css`
+          display: none;
+        `}
+
   ${props =>
     props.isSelected &&
     css`
@@ -57,9 +61,14 @@ export const PageButton = styled.button<PaginationStyleProps>`
   &:active {
     border: 1px solid ${({ theme }) => theme.colors.lightGray};
     background: transparent;
+  }
+  cursor: pointer;
 
-    cursor: pointer;
+  font-size: 1.6rem;
 
-    font-size: 1.6rem;
+  @media ${breakPoints.laptop} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `

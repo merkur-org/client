@@ -71,24 +71,23 @@ const Pagination: React.FC<IPaginationProps> = ({
           {minPageNumberLimit >= 1 && (
             <button onClick={handlePrevious}>...</button>
           )}
-          <section className="pageNumbers">
-            {pages.map(number => {
-              if (
-                number < maxPageNumberLimit + 1 &&
-                number > minPageNumberLimit
-              ) {
-                return (
-                  <PageButton
-                    key={number}
-                    isSelected={currentPage === number}
-                    onClick={() => handleSelectPage(number)}
-                  >
-                    {number}
-                  </PageButton>
-                )
-              }
-            })}
-          </section>
+          {pages.map(number => {
+            if (
+              number < maxPageNumberLimit + 1 &&
+              number > minPageNumberLimit
+            ) {
+              return (
+                <PageButton
+                  key={number}
+                  isSelected={currentPage === number}
+                  onClick={() => handleSelectPage(number)}
+                  isCurrentPage={number === currentPage}
+                >
+                  {number}
+                </PageButton>
+              )
+            }
+          })}
           {pages.length > maxPageNumberLimit && (
             <button onClick={handleNext}>...</button>
           )}
