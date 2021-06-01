@@ -18,6 +18,10 @@ interface SignUpCredentials {
   cnpj?: string
 }
 
+interface PasswordRecoverCredentials {
+  email: string
+}
+
 export interface User {
   id: string
   name: string
@@ -29,6 +33,7 @@ interface AuthContextData {
   signIn(credentials: SignInCredentials): Promise<void>
   signOut(): void
   signUp(credentials: SignUpCredentials): Promise<void>
+  passwordRecover(credentials: PasswordRecoverCredentials): Promise<void>
 }
 
 interface AuthData {
@@ -113,8 +118,21 @@ export const AuthProvider: React.FC = ({ children }) => {
     []
   )
 
+  const passwordRecover = useCallback(
+    async ({ email }: PasswordRecoverCredentials) => {
+      const response = await api.post('/password/forgot', {
+        email: email
+      })
+
+      console.log(response)
+    },
+    []
+  )
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut, signUp }}>
+    <AuthContext.Provider
+      value={{ user: data.user, signIn, signOut, signUp, passwordRecover }}
+    >
       {children}
     </AuthContext.Provider>
   )
