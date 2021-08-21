@@ -119,8 +119,8 @@ const Login: NextPage = () => {
                     subLabel="esqueceu sua senha"
                   />
                   <LinksContainer>
-                    <a href="forgotPassword">esqueceu sua senha?</a>
-                    <a href="noRegister">não possui cadastro?</a>
+                    <a href="/recuperar-senha">esqueceu sua senha?</a>
+                    <a href="/cadastro">não possui cadastro?</a>
                   </LinksContainer>
                 </>
               )}

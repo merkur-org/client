@@ -61,7 +61,6 @@ const Cadastro: React.FC = () => {
   const handleSubmit = useCallback(async (formData: formProps) => {
     try {
       const data = await validateRegister(formData, formRef)
-
       if (data) {
         setisLoading(true)
 
