@@ -30,7 +30,12 @@ const validateRegister = async (
       empresarial: Yup.boolean(),
       name: Yup.string().required(formMessages.required),
       email: Yup.string().email().required(formMessages.required),
-      phone: Yup.string().required(formMessages.required),
+      phone: Yup.string()
+        .required(formMessages.required)
+        .test('len', 'Número de telefone inválido', val => {
+          const phoneLength = val.replace(/-|\(|\)/g, '').length
+          return phoneLength === 12
+        }),
       cpf: Yup.string().when('pessoal', {
         is: true,
         then: Yup.string().required(formMessages.required)

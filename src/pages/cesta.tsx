@@ -107,6 +107,8 @@ const Bag: NextPage<BagPageProps> = ({ states }) => {
           return accumulator
         }, 0)
 
+        console.log(activeList)
+
         addOrder({
           delivery_point_id: formData.delivery_point,
           payment_status: 'processing',

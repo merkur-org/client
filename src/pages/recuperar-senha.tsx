@@ -94,7 +94,7 @@ const Login: NextPage = () => {
                 <Input name="email" type="email" label="Email" />
               </InputContainer>
               <LinksContainer>
-                <a href="noRegister">não possui cadastro?</a>
+                <a href="/cadastro">não possui cadastro?</a>
               </LinksContainer>
               <ButtonContainer>
                 <Button text="Continuar" icon={FaCheck} type="submit" />

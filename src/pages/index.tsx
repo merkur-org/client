@@ -69,6 +69,7 @@ const Home: NextPage<HomeProps> = ({
   const [isOpenModalFilter, setIsOpenModalFilter] = useState(false)
 
   useEffect(() => {
+    console.log(list)
     setActiveList(list)
   }, [])
 
@@ -93,9 +94,13 @@ const Home: NextPage<HomeProps> = ({
       <OffersTopTitle>
         <Title
           title="Ofertas"
-          subtitle={`(Disponível de ${formatDate(
+          subtitle={
             list.start_date
-          )} à ${formatDate(list.end_date)})`}
+              ? `(Disponível de ${formatDate(list.start_date)} à ${formatDate(
+                  list.end_date
+                )})`
+              : ''
+          }
         />
         <Filter
           label={filterLabel}
@@ -140,14 +145,13 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   const { data } = await api.get(url)
   const { data: listProducts, limit, total_count, list } = data
-
   return {
     props: {
       page,
       limit,
       total_count,
       listProducts,
-      list,
+      list: list || {},
       search: search || ''
     }
   }
