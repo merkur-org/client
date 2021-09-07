@@ -26,6 +26,7 @@ export const Container = styled.label<ButtonProps>`
     cursor: pointer;
     position: relative;
     top: 1.2rem;
+    font-size: 1.6rem;
   }
 
   ${props =>
